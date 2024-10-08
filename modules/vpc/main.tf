@@ -20,18 +20,18 @@ module "vpc_redirecter" {
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-redirecter"
+  network_name = "${var.env}-redirector"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-redirecter-subnet-01"
+      subnet_name   = "${var.env}-redirector-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.0.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-redirecter-subnet-01" = []
+    "${var.env}-redirector-subnet-01" = []
   }
 }
 
@@ -44,14 +44,14 @@ module "vpc_c2" {
 
   subnets = [
     {
-      subnet_name   = "${var.env}-C2-subnet-01"
+      subnet_name   = "${var.env}-c2-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.1.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-C2-subnet-01" = []
+    "${var.env}-c2-subnet-01" = []
   }
 }
 
@@ -60,18 +60,18 @@ module "vpc_test" {
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-Test"
+  network_name = "${var.env}-test"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-Test-subnet-01"
+      subnet_name   = "${var.env}-test-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.2.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-Test-subnet-01" = []
+    "${var.env}-test-subnet-01" = []
   }
 }
 
@@ -80,17 +80,17 @@ module "vpc_phising" {
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-Phising"
+  network_name = "${var.env}-phising"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-Phising-subnet-01"
+      subnet_name   = "${var.env}-phising-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.3.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-Phising-subnet-01" = []
+    "${var.env}-phising-subnet-01" = []
   }
 }

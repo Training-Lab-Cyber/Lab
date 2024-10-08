@@ -21,11 +21,11 @@ output "c2_subnet" {
   value = "${element(module.vpc_c2.subnets_names, 0)}"
 }
 
-output "redirecter_network" {
+output "redirector_network" {
   value = "${module.vpc_redirecter.network_name}"
 }
 
-output "redirecter_subnet" {
+output "redirector_subnet" {
   value = "${element(module.vpc_redirecter.subnets_names, 0)}"
 }
 
