@@ -30,7 +30,7 @@ steps:
   - '-c'
   - |
       if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-        cd environments/$BRANCH_NAME
+        cd Terraform/environments/$BRANCH_NAME
         terraform init
       else
         for dir in Terraform/environments/*/
@@ -55,7 +55,7 @@ steps:
   - '-c'
   - | 
       if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-        cd environments/$BRANCH_NAME
+        cd Terraform/environments/$BRANCH_NAME
         terraform plan
       else
         for dir in Terraform/environments/*/
@@ -101,6 +101,10 @@ steps:
       if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
         cd Terraform/environments/$BRANCH_NAME      
         terraform output -json > ../../Ansible/terraform_output.json
+      else
+        echo "***************************** SKIPPING APPLYING *******************************"
+        echo "Branch '$BRANCH_NAME' does not represent an official environment."
+        echo "*******************************************************************************"
       fi
 # [END terraform output]
 
@@ -112,7 +116,9 @@ steps:
   args:
     - '-c'
     - |
-      python generate_inventory.py Ansible/inventory.ini
+      cd Ansible/      
+      python generate_inventory.py inventory.ini
+      
 # [END Ansible Inventory Creation]
 
 # [START Ansible Playbook]
@@ -122,7 +128,8 @@ steps:
   args:
     - '-c'
     - |
-      ansible-playbook -i Ansible/inventory.ini Ansible/playbook.yml
+      cd Ansible/     
+      ansible-playbook -i inventory.ini playbook.yml
 
 # [END Ansible Playbook]
 
