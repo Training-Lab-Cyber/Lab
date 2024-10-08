@@ -25,7 +25,7 @@ resource "google_compute_instance" "c2_server" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-jammy-v20240402"
+      image = "ubuntu-os-cloud/ubuntu-2204-jammy-v20240927"
     }
   }
 
