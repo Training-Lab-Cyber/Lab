@@ -13,10 +13,34 @@
 # limitations under the License.
 
 
-output "network" {
-  value = "${module.vpc.network_name}"
+output "redirecter_network" {
+  value = module.vpc_redirecter.network_name
 }
 
-output "subnet" {
-  value = "${element(module.vpc.subnets_names, 0)}"
+output "redirecter_subnet" {
+  value = element(module.vpc_redirecter.subnets_names, 0)
+}
+
+output "C2_network" {
+  value = module.vpc_C2.network_name
+}
+
+output "C2_subnet" {
+  value = element(module.vpc_C2.subnets_names, 0)
+}
+
+output "Test_network" {
+  value = module.vpc_Test.network_name
+}
+
+output "Test_subnet" {
+  value = element(module.vpc_Test.subnets_names, 0)
+}
+
+output "Phising_network" {
+  value = module.vpc_Phising.network_name
+}
+
+output "Phising_subnet" {
+  value = element(module.vpc_Phising.subnets_names, 0)
 }
