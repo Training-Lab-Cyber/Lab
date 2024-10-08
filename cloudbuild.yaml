@@ -29,11 +29,11 @@ steps:
   args: 
   - '-c'
   - |
-      if [ -d "environments/$BRANCH_NAME/" ]; then
+      if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
         cd environments/$BRANCH_NAME
         terraform init
       else
-        for dir in environments/*/
+        for dir in Terraform/environments/*/
         do 
           cd ${dir}   
           env=${dir%*/}
@@ -54,11 +54,11 @@ steps:
   args: 
   - '-c'
   - | 
-      if [ -d "environments/$BRANCH_NAME/" ]; then
+      if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
         cd environments/$BRANCH_NAME
         terraform plan
       else
-        for dir in environments/*/
+        for dir in Terraform/environments/*/
         do 
           cd ${dir}   
           env=${dir%*/}
@@ -80,8 +80,8 @@ steps:
   args: 
   - '-c'
   - | 
-      if [ -d "environments/$BRANCH_NAME/" ]; then
-        cd environments/$BRANCH_NAME      
+      if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
+        cd Terraform/environments/$BRANCH_NAME      
         terraform apply -auto-approve
       else
         echo "***************************** SKIPPING APPLYING *******************************"
@@ -90,6 +90,42 @@ steps:
       fi
 # [END tf-apply]
 
+
+# [START terraform output]
+- id: 'tf output'
+  name: 'hashicorp/terraform:1.0.0'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
+        cd Terraform/environments/$BRANCH_NAME      
+        terraform output -json > ../../Ansible/terraform_output.json
+      fi
+# [END terraform output]
+
+
+# [START Ansible Inventory Creation]
+- id: 'generate inventory'
+  name: 'python:3.9'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      python generate_inventory.py Ansible/inventory.ini
+# [END Ansible Inventory Creation]
+
+# [START Ansible Playbook]
+- id: 'run ansible playbook'
+  name: 'ansible/ansible:latest'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      ansible-playbook -i Ansible/inventory.ini Ansible/playbook.yml
+
+# [END Ansible Playbook]
+
 # [START tf-destroy]
 - id: 'tf destroy'
   name: 'hashicorp/terraform:1.0.0'
@@ -97,8 +133,8 @@ steps:
   args: 
   - '-c'
   - | 
-      if [ -d "environments/$BRANCH_NAME/" ]; then
-        cd environments/$BRANCH_NAME      
+      if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
+        cd Terraform/environments/$BRANCH_NAME      
         echo "***************************** STARTING DESTROY *******************************"
         terraform destroy -auto-approve
       else

@@ -13,22 +13,15 @@
 # limitations under the License.
 
 
-output "network" {
-  value = "${module.vpc.network}"
-}
-
-output "subnet" {
-  value = "${module.vpc.subnet}"
-}
-
-output "firewall_rule" {
-  value = "${module.firewall.firewall_rule}"
-}
-
 output "instance_name" {
-  value = "${module.http_server.instance_name}"
+  value = "${google_compute_instance.http_server.name}"
 }
+
+output "internal_ip" {
+  value = "${google_compute_instance.http_server.network_interface.0.access_config.0.network_ip}"
+}
+
 
 output "external_ip" {
-  value = "${module.http_server.external_ip}"
+  value = "${google_compute_instance.http_server.network_interface.0.access_config.0.nat_ip}"
 }

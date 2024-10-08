@@ -13,20 +13,16 @@
 # limitations under the License.
 
 
-locals {
-  network = "${element(split("-", var.subnet), 0)}"
+output "network" {
+  value = "${module.vpc.network_name}"
 }
 
-resource "google_compute_firewall" "allow-http" {
-  name    = "${local.network}-allow-http"
-  network = "${local.network}"
-  project = "${var.project}"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80"]
+output "subnets" {
+  value = {
+    c2         = "${element(module.vpc.subnets_names, 0)}"
+    redirector = "${element(module.vpc.subnets_names, 1)}"
+    test       = "${element(module.vpc.subnets_names, 2)}"
+    phishing   = "${element(module.vpc.subnets_names, 3)}"
+    utils      = "${element(module.vpc.subnets_names, 4)}"
   }
-
-  target_tags   = ["http-server2"]
-  source_ranges = ["0.0.0.0/0"]
 }
