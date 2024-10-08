@@ -20,7 +20,7 @@ locals {
 resource "google_compute_instance" "c2_server" {
   project      = "${var.project}"
   zone         = "us-west1-a"
-  name         = "${local.network}-C2-instance"
+  name         = "${local.network}-c2-instance"
   machine_type = "e2-micro"
 
   boot_disk {
@@ -38,6 +38,6 @@ resource "google_compute_instance" "c2_server" {
   }
 
   # Apply the firewall rule to allow external IPs to access this instance
-  tags = ["C2-server"]
+  tags = ["c2-server"]
 }
 
