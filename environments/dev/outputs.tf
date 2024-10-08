@@ -13,12 +13,12 @@
 # limitations under the License.
 
 
-output "network" {
-  value = "${module.vpc.c2_network}"
+output "c2_network" {
+  value = "${module.vpc.networks.c2}"
 }
 
-output "subnet" {
-  value = "${module.vpc.c2_subnet}"
+output "c2_subnet" {
+  value = "${module.vpc.subnets.c2}"
 }
 
 output "firewall_rule" {

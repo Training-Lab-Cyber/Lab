@@ -15,7 +15,7 @@
 
 
 # VPCモジュールの呼び出し
-module "vpc_redirecter" {
+module "vpc_redirector" {
   source  = "terraform-google-modules/network/google"
   version = "3.3.0"
 
