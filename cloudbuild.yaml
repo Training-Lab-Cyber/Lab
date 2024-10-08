@@ -119,12 +119,13 @@ steps:
     - |
       cd Ansible/      
       python generate_inventory.py inventory.ini
+      cat inventory.ini
       
 # [END Ansible Inventory Creation]
 
 # [START Ansible Playbook]
 - id: 'run ansible playbook'
-  name: 'ansible/ansible:latest'
+- name: 'ansible/ansible-runner:latest'
   entrypoint: 'bash'
   args:
     - '-c'
