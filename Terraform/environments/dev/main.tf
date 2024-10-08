@@ -26,12 +26,6 @@ module "vpc" {
   project = "${var.project}"
   env     = "${local.env}"
 }
-module "http_server" {
-  source  = "../../modules/ansible_server"
-  project = "${var.project}"
-  subnet  = "${module.vpc.subnets.utils}"
-}
-
 
 module "http_server" {
   source  = "../../modules/http_server"
