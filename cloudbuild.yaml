@@ -125,7 +125,6 @@ steps:
 
 
 # [START Ansible Playbook]
-steps:
 - id: 'Copy Ansible Playbook and Inventory'
   name: 'google/cloud-sdk'
   entrypoint: 'bash'
