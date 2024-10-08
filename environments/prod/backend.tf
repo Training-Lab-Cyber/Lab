@@ -15,7 +15,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "PROJECT_ID-tfstate"
+    bucket = "crafty-airfoil-438000-g9-tfstate"
     prefix = "env/prod"
   }
 }
