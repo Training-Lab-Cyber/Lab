@@ -99,13 +99,8 @@ steps:
   - | 
       if [ -d "environments/$BRANCH_NAME/" ]; then
         cd environments/$BRANCH_NAME      
-        echo "Are you sure you want to destroy the resources in '$BRANCH_NAME'? (yes/no)"
-        read confirmation
-        if [ "$confirmation" == "yes" ]; then
-          terraform destroy -auto-approve
-        else
-          echo "***************************** DESTROY ABORTED *******************************"
-        fi
+        echo "***************************** STARTING DESTROY *******************************"
+        terraform destroy -auto-approve
       else
         echo "***************************** SKIPPING DESTROY *******************************"
         echo "Branch '$BRANCH_NAME' does not represent an official environment."
