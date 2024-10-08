@@ -123,16 +123,24 @@ steps:
       
 # [END Ansible Inventory Creation]
 
+
 # [START Ansible Playbook]
-- id: 'run ansible playbook'
-  name: 'ansible/ansible-runner:latest'
+steps:
+- id: 'Copy Ansible Playbook and Inventory'
+  name: 'google/cloud-sdk'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
-      cd Ansible/     
-      ansible-playbook -i inventory.ini playbook.yml
+      gcloud compute scp --recurse Ansible/* ansible_server:~/Ansible
 
+- id: 'Run Ansible Playbook'
+  name: 'google/cloud-sdk'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      gcloud compute ssh ansible_server --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
 # [END Ansible Playbook]
 
 # [START tf-destroy]
