@@ -75,22 +75,22 @@ module "vpc_test" {
   }
 }
 
-module "vpc_phising" {
+module "vpc_phishing" {
   source  = "terraform-google-modules/network/google"
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-phising"
+  network_name = "${var.env}-phishing"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-phising-subnet-01"
+      subnet_name   = "${var.env}-phishing-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.3.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-phising-subnet-01" = []
+    "${var.env}-phishing-subnet-01" = []
   }
 }
