@@ -125,7 +125,7 @@ steps:
 
 # [START Ansible Playbook]
 - id: 'run ansible playbook'
-- name: 'ansible/ansible-runner:latest'
+  name: 'ansible/ansible-runner:latest'
   entrypoint: 'bash'
   args:
     - '-c'
