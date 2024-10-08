@@ -35,12 +35,12 @@ module "vpc_redirecter" {
   }
 }
 
-module "vpc_C2" {
+module "vpc_c2" {
   source  = "terraform-google-modules/network/google"
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-C2"
+  network_name = "${var.env}-c2"
 
   subnets = [
     {
@@ -55,7 +55,7 @@ module "vpc_C2" {
   }
 }
 
-module "vpc_Test" {
+module "vpc_test" {
   source  = "terraform-google-modules/network/google"
   version = "3.3.0"
 
@@ -75,7 +75,7 @@ module "vpc_Test" {
   }
 }
 
-module "vpc_Phising" {
+module "vpc_phising" {
   source  = "terraform-google-modules/network/google"
   version = "3.3.0"
 

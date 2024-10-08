@@ -30,11 +30,11 @@ module "vpc" {
 module "c2_server" {
   source  = "../../modules/c2_server"
   project = "${var.project}"
-  subnet  = "${module.vpc_C2.subnet}"
+  subnet  = "${module.vpc_c2.subnet}"
 }
 
 module "firewall" {
   source  = "../../modules/firewall"
   project = "${var.project}"
-  subnet  = "${module.vpc_C2.subnet}"
+  subnet  = "${module.vpc_c2.subnet}"
 }

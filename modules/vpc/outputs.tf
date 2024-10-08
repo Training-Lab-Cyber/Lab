@@ -13,34 +13,35 @@
 # limitations under the License.
 
 
+output "c2_network" {
+  value = "${module.vpc_c2.network_name}"
+}
+
+output "c2_subnet" {
+  value = "${element(module.vpc_c2.subnets_names, 0)}"
+}
+
 output "redirecter_network" {
-  value = module.vpc_redirecter.network_name
+  value = "${module.vpc_redirecter.network_name}"
 }
 
 output "redirecter_subnet" {
-  value = element(module.vpc_redirecter.subnets_names, 0)
+  value = "${element(module.vpc_redirecter.subnets_names, 0)}"
 }
 
-output "C2_network" {
-  value = module.vpc_C2.network_name
+
+output "test_network" {
+  value = "${module.vpc_test.network_name}"
 }
 
-output "C2_subnet" {
-  value = element(module.vpc_C2.subnets_names, 0)
+output "test_subnet" {
+  value = "${element(module.vpc_test.subnets_names, 0)}"
 }
 
-output "Test_network" {
-  value = module.vpc_Test.network_name
+output "phising_network" {
+  value = "${module.vpc_phising.network_name}"
 }
 
-output "Test_subnet" {
-  value = element(module.vpc_Test.subnets_names, 0)
-}
-
-output "Phising_network" {
-  value = module.vpc_Phising.network_name
-}
-
-output "Phising_subnet" {
-  value = element(module.vpc_Phising.subnets_names, 0)
+output "phising_subnet" {
+  value = "${element(module.vpc_phising.subnets_names, 0)}"
 }
