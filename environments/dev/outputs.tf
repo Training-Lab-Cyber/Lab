@@ -13,12 +13,12 @@
 # limitations under the License.
 
 
-output "c2_network" {
-  value = "${module.vpc.networks.c2}"
+output "network" {
+  value = "${module.vpc.network}"
 }
 
-output "c2_subnet" {
-  value = "${module.vpc.subnets.c2}"
+output "subnet" {
+  value = "${module.vpc.subnet}"
 }
 
 output "firewall_rule" {
@@ -26,9 +26,9 @@ output "firewall_rule" {
 }
 
 output "instance_name" {
-  value = "${module.c2_server.instance_name}"
+  value = "${module.http_server.instance_name}"
 }
 
 output "external_ip" {
-  value = "${module.c2_server.external_ip}"
+  value = "${module.http_server.external_ip}"
 }

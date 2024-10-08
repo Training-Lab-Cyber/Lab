@@ -13,15 +13,21 @@
 # limitations under the License.
 
 
-resource "google_compute_instance" "c2_server" {
+locals {
+  network = "${element(split("-", var.subnet), 0)}"
+}
+
+resource "google_compute_instance" "http_server" {
   project      = "${var.project}"
   zone         = "us-west1-a"
-  name         = "${var.network}-c2-instance"
-  machine_type = "e2-micro"
+  name         = "${local.network}-apache2-instance"
+  machine_type = "f1-micro"
+
+  metadata_startup_script = "sudo apt-get update && sudo apt-get install apache2 -y && echo '<html><body><h1>Environment: ${local.network}</h1></body></html>' | sudo tee /var/www/html/index.html"
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-jammy-v20240927"
+      image = "debian-cloud/debian-11"
     }
   }
 
@@ -34,6 +40,5 @@ resource "google_compute_instance" "c2_server" {
   }
 
   # Apply the firewall rule to allow external IPs to access this instance
-  tags = ["c2-server"]
+  tags = ["http-server"]
 }
-

@@ -13,84 +13,22 @@
 # limitations under the License.
 
 
-
-# VPCモジュールの呼び出し
-module "vpc_redirector" {
+module "vpc" {
   source  = "terraform-google-modules/network/google"
   version = "3.3.0"
 
-  project_id   = var.project
-  network_name = "${var.env}-redirector"
+  project_id   = "${var.project}"
+  network_name = "${var.env}"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-redirector-subnet-01"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.0.0/24"
+      subnet_name   = "${var.env}-subnet-01"
+      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.10.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-redirector-subnet-01" = []
-  }
-}
-
-module "vpc_c2" {
-  source  = "terraform-google-modules/network/google"
-  version = "3.3.0"
-
-  project_id   = var.project
-  network_name = "${var.env}-c2"
-
-  subnets = [
-    {
-      subnet_name   = "${var.env}-c2-subnet-01"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.1.0/24"
-      subnet_region = "us-west1"
-    },
-  ]
-
-  secondary_ranges = {
-    "${var.env}-c2-subnet-01" = []
-  }
-}
-
-module "vpc_test" {
-  source  = "terraform-google-modules/network/google"
-  version = "3.3.0"
-
-  project_id   = var.project
-  network_name = "${var.env}-test"
-
-  subnets = [
-    {
-      subnet_name   = "${var.env}-test-subnet-01"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.2.0/24"
-      subnet_region = "us-west1"
-    },
-  ]
-
-  secondary_ranges = {
-    "${var.env}-test-subnet-01" = []
-  }
-}
-
-module "vpc_phishing" {
-  source  = "terraform-google-modules/network/google"
-  version = "3.3.0"
-
-  project_id   = var.project
-  network_name = "${var.env}-phishing"
-
-  subnets = [
-    {
-      subnet_name   = "${var.env}-phishing-subnet-01"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.3.0/24"
-      subnet_region = "us-west1"
-    },
-  ]
-
-  secondary_ranges = {
-    "${var.env}-phishing-subnet-01" = []
+    "${var.env}-subnet-01" = []
   }
 }

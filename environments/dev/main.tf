@@ -27,16 +27,14 @@ module "vpc" {
   env     = "${local.env}"
 }
 
-module "c2_server" {
-  source  = "../../modules/c2_server"
+module "http_server" {
+  source  = "../../modules/http_server"
   project = "${var.project}"
-  network  = "${module.vpc.networks.c2}"
-  subnet  = "${module.vpc.subnets.c2}"
+  subnet  = "${module.vpc.subnet}"
 }
 
 module "firewall" {
   source  = "../../modules/firewall"
   project = "${var.project}"
-  network  = "${module.vpc.networks.c2}"
-  subnet  = "${module.vpc.subnets.c2}"
+  subnet  = "${module.vpc.subnet}"
 }
