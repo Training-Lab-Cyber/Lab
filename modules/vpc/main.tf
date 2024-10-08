@@ -20,18 +20,18 @@ module "vpc_redirecter" {
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-redirector"
+  network_name = "${var.env}_redirector"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-redirector-subnet-01"
+      subnet_name   = "${var.env}_redirector-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.0.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-redirector-subnet-01" = []
+    "${var.env}_redirector-subnet-01" = []
   }
 }
 
@@ -40,18 +40,18 @@ module "vpc_c2" {
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-c2"
+  network_name = "${var.env}_c2"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-c2-subnet-01"
+      subnet_name   = "${var.env}_c2-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.1.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-c2-subnet-01" = []
+    "${var.env}_c2-subnet-01" = []
   }
 }
 
@@ -60,18 +60,18 @@ module "vpc_test" {
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-test"
+  network_name = "${var.env}_test"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-test-subnet-01"
+      subnet_name   = "${var.env}_test-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.2.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-test-subnet-01" = []
+    "${var.env}_test-subnet-01" = []
   }
 }
 
@@ -80,17 +80,17 @@ module "vpc_phising" {
   version = "3.3.0"
 
   project_id   = var.project
-  network_name = "${var.env}-phising"
+  network_name = "${var.env}_phising"
 
   subnets = [
     {
-      subnet_name   = "${var.env}-phising-subnet-01"
+      subnet_name   = "${var.env}_phising-subnet-01"
       subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.3.0/24"
       subnet_region = "us-west1"
     },
   ]
 
   secondary_ranges = {
-    "${var.env}-phising-subnet-01" = []
+    "${var.env}_phising-subnet-01" = []
   }
 }

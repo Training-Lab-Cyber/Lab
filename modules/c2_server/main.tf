@@ -20,7 +20,7 @@ locals {
 resource "google_compute_instance" "c2_server" {
   project      = "${var.project}"
   zone         = "us-west1-a"
-  name         = "${local.network}-c2-instance"
+  name         = "${local.network}_c2-instance"
   machine_type = "e2-micro"
 
   boot_disk {
