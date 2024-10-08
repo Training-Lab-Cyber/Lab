@@ -14,11 +14,11 @@
 
 
 output "network" {
-  value = "${module.vpc.network}"
+  value = "${module.vpc.c2_network}"
 }
 
 output "subnet" {
-  value = "${module.vpc.subnet}"
+  value = "${module.vpc.c2_subnet}"
 }
 
 output "firewall_rule" {
