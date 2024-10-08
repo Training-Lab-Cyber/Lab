@@ -131,7 +131,8 @@ steps:
   args:
     - '-c'
     - |
-      gcloud compute scp --recurse Ansible/* ansible_server:~/Ansible
+
+      gcloud compute scp --zone us-west1-a --recurse Ansible/* ansible_server:~/Ansible
 
 - id: 'Run Ansible Playbook'
   name: 'google/cloud-sdk'
@@ -139,7 +140,7 @@ steps:
   args:
     - '-c'
     - |
-      gcloud compute ssh ansible_server --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
+      gcloud compute ssh --zone us-west1-a ansible_server --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
 # [END Ansible Playbook]
 
 # [START tf-destroy]
