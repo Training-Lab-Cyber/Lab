@@ -10,8 +10,7 @@
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
-# limitations under the License..
-
+# limitations under the License.
 
 steps:
 - id: 'branch name'
@@ -38,7 +37,7 @@ steps:
         do 
           cd ${dir}   
           env=${dir%*/}
-          env=${env#*/}
+          env=${env#*/}  
           echo ""
           echo "*************** TERRAFORM INIT ******************"
           echo "******* At environment: ${env} ********"
@@ -89,7 +88,25 @@ steps:
         echo "Branch '$BRANCH_NAME' does not represent an official environment."
         echo "*******************************************************************************"
       fi
-# [END tf-apply]      
+# [END tf-apply]
+
+# [START tf-destroy]
+- id: 'tf destroy'
+  name: 'hashicorp/terraform:1.0.0'
+  entrypoint: 'sh'
+  args: 
+  - '-c'
+  - | 
+      if [ -d "environments/$BRANCH_NAME/" ]; then
+        cd environments/$BRANCH_NAME      
+        echo "***************************** STARTING DESTROY *******************************"
+        terraform destroy -auto-approve
+      else
+        echo "***************************** SKIPPING DESTROY *******************************"
+        echo "Branch '$BRANCH_NAME' does not represent an official environment."
+        echo "*******************************************************************************"
+      fi
+# [END tf-destroy] 
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
