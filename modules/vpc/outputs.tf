@@ -15,18 +15,18 @@
 
 output "networks" {
   value = {
-    redirecter = module.vpc_redirecter.network_name
-    c2         = module.vpc_c2.network_name
-    test       = module.vpc_test.network_name
-    phishing   = module.vpc_phishing.network_name
+    redirector = "${module.vpc-redirector.network_name}"
+    c2         = "${module.vpc-c2.network_name}"
+    test       = "${module.vpc-test.network_name}"
+    phishing   = "${module.vpc-phishing.network_name}"
   }
 }
 
 output "subnets" {
   value = {
-    redirecter = module.vpc_redirecter.subnets_names[0]
-    c2         = module.vpc_c2.subnets_names[0]
-    test       = module.vpc_test.subnets_names[0]
-    phishing   = module.vpc_phishing.subnets_names[0]
+    redirecter =  "${element(module.vpc-redirector.subnets_names, 0)}"
+    c2         = "${element(module.vpc-c2.subnets_names, 0)}"
+    test       = "${element(module.vpc-test.subnets_names, 0)}"
+    phishing   = "${element(module.vpc-phishing.subnets_names, 0)}"
   }
 }
