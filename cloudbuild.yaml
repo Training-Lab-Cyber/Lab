@@ -100,7 +100,8 @@ steps:
   - |
       if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
         cd Terraform/environments/$BRANCH_NAME      
-        terraform output -json > ../../Ansible/terraform_output.json
+        terraform output -json > ../../../Ansible/terraform_output.json
+        cat ../../../Ansible/terraform_output.json
       else
         echo "***************************** SKIPPING APPLYING *******************************"
         echo "Branch '$BRANCH_NAME' does not represent an official environment."
