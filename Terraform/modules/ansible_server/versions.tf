@@ -13,14 +13,6 @@
 # limitations under the License.
 
 
-output "instance_name" {
-  value = "${google_compute_instance.http_server.name}"
-}
-
-output "internal_ip" {
-  value = "${google_compute_instance.http_server.network_interface.0.network_ip}"
-}
-
-output "external_ip" {
-  value = "${google_compute_instance.http_server.network_interface.0.access_config.0.nat_ip}"
+terraform {
+  required_version = "~> 1.0.0"
 }
