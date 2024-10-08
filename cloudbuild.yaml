@@ -110,6 +110,39 @@ steps:
 # [END terraform output]
 
 
+# [START Ansible Inventory Creation]
+- id: 'generate inventory'
+  name: 'python:3.9'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      cd Ansible/      
+      python generate_inventory.py inventory.ini
+      cat inventory.ini
+      
+# [END Ansible Inventory Creation]
+
+
+# [START Ansible Playbook]
+steps:
+- id: 'Copy Ansible Playbook and Inventory'
+  name: 'google/cloud-sdk'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      gcloud compute scp --recurse Ansible/* ansible_server:~/Ansible
+
+- id: 'Run Ansible Playbook'
+  name: 'google/cloud-sdk'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      gcloud compute ssh ansible_server --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
+# [END Ansible Playbook]
+
 # [START tf-destroy]
 - id: 'tf destroy'
   name: 'hashicorp/terraform:1.0.0'
