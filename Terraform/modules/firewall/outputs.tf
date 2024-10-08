@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-output "firewall_rule" {
+output "firewall_rule_http" {
   value = "${google_compute_firewall.allow-http.name}"
 }
 
-output "firewall_rule" {
+output "firewall_rule_ssh" {
   value = "${google_compute_firewall.allow-ssh.name}"
 }

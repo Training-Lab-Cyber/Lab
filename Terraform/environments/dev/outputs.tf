@@ -38,8 +38,8 @@ output "utils_subnet" {
 }
 
 
-output "firewall_rule" {
-  value = "${module.firewall.firewall_rule}"
+output "firewall_rule_http" {
+  value = "${module.firewall.firewall_rule_http}"
 }
 
 output "http_instance_name" {
