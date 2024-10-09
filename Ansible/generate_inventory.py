@@ -1,8 +1,8 @@
 import json
 import sys
 
-def generate_inventory(output_file):
-    with open('terraform_output.json') as f:
+def generate_inventory(input_file, output_file):
+    with open(input_file) as f:
         outputs = json.load(f)
 
     apache_ip = outputs['http_internal_ip']['value']
@@ -12,5 +12,6 @@ def generate_inventory(output_file):
         inventory.write(f'{apache_ip}\n')
 
 if __name__ == "__main__":
-    output_file = sys.argv[1] if len(sys.argv) > 1 else 'inventory.ini'
-    generate_inventory(output_file)
+    input_file = sys.argv[1] if len(sys.argv) > 1 else 'terraform_output.json'
+    output_file = sys.argv[2] if len(sys.argv) > 2 else 'inventory.ini'
+    generate_inventory(input_file, output_file)
