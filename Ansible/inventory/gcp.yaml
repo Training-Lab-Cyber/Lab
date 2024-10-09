@@ -1,7 +1,6 @@
 plugin: gcp_compute
 projects:
   - crafty-airfoil-438000-g9
-auth_kind: serviceaccount
-key_file: /workspace/key.json  # サービスアカウントキーのパスを指定
+auth_kind: application
 groups:
   gce_instance: yes
