@@ -115,6 +115,8 @@ steps:
         apt-get update > /dev/null 2>&1
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
+        gcloud auth login
+        ls -la
         cd Ansible
         ansible-inventory -i inventory/gcp.yaml --graph
         ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
