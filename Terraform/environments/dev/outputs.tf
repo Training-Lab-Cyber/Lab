@@ -42,6 +42,12 @@ output "firewall_rule_http" {
   value = "${module.firewall.firewall_rule_http}"
 }
 
+
+output "firewall_rule_ssh" {
+  value = "${module.firewall.firewall_rule_ssh}"
+}
+
+
 output "http_instance_name" {
   value = "${module.http_server.instance_name}"
 }
