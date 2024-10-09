@@ -111,7 +111,7 @@ steps:
 
 
 
-# [START Ansible Playbook]2
+# [START Ansible Playbook]
 - id: 'Copy Ansible files and Run Ansible Playbook'
   name: 'google/cloud-sdk'
   entrypoint: 'bash'
@@ -121,9 +121,12 @@ steps:
       apt-get update
       apt-get install -y ansible
       apt-get install -y python3-google-auth
+      gcloud auth login
+      cat ~/.ssh/google_compute_engine
       # gcloud auth activate-service-account --key-file=/workspace/key.json
       # インベントリを表示
       ansible-inventory -i Ansible/inventory/gcp.yaml --graph
+      ansible http-server -m command -a "pwd"
 
 # [END Ansible Playbook]
 
