@@ -120,32 +120,14 @@ steps:
     - |
       apt-get update
       apt-get install -y ansible
-      apt-get install -y python3-google-auth
       gcloud auth login
       cat ~/.ssh/google_compute_engine
       # gcloud auth activate-service-account --key-file=/workspace/key.json
       # インベントリを表示
       ansible-inventory -i Ansible/inventory/gcp.yaml --graph
-      ansible http-server -m command -a "pwd"
+      # ansible web_servers -m command -a "pwd"
 
 # [END Ansible Playbook]
-
-# [START tf-destroy]
-- id: 'tf destroy'
-  name: 'hashicorp/terraform:1.0.0'
-  entrypoint: 'sh'
-  args: 
-  - '-c'
-  - | 
-      if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-        cd Terraform/environments/$BRANCH_NAME      
-        terraform destroy -auto-approve
-      else
-        echo "***************************** SKIPPING DESTROY *******************************"
-        echo "Branch '$BRANCH_NAME' does not represent an official environment."
-        echo "*******************************************************************************"
-      fi
-# [END tf-destroy]
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
