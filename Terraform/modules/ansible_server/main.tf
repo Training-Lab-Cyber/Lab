@@ -40,6 +40,9 @@ resource "google_compute_instance" "ansible_server" {
   network_interface {
     subnetwork = var.subnet
 
+    access_config {
+      # Include this section to give the VM an external IP address
+    }
   }
 
   # Apply the firewall rule to allow external IPs to access this instance
