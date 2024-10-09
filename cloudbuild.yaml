@@ -138,23 +138,6 @@ steps:
 
 # [END Ansible Playbook]
 
-# [START tf-destroy]
-- id: 'tf destroy'
-  name: 'hashicorp/terraform:1.0.0'
-  entrypoint: 'sh'
-  args: 
-  - '-c'
-  - | 
-      if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-        cd Terraform/environments/$BRANCH_NAME      
-        echo "***************************** STARTING DESTROY *******************************"
-        terraform destroy -auto-approve
-      else
-        echo "***************************** SKIPPING DESTROY *******************************"
-        echo "Branch '$BRANCH_NAME' does not represent an official environment."
-        echo "*******************************************************************************"
-      fi
-# [END tf-destroy] 
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
