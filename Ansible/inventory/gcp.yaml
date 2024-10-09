@@ -4,8 +4,5 @@ projects:
 auth_kind: application
 groups:
   gce_instance: yes
-  http-server:
-    filters:
-      tags: http-server
 hostnames:
   - internal_ip
