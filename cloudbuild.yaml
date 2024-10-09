@@ -138,8 +138,7 @@ steps:
       gcloud compute ssh --zone us-west1-a debian@$(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json) --command "mkdir ~/Ansible"  --tunnel-through-iap  2>&1 | tee /dev/stderr
 
       gcloud compute scp --zone us-west1-a --recurse Ansible/* debian@$(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json):~/Ansible  --tunnel-through-iap   2>&1 | tee /dev/stderr
-      gcloud compute ssh --zone us-west1-a debian@$(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json) --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"  --tunnel-through-iap 2>&1 | tee /dev/stderr
-
+      gcloud compute ssh --zone us-west1-a debian@$(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json) --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yaml"  --tunnel-through-iap 2>&1 | tee /dev/stderr
       
       gcloud compute ssh --zone us-west1-a debian@$(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json) --command "rm -rf ~/Ansible"  --tunnel-through-iap  2>&1 | tee /dev/stderr
 
