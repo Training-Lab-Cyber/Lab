@@ -124,23 +124,21 @@ steps:
 # [END Ansible Inventory Creation]
 
 
+
+
+
+
 # [START Ansible Playbook]
-- id: 'Copy Ansible Playbook and Inventory'
+- id: 'Copy Ansible files and Run Ansible Playbook'
   name: 'google/cloud-sdk'
   entrypoint: 'bash'
   args:
     - '-c'
     - |
+      ANSIBLE_INSTANCE_NAME=$(cat terraform_output.json | jq -r Ansible/ansible_instance_name.value)
+      gcloud compute scp --zone us-west1-a --recurse Ansible/* $ANSIBLE_INSTANCE_NAME:~/Ansible
+      gcloud compute ssh --zone us-west1-a $ANSIBLE_INSTANCE_NAME --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
 
-      gcloud compute scp --zone us-west1-a --recurse Ansible/* ansible_server:~/Ansible
-
-- id: 'Run Ansible Playbook'
-  name: 'google/cloud-sdk'
-  entrypoint: 'bash'
-  args:
-    - '-c'
-    - |
-      gcloud compute ssh --zone us-west1-a ansible_server --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
 # [END Ansible Playbook]
 
 # [START tf-destroy]
