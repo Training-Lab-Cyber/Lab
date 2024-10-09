@@ -22,15 +22,6 @@ resource "google_compute_instance" "ansible_server" {
   name         = "${local.network}-ansible-instance"
   machine_type = "e2-micro"  # Ansibleサーバーに適したインスタンスタイプ
 
-  metadata_startup_script = <<-EOT
-    #!/bin/bash
-    sudo apt-get update
-    sudo apt-get install -y software-properties-common
-    sudo add-apt-repository -y ppa:ansible/ansible
-    sudo apt-get update
-    sudo apt-get install -y ansible
-  EOT
-
   boot_disk {
     initialize_params {
       image = "debian-cloud/debian-11"
