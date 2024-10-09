@@ -118,11 +118,11 @@ steps:
   args:
     - '-c'
     - |
-      apt-get update
-      apt-get install -y ansible
-      apt-get install -y python3-google-auth
+      apt-get update > /dev/null 2>&1
+      apt-get install -y ansible > /dev/null 2>&1
+      apt-get install -y python3-google-auth > /dev/null 2>&1
       ansible-inventory -i Ansible/inventory/gcp.yaml --graph
-      ansible web_servers -m command -a "hostname"
+      ansible http_server -m command -a "hostname"
 
 # [END Ansible Playbook]
 
