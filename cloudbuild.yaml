@@ -120,6 +120,7 @@ steps:
     - |
       apt-get update
       apt-get install -y ansible
+      apt-get install -y python3-google-auth
       # gcloud auth activate-service-account --key-file=/workspace/key.json
       # インベントリを表示
       ansible-inventory -i Ansible/inventory/gcp.yaml --graph
