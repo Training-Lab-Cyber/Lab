@@ -115,8 +115,7 @@ steps:
         apt-get update > /dev/null 2>&1
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
-        gcloud auth login
-        ls -la
+        gcloud auth activate-service-account cloud-build-service-account@crafty-airfoil-438000-g9.iam.gserviceaccount.com --key-file=/workspace/key --project=crafty-airfoil-438000-g9
         cd Ansible
         ansible-inventory -i inventory/gcp.yaml --graph
         ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
