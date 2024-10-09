@@ -68,7 +68,3 @@ output "ansible_instance_name" {
 output "ansible_internal_ip" {
   value = "${module.ansible_server.internal_ip}"
 }
-
-output "ansible_external_ip" {
-  value = "${module.ansible_server.external_ip}"
-}
