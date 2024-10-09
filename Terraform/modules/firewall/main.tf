@@ -14,13 +14,13 @@
 
 
 locals {
-  network_redirector = "${element(split("-", var.subnet_redirector), 0)}"
+  network_redirector = element(split("-", var.subnet_redirector), 0)
 }
 
 resource "google_compute_firewall" "allow-http-from-internet" {
   name    = "${local.network_redirector}-allow-http-from-internet"
-  network = "${local.network_redirector}"
-  project = "${var.project}"
+  network = local.network_redirector
+  project = var.project
 
   allow {
     protocol = "tcp"
@@ -33,14 +33,14 @@ resource "google_compute_firewall" "allow-http-from-internet" {
 
 resource "google_compute_firewall" "allow-ssh-from-iap" {
   name    = "${local.network_redirector}-allow-ssh-from-iap"
-  network = "${local.network_redirector}"
-  project = "${var.project}"
+  network = local.network_redirector
+  project = var.project
 
   allow {
     protocol = "tcp"
     ports    = ["22"]
   }
 
-  target_tags   = ["ansible-server","http-server"]
+  target_tags   = ["http-server"]
   source_ranges = ["35.235.240.0/20"]
 }
