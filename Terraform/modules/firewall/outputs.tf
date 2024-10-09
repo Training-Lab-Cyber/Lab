@@ -18,5 +18,5 @@ output "firewall_rule_http" {
 }
 
 output "firewall_rule_ssh" {
-  value = "${google_compute_firewall.allow-ssh-from-ansible.name}"
+  value = "${google_compute_firewall.allow-ssh-from-iap.name}"
 }

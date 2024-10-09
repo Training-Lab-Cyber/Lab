@@ -15,7 +15,6 @@
 
 locals {
   network_redirector = "${element(split("-", var.subnet_redirector), 0)}"
-  network_utils = "${element(split("-", var.subnet_utils), 0)}"
 }
 
 resource "google_compute_firewall" "allow-http-from-internet" {
@@ -32,8 +31,8 @@ resource "google_compute_firewall" "allow-http-from-internet" {
   source_ranges = ["0.0.0.0/0"]
 }
 
-resource "google_compute_firewall" "allow-ssh-from-ansible" {
-  name    = "${local.network_redirector}-allow-ssh-from-ansible"
+resource "google_compute_firewall" "allow-ssh-from-iap" {
+  name    = "${local.network_redirector}-allow-ssh-from-iap"
   network = "${local.network_redirector}"
   project = "${var.project}"
 
@@ -42,21 +41,6 @@ resource "google_compute_firewall" "allow-ssh-from-ansible" {
     ports    = ["22"]
   }
 
-  target_tags   = ["http-server"]
-  source_ranges = ["${var.ansible_ip}/32"]
-}
-
-
-resource "google_compute_firewall" "allow-ssh-from-iap" {
-  name    = "${local.network_utils}-allow-ssh-from-iap"
-  network = "${local.network_utils}"
-  project = "${var.project}"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["22"]
-  }
-
-  target_tags   = ["ansible-server"]
+  target_tags   = ["ansible-server","http-server"]
   source_ranges = ["35.235.240.0/20"]
 }

@@ -26,12 +26,6 @@ module "vpc" {
   project = "${var.project}"
   env     = "${local.env}"
 }
-module "ansible_server" {
-  source  = "../../modules/ansible_server"
-  project = "${var.project}"
-  subnet  = "${module.vpc.subnets.utils}"
-}
-
 
 module "http_server" {
   source  = "../../modules/http_server"
@@ -43,6 +37,4 @@ module "firewall" {
   source  = "../../modules/firewall"
   project = "${var.project}"
   subnet_redirector  = "${module.vpc.subnets.redirector}"
-  subnet_utils  = "${module.vpc.subnets.utils}"
-  ansible_ip = "${module.ansible_server.internal_ip}"
 }
