@@ -123,7 +123,7 @@ steps:
       
 # [END Ansible Inventory Creation]
 
-# [START Ansible Playbook]
+# [START Ansible Playbook]2
 - id: 'Copy Ansible files and Run Ansible Playbook'
   name: 'google/cloud-sdk'
   entrypoint: 'bash'
