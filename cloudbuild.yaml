@@ -132,8 +132,8 @@ steps:
     - |
       apt-get update && apt-get install -y jq
       cp /workspace/inventory.ini Ansible/inventory.ini
-      gcloud compute scp --zone us-west1-a --recurse Ansible/* $(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json):~/Ansible   2>&1 | tee /dev/stderr
-      gcloud compute ssh --zone us-west1-a $(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json) --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml" --troubleshoot  2>&1 | tee /dev/stderr
+      gcloud compute scp --zone us-west1-a --recurse Ansible/* $(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json):~/Ansible --internal-ip  2>&1 | tee /dev/stderr
+      gcloud compute ssh --zone us-west1-a $(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json) --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml" --troubleshoot --internal-ip 2>&1 | tee /dev/stderr
 
 
 # [END Ansible Playbook]
