@@ -120,7 +120,7 @@ steps:
     - |
       apt-get update
       apt-get install -y ansible
-      gcloud auth login
+      # gcloud auth login
       cat ~/.ssh/google_compute_engine
       # gcloud auth activate-service-account --key-file=/workspace/key.json
       # インベントリを表示
