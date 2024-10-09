@@ -119,7 +119,7 @@ steps:
     - |
       cd Ansible/      
       python generate_inventory.py /workspace/terraform_output.json /workspace/inventory.ini
-      cat inventory.ini
+      cat /workspace/inventory.ini
       
 # [END Ansible Inventory Creation]
 
