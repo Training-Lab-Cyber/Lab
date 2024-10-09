@@ -100,14 +100,15 @@ steps:
   - |
       if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
         cd Terraform/environments/$BRANCH_NAME      
-        terraform output -json > ../../../Ansible/terraform_output.json
-        cat ../../../Ansible/terraform_output.json
+        terraform output -json > /workspace/terraform_output.json
+        cat ./workspace/terraform_output.json
       else
         echo "***************************** SKIPPING APPLYING *******************************"
         echo "Branch '$BRANCH_NAME' does not represent an official environment."
         echo "*******************************************************************************"
       fi
 # [END terraform output]
+
 
 # [START Ansible Inventory Creation]
 - id: 'generate inventory'
@@ -118,10 +119,25 @@ steps:
     - |
       cd Ansible/      
       python generate_inventory.py inventory.ini
+      cp inventory.ini /workspace/inventory.ini
       cat inventory.ini
       
 # [END Ansible Inventory Creation]
 
+# [START Ansible Playbook]
+- id: 'Copy Ansible files and Run Ansible Playbook'
+  name: 'google/cloud-sdk'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      apt-get update && apt-get install -y jq
+      ANSIBLE_INSTANCE_NAME=$(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json)
+      cp /workspace/inventory.ini Ansible/inventory.ini
+      gcloud compute scp --zone us-west1-a --recurse Ansible/* $(ANSIBLE_INSTANCE_NAME):~/Ansible
+      gcloud compute ssh --zone us-west1-a $(ANSIBLE_INSTANCE_NAME) --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
+
+# [END Ansible Playbook]
 
 # [START tf-destroy]
 - id: 'tf destroy'
