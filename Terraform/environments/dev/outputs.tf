@@ -53,3 +53,16 @@ output "http_internal_ip" {
 output "http_external_ip" {
   value = "${module.http_server.external_ip}"
 }
+
+
+output "ansible_instance_name" {
+  value = "${module.ansible_server.instance_name}"
+}
+
+output "ansible_internal_ip" {
+  value = "${module.ansible_server.internal_ip}"
+}
+
+output "ansible_external_ip" {
+  value = "${module.ansible_server.external_ip}"
+}
