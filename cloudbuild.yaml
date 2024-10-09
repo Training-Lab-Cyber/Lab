@@ -133,8 +133,8 @@ steps:
       apt-get update && apt-get install -y jq
       ANSIBLE_INSTANCE_NAME=$(jq -r '.ansible_instance_name.value' /workspace/terraform_output.json)
       cp /workspace/inventory.ini Ansible/inventory.ini
-      gcloud compute scp --zone us-west1-a --recurse Ansible/* $(ANSIBLE_INSTANCE_NAME):~/Ansible
-      gcloud compute ssh --zone us-west1-a $(ANSIBLE_INSTANCE_NAME) --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
+      gcloud compute scp --zone us-west1-a --recurse Ansible/* $ANSIBLE_INSTANCE_NAME:~/Ansible
+      gcloud compute ssh --zone us-west1-a $ANSIBLE_INSTANCE_NAME --command "cd ~/Ansible && ansible-playbook -i inventory.ini playbook.yml"
 
 # [END Ansible Playbook]
 
