@@ -16,3 +16,4 @@
 variable "project" {}
 variable "subnet_redirector" {}
 variable "subnet_utils" {}
+variable "ansible_ip" {}
