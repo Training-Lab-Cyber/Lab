@@ -122,7 +122,7 @@ steps:
       apt-get install -y ansible
       apt-get install -y python3-google-auth
       ansible-inventory -i Ansible/inventory/gcp.yaml --graph
-      # ansible web_servers -m command -a "pwd"
+      ansible web_servers -m command -a "hostname"
 
 # [END Ansible Playbook]
 
