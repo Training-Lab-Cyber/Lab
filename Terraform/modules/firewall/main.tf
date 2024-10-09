@@ -14,12 +14,13 @@
 
 
 locals {
-  network = "${element(split("-", var.subnet), 0)}"
+  network_redirector = "${element(split("-", var.subnet_redirector), 0)}"
+  network_utils = "${element(split("-", var.subnet_utils), 0)}"
 }
 
 resource "google_compute_firewall" "allow-http" {
-  name    = "${local.network}-allow-http"
-  network = "${local.network}"
+  name    = "${local.network_redirector}-allow-http"
+  network = "${local.network_redirector}"
   project = "${var.project}"
 
   allow {
@@ -34,8 +35,8 @@ resource "google_compute_firewall" "allow-http" {
 
 
 resource "google_compute_firewall" "allow-ssh" {
-  name    = "${local.network}-allow-ssh"
-  network = "${local.network}"
+  name    = "${local.network_utils}-allow-ssh"
+  network = "${local.network_utils}"
   project = "${var.project}"
 
   allow {

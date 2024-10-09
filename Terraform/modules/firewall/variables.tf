@@ -14,4 +14,5 @@
 
 
 variable "project" {}
-variable "subnet" {}
+variable "subnet_redirector" {}
+variable "subnet_utils" {}

@@ -42,5 +42,6 @@ module "http_server" {
 module "firewall" {
   source  = "../../modules/firewall"
   project = "${var.project}"
-  subnet  = "${module.vpc.subnets.redirector}"
+  subnet_redirector  = "${module.vpc.subnets.redirector}"
+  subnet_utils  = "${module.vpc.subnets.utils}"
 }
