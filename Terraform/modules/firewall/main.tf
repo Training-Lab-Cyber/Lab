@@ -19,7 +19,7 @@ locals {
 }
 
 resource "google_compute_firewall" "allow-http-from-internet" {
-  name    = "${local.network_redirector}-allow-http"
+  name    = "${local.network_redirector}-allow-http-from-internet"
   network = "${local.network_redirector}"
   project = "${var.project}"
 
@@ -33,7 +33,7 @@ resource "google_compute_firewall" "allow-http-from-internet" {
 }
 
 resource "google_compute_firewall" "allow-ssh-from-ansible" {
-  name    = "${local.network_redirector}-allow-ssh"
+  name    = "${local.network_redirector}-allow-ssh-from-ansible"
   network = "${local.network_redirector}"
   project = "${var.project}"
 
@@ -48,7 +48,7 @@ resource "google_compute_firewall" "allow-ssh-from-ansible" {
 
 
 resource "google_compute_firewall" "allow-ssh-from-iap" {
-  name    = "${local.network_utils}-allow-ssh"
+  name    = "${local.network_utils}-allow-ssh-from-iap"
   network = "${local.network_utils}"
   project = "${var.project}"
 
