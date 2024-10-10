@@ -121,7 +121,7 @@ steps:
       apt-get update > /dev/null 2>&1
       apt-get install -y ansible > /dev/null 2>&1
       apt-get install -y python3-google-auth > /dev/null 2>&1
-      ansible-inventory -i Ansible/inventory/gcp.yaml --graph
+      ansible-inventory -i Ansible/inventory/gcp.yaml --graph -vvvv
       ansible http_server -m command -a "hostname"
 
 # [END Ansible Playbook]
