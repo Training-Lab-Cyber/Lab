@@ -4,9 +4,12 @@ projects:
 auth_kind: application
 groups:
   gce_instance: yes
-  # タグに基づくグループ化
+  # ここでtagsをグループ名に変換するための設定を追加
   all_tags:
     filters:
       tags: "*"
+    # 各タグごとにグループを作成
+    groups: "{{ item }}"
+    with_items: "{{ instance.tags }}"
 hostnames:
   - name
