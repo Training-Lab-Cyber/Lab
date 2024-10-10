@@ -157,3 +157,19 @@ steps:
 
   # [END Ansible Playbook]
 
+# [START tf-apply]
+  - id: "tf apply"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
+          cd Terraform/environments/$BRANCH_NAME      
+          terraform destroy -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
+        else
+          echo "***************************** SKIPPING APPLYING *******************************"
+          echo "Branch '$BRANCH_NAME' does not represent an official environment."
+          echo "*******************************************************************************"
+        fi
+  # [END tf-apply]
