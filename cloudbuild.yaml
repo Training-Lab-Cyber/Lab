@@ -157,8 +157,8 @@ steps:
 
   # [END Ansible Playbook]
 
-# [START tf-apply]
-  - id: "tf apply"
+# [START tf-destroy]
+  - id: "tf destroy"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
     args:
