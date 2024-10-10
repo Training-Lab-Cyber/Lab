@@ -33,13 +33,17 @@ steps:
   
   # [START ssh-keygen]
   - id: 'Create SSH Key Pair'
-    name: 'gcr.io/cloud-builders/openssl'
-    args: ['ssh-keygen', '-t', 'rsa', '-b', '2048', '-f', '/workspace/ansible_key', '-q', '-N', '']
+    name: "alpine"
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N
   # [END ssh-keygen]
 
 # [START Secrets create]
   - id: 'Register SSH Private Key to Secret Manager'
-    name: "alpine"
+    name: 'google/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
