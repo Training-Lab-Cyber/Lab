@@ -38,6 +38,7 @@ steps:
     args:
       - '-c'
       - |
+        apk add --no-cache openssh
         ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N
   # [END ssh-keygen]
 
