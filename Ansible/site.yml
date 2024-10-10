@@ -1,0 +1,5 @@
+---
+- hosts: http_servers
+  gather_facts: false
+  roles:
+    - apache2

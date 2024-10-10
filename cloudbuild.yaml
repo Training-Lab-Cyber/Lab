@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License..
 
+substitutions:
+  _ANSIBLE_PRIVATE_KEY: ""
+
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
 steps:
   - id: "branch name"
     name: "alpine"
@@ -23,6 +29,31 @@ steps:
         echo "$BRANCH_NAME"
         echo "***********************"
 
+  # [START ssh-keygen]
+  - id: "Create SSH Key Pair"
+    name: "alpine"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        apk add --no-cache openssh
+        ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
+  # [END ssh-keygen]
+  # [START Secrets create]
+  - id: "Register SSH Private Key to Secret Manager"
+    name: "google/cloud-sdk"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        if gcloud secrets describe ansible_key &>/dev/null; then
+          echo "Secret 'ansible_key' already exists. Adding a new version..."
+          gcloud secrets versions add ansible_key --data-file=/workspace/ansible_key
+        else
+          echo "Creating new secret 'ansible_key'..."
+          gcloud secrets create ansible_key --data-file=/workspace/ansible_key
+        fi
+  # [END Secrets create]
   - id: "tf init"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
@@ -31,7 +62,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME
-          terraform init
+          terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
           for dir in Terraform/environments/*/
           do 
@@ -56,7 +87,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME
-          terraform plan
+          terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
           for dir in Terraform/environments/*/
           do 
@@ -81,7 +112,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME      
-          terraform apply -auto-approve
+          terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
           echo "***************************** SKIPPING APPLYING *******************************"
           echo "Branch '$BRANCH_NAME' does not represent an official environment."
@@ -115,10 +146,8 @@ steps:
         apt-get update > /dev/null 2>&1
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
-        gcloud auth activate-service-account cloud-build-service-account@crafty-airfoil-438000-g9.iam.gserviceaccount.com --key-file=/workspace/key --project=crafty-airfoil-438000-g9
         cd Ansible
-        ansible-inventory -i inventory/gcp.yaml --graph
-        ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
+        ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml
 
   # [END Ansible Playbook]
 
@@ -130,23 +159,11 @@ steps:
       - "-c"
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-          cd Terraform/environments/$BRANCH_NAME
-          terraform destroy -auto-approve
+          cd Terraform/environments/$BRANCH_NAME      
+          terraform destroy -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
-          for dir in Terraform/environments/*/
-          do 
-            cd ${dir}   
-            env=${dir%*/}
-            env=${env#*/}  
-            echo ""
-            echo "*************** TERRAFORM PLAN ******************"
-            echo "******* At environment: ${env} ********"
-            echo "*************************************************"
-            terraform destroy || exit 1
-            cd ../../
-          done
+          echo "***************************** SKIPPING APPLYING *******************************"
+          echo "Branch '$BRANCH_NAME' does not represent an official environment."
+          echo "*******************************************************************************"
         fi
-  # [END tf-destroy]
-
-options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+  # [END tf-apply]

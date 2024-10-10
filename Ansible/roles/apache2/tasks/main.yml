@@ -1,0 +1,17 @@
+---
+- name: install apache
+  apt: 
+    name: apache2
+    state: present
+  become: yes
+- name: copy default page
+  copy:
+    src: index.html
+    dest: /var/www/html/index.html
+  become: yes
+- name: start service
+  service: 
+    name: apache2
+    state: started
+    enabled: yes
+  become: yes
