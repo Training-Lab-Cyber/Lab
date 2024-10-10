@@ -35,9 +35,6 @@ steps:
   - id: 'Create SSH Key Pair'
     name: 'gcr.io/cloud-builders/openssl'
     args: ['ssh-keygen', '-t', 'rsa', '-b', '2048', '-f', '/workspace/ansible_key', '-q', '-N', '']
-    volumes:
-      - name: 'ssh-key-volume'
-        path: /workspace
   # [END ssh-keygen]
 
 # [START Secrets create]
