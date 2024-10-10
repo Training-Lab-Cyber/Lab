@@ -37,6 +37,18 @@ resource "google_compute_instance" "http_server" {
     }
   }
 
+
+  metadata = {
+    ssh-keys = "ansible:${file(var.public_key_path)}"
+  }
+
+
+  metadata_startup_script = <<-EOT
+    #!/bin/bash
+    useradd -m -s /bin/bash ansible
+    echo 'ansible ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+  EOT
+
   # Apply the firewall rule to allow external IPs to access this instance
   tags = ["http-server"]
 }

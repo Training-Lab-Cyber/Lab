@@ -15,3 +15,4 @@
 
 variable "project" {}
 variable "subnet" {}
+variable "public_key_path" {}

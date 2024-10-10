@@ -14,3 +14,4 @@
 
 
 variable "project" {}
+variable "public_key_path" {}

@@ -1,6 +1,4 @@
 plugin: gcp_compute
-projects:
-  - crafty-airfoil-438000-g9
 auth_kind: application
 groups:
   gce_instance: yes
@@ -8,4 +6,4 @@ groups:
     filters:
       tags: http-server
 hostnames:
-  - private_ip
+  - name
