@@ -153,16 +153,7 @@ steps:
         apt-get update > /dev/null 2>&1
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
-        
-        gcloud secrets versions access latest --secret="ansible_key" > /workspace/ansible_key
-
-        touch /workspace/ansible_key
-        export _ANSIBLE_PRIVATE_KEY=$(gcloud secrets versions access latest --secret="ansible_key")
-        echo "$_ANSIBLE_PRIVATE_KEY" > /workspace/ansible_key
-        chmod 600 /workspace/ansible_key
-
         cat /workspace/ansible_key
-
         cd Ansible
         ansible-inventory -i inventory/gcp.yaml --graph -vvvv
         ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
