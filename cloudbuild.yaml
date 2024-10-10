@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License..
 
+substitutions:
+  _ANSIBLE_PRIVATE_KEY: ""
+
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
+
+
 steps:
   - id: "branch name"
     name: "alpine"
@@ -180,6 +187,3 @@ steps:
           done
         fi
   # [END tf-destroy]
-
-options:
-  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
