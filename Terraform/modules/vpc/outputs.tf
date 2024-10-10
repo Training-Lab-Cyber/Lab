@@ -19,10 +19,10 @@ output "network" {
 
 output "subnets" {
   value = {
-    c2         = "${element(module.vpc.subnets_names, 0)}"
-    redirector = "${element(module.vpc.subnets_names, 1)}"
-    test       = "${element(module.vpc.subnets_names, 2)}"
-    phishing   = "${element(module.vpc.subnets_names, 3)}"
-    utils      = "${element(module.vpc.subnets_names, 4)}"
+    c2         = lookup(module.vpc.subnets_self_links, "${module.vpc.network_name}-subnet-c2")
+    redirector = lookup(module.vpc.subnets_self_links, "${module.vpc.network_name}-subnet-redirector")
+    test       = lookup(module.vpc.subnets_self_links, "${module.vpc.network_name}-subnet-test")
+    phishing   = lookup(module.vpc.subnets_self_links, "${module.vpc.network_name}-subnet-phishing")
+    utils      = lookup(module.vpc.subnets_self_links, "${module.vpc.network_name}-subnet-utils")
   }
 }
