@@ -20,126 +20,6 @@ options:
 
 
 steps:
-  - id: "branch name"
-    name: "alpine"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - |
-        echo "***********************"
-        echo "$BRANCH_NAME"
-        echo "***********************"
-
-  
-  # [START ssh-keygen]
-  - id: 'Create SSH Key Pair'
-    name: "alpine"
-    entrypoint: 'sh'
-    args:
-      - '-c'
-      - |
-        apk add --no-cache openssh
-        ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
-  # [END ssh-keygen]
-
-# [START Secrets create]
-  - id: 'Register SSH Private Key to Secret Manager'
-    name: 'google/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if gcloud secrets describe ansible_key &>/dev/null; then
-          echo "Secret 'ansible_key' already exists. Adding a new version..."
-          gcloud secrets versions add ansible_key --data-file=/workspace/ansible_key
-        else
-          echo "Creating new secret 'ansible_key'..."
-          gcloud secrets create ansible_key --data-file=/workspace/ansible_key
-        fi
-# [END Secrets create]
-
-  - id: "tf init"
-    name: "hashicorp/terraform:1.0.0"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - |
-        if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-          cd Terraform/environments/$BRANCH_NAME
-          terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
-        else
-          for dir in Terraform/environments/*/
-          do 
-            cd ${dir}   
-            env=${dir%*/}
-            env=${env#*/}  
-            echo ""
-            echo "*************** TERRAFORM INIT ******************"
-            echo "******* At environment: ${env} ********"
-            echo "*************************************************"
-            terraform init || exit 1
-            cd ../../
-          done
-        fi
-
-  # [START tf-plan]
-  - id: "tf plan"
-    name: "hashicorp/terraform:1.0.0"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - |
-        if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-          cd Terraform/environments/$BRANCH_NAME
-          terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
-        else
-          for dir in Terraform/environments/*/
-          do 
-            cd ${dir}   
-            env=${dir%*/}
-            env=${env#*/}  
-            echo ""
-            echo "*************** TERRAFORM PLAN ******************"
-            echo "******* At environment: ${env} ********"
-            echo "*************************************************"
-            terraform plan || exit 1
-            cd ../../
-          done
-        fi
-  # [END tf-plan]
-  # [START tf-apply]
-  - id: "tf apply"
-    name: "hashicorp/terraform:1.0.0"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - |
-        if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-          cd Terraform/environments/$BRANCH_NAME      
-          terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
-        else
-          echo "***************************** SKIPPING APPLYING *******************************"
-          echo "Branch '$BRANCH_NAME' does not represent an official environment."
-          echo "*******************************************************************************"
-        fi
-  # [END tf-apply]
-  # [START terraform output]
-  - id: "tf output"
-    name: "hashicorp/terraform:1.0.0"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - |
-        if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-          cd Terraform/environments/$BRANCH_NAME      
-          terraform output -json > /workspace/terraform_output.json
-          cat /workspace/terraform_output.json
-        else
-          echo "***************************** SKIPPING APPLYING *******************************"
-          echo "Branch '$BRANCH_NAME' does not represent an official environment."
-          echo "*******************************************************************************"
-        fi
-  # [END terraform output]
 
 
   # [START Ansible Playbook]
@@ -153,8 +33,9 @@ steps:
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
         cd Ansible
+        gcloud secrets versions access latest --secret="ansible_key" > /workspace/ansible_key
         ansible-inventory -i inventory/$BRANCH_NAME/dev_gcp.yaml --graph
-        ansible-playbook http_servers -i inventory/$BRANCH_NAME/dev_gcp.yaml site.yml
+        ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml 
 
   # [END Ansible Playbook]
 
