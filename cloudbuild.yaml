@@ -114,7 +114,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME
-          terraform destroy
+          terraform destroy -auto-approve
         else
           for dir in Terraform/environments/*/
           do 
