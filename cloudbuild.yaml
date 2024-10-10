@@ -34,6 +34,7 @@ steps:
         apt-get install -y python3-google-auth > /dev/null 2>&1
         cd Ansible
         gcloud secrets versions access latest --secret="ansible_key" > /workspace/ansible_key
+        chmod 600 /workspace/ansible_key
         ansible-inventory -i inventory/$BRANCH_NAME/dev_gcp.yaml --graph
         ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml 
 
