@@ -120,7 +120,33 @@ steps:
         ansible-inventory -i inventory/gcp.yaml --graph
         ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
 
-# [END Ansible Playbook]
+  # [END Ansible Playbook]
+
+  # [START tf-destroy]
+  - id: "tf destroy"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
+          cd Terraform/environments/$BRANCH_NAME
+          terraform destroy
+        else
+          for dir in Terraform/environments/*/
+          do 
+            cd ${dir}   
+            env=${dir%*/}
+            env=${env#*/}  
+            echo ""
+            echo "*************** TERRAFORM PLAN ******************"
+            echo "******* At environment: ${env} ********"
+            echo "*************************************************"
+            terraform destroy || exit 1
+            cd ../../
+          done
+        fi
+  # [END tf-destroy]
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
