@@ -105,23 +105,6 @@ steps:
           echo "*******************************************************************************"
         fi
   # [END terraform output]
-  # [START Ansible Playbook]
-  - id: "Copy Ansible files and Run Ansible Playbook"
-    name: "google/cloud-sdk"
-    entrypoint: "bash"
-    args:
-      - "-c"
-      - |
-        apt-get update > /dev/null 2>&1
-        apt-get install -y ansible > /dev/null 2>&1
-        apt-get install -y python3-google-auth > /dev/null 2>&1
-        gcloud auth activate-service-account cloud-build-service-account@crafty-airfoil-438000-g9.iam.gserviceaccount.com --key-file=/workspace/key --project=crafty-airfoil-438000-g9
-        cd Ansible
-        ansible-inventory -i inventory/gcp.yaml --graph
-        ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
-
-  # [END Ansible Playbook]
-
   # [START tf-destroy]
   - id: "tf destroy"
     name: "hashicorp/terraform:1.0.0"
