@@ -153,9 +153,8 @@ steps:
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
         cd Ansible
-        cat inventory/$BRANCH_NAME/dev_gcp.yaml
         ansible-inventory -i inventory/$BRANCH_NAME/dev_gcp.yaml --graph
-        ansible gce_instance -i inventory/$BRANCH_NAME/dev_gcp.yaml -m command -a "hostname"
+        ansible http_servers -i inventory/$BRANCH_NAME/dev_gcp.yaml site.yml
 
   # [END Ansible Playbook]
 

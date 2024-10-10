@@ -4,11 +4,9 @@ projects:
 auth_kind: application
 groups:
   gce_instance: yes
-  # タグごとにグループを作成
-  "{{ item }}":
+  # タグに基づくグループ化
+  http_servers:
     filters:
-      tags: "{{ item }}"
-    # すべてのタグに対してグループを作成
-    with_items: "{{ instance.tags }}"
+      tags: http-server
 hostnames:
   - name
