@@ -31,11 +31,11 @@ module "http_server" {
   source  = "../../modules/http_server"
   project = "${var.project}"
   public_key_path = "${var.public_key_path}"
-  subnet  = "${module.vpc.subnets.phishing}"
+  subnet  = "${module.vpc.subnets.redirector}"
 }
 
 module "firewall" {
   source  = "../../modules/firewall"
   project = "${var.project}"
-  subnet_redirector  = "${module.vpc.subnets.phishing}"
+  subnet_redirector  = "${module.vpc.subnets.redirector}"
 }
