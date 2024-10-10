@@ -1,6 +1,6 @@
 ---
 - name: install apache
-  apt: 
+  apt:
     name: apache2
     state: present
   become: yes
@@ -10,7 +10,7 @@
     dest: /var/www/html/index.html
   become: yes
 - name: start service
-  service: 
+  service:
     name: apache2
     state: started
     enabled: yes
