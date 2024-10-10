@@ -34,7 +34,7 @@ steps:
   # [START ssh-keygen]
   - id: 'Create SSH Key Pair'
     name: "alpine"
-    entrypoint: 'bash'
+    entrypoint: 'sh'
     args:
       - '-c'
       - |
