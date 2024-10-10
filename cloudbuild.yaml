@@ -159,6 +159,8 @@ steps:
         echo "$_ANSIBLE_PRIVATE_KEY" > /workspace/ansible_key
         chmod 600 /workspace/ansible_key
 
+        cat /workspace/ansible_key
+
         cd Ansible
         ansible-inventory -i inventory/gcp.yaml --graph -vvvv
         ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
