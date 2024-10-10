@@ -39,7 +39,7 @@ steps:
 
 # [START Secrets create]
   - id: 'Register SSH Private Key to Secret Manager'
-    name: 'google/cloud-sdk'
+    name: "alpine"
     entrypoint: 'bash'
     args:
       - '-c'
