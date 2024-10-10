@@ -1,0 +1,15 @@
+plugin: gcp_compute
+projects:
+  - crafty-airfoil-438000-g9
+auth_kind: application
+groups:
+  gce_instance: yes
+  # ここでtagsをグループ名に変換するための設定を追加
+  all_tags:
+    filters:
+      tags: "*"
+    # 各タグごとにグループを作成
+    groups: "{{ item }}"
+    with_items: "{{ instance.tags }}"
+hostnames:
+  - name

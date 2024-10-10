@@ -49,7 +49,6 @@ steps:
     args:
       - '-c'
       - |
-        # シークレットが存在するか確認
         if gcloud secrets describe ansible_key &>/dev/null; then
           echo "Secret 'ansible_key' already exists. Adding a new version..."
           gcloud secrets versions add ansible_key --data-file=/workspace/ansible_key
@@ -153,7 +152,6 @@ steps:
         apt-get update > /dev/null 2>&1
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
-        cat /workspace/ansible_key
         cd Ansible
         ansible-inventory -i inventory/gcp.yaml --graph -vvvv
         ansible http_server -m command -a "hostname" -i inventory/gcp.yaml
