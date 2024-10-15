@@ -18,7 +18,7 @@ output "network" {
 }
 
 output "subnets" {
-  value = module.vpc.subnets_names
+  value = module.vpc.subnets
 }
 
 output "vm_redirector_name" {
