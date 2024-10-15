@@ -3,7 +3,6 @@ projects:
   - crafty-airfoil-438000-g9
 auth_kind: application
 groups:
-  gce_instance: yes
   redirector:
     filters:
       tags: redirector

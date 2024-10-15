@@ -1,5 +1,6 @@
 ---
-- become: yes
+- name: Setup and build environment for Havoc
+  become: yes
   tasks:
     - name: Install required packages
       apt:
@@ -60,7 +61,7 @@
 
     - name: Clone teamserver repository (assuming you don't have it yet)
       git:
-        repo: "git clone https://github.com/HavocFramework/Havoc.git"
+        repo: "https://github.com/HavocFramework/Havoc.git"
         dest: /path/to/teamserver
 
     - name: Download Go dependencies
