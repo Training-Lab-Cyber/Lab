@@ -16,7 +16,7 @@
 variable "project" {}
 variable "env" {}
 variable "subnets" {
-  type = map(object(
+  type = list(map(
     {
       subnet_name = string
       subnet_ip   = string
