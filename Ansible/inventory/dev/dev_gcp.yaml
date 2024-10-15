@@ -4,9 +4,11 @@ projects:
 auth_kind: application
 groups:
   gce_instance: yes
-  # タグに基づくグループ化
-  http_servers:
+  redirector:
     filters:
-      tags: http-server
+      tags: redirector
+  c2:
+    filters:
+      tags: c2
 hostnames:
   - name

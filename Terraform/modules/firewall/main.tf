@@ -15,6 +15,7 @@
 
 locals {
   network_redirector = element(split("-", var.subnet_redirector), 0)
+  network_c2         = element(split("-", var.subnet_c2), 0)
 }
 
 resource "google_compute_firewall" "allow-http-from-internet" {
@@ -27,12 +28,12 @@ resource "google_compute_firewall" "allow-http-from-internet" {
     ports    = ["80"]
   }
 
-  target_tags   = ["http-server"]
+  target_tags   = ["redirector"]
   source_ranges = ["0.0.0.0/0"]
 }
 
-resource "google_compute_firewall" "allow-ssh-from-iap" {
-  name    = "${local.network_redirector}-allow-ssh-from-iap"
+resource "google_compute_firewall" "allow-ssh-from-iap-to-redirector" {
+  name    = "${local.network_redirector}-allow-ssh-from-iap-to-redirector"
   network = local.network_redirector
   project = var.project
 
@@ -41,6 +42,20 @@ resource "google_compute_firewall" "allow-ssh-from-iap" {
     ports    = ["22"]
   }
 
-  target_tags   = ["http-server"]
+  target_tags   = ["redirector"]
+  source_ranges = ["35.235.240.0/20"]
+}
+
+resource "google_compute_firewall" "allow-ssh-from-iap-to-c2" {
+  name    = "${local.network_redirector}-allow-ssh-from-iap-to-c2"
+  network = local.network_c2
+  project = var.project
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  target_tags   = ["c2"]
   source_ranges = ["35.235.240.0/20"]
 }

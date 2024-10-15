@@ -1,5 +1,10 @@
 ---
-- hosts: http_servers
+- hosts: redirector
   gather_facts: false
   roles:
     - apache2
+
+- hosts: c2
+  gather_facts: false
+  roles:
+    - havoc

@@ -14,5 +14,5 @@
 
 
 variable "project" {}
-variable "subnet_redirector" {}
-variable "subnet_c2" {}
+variable "subnet" {}
+variable "public_key_path" {}

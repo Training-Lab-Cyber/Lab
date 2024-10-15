@@ -41,8 +41,18 @@ module "vm_redirector" {
   subnet          = module.vpc.subnets["${local.env}-subnet-redirector"]
 }
 
+
+module "vm_c2" {
+  source          = "../../modules/vm_c2"
+  project         = var.project
+  public_key_path = var.public_key_path
+  subnet          = module.vpc.subnets["${local.env}-subnet-c2"]
+}
+
+
 module "firewall" {
   source            = "../../modules/firewall"
   project           = var.project
   subnet_redirector = module.vpc.subnets["${local.env}-subnet-redirector"]
+  subnet_c2         = module.vpc.subnets["${local.env}-subnet-c2"]
 }

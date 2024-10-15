@@ -13,6 +13,10 @@
 # limitations under the License.
 
 
-variable "project" {}
-variable "subnet_redirector" {}
-variable "subnet_c2" {}
+output "instance_name" {
+  value = google_compute_instance.http_server.name
+}
+
+output "internal_ip" {
+  value = google_compute_instance.http_server.network_interface[0].network_ip
+}

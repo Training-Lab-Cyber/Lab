@@ -13,6 +13,6 @@
 # limitations under the License.
 
 
-variable "project" {}
-variable "subnet_redirector" {}
-variable "subnet_c2" {}
+terraform {
+  required_version = "~> 1.0.0"
+}
