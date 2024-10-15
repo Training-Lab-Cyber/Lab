@@ -51,4 +51,7 @@ resource "google_compute_instance" "redirector" {
 
   # Apply the firewall rule to allow external IPs to access this instance
   tags = ["redirector"]
+  labels = {
+    group = "redirector"
+  }
 }

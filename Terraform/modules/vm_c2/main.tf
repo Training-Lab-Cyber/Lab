@@ -48,4 +48,7 @@ resource "google_compute_instance" "c2" {
 
   # Apply the firewall rule to allow external IPs to access this instance
   tags = ["c2"]
+  labels = {
+    group = "c2"
+  }
 }
