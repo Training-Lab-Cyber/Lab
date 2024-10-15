@@ -20,12 +20,7 @@ module "vpc" {
   project_id   = var.project
   network_name = var.env
 
+  for_each = var.subnets
 
-  subnets = [
-    for i in range(length(var.subnet_names)) : {
-      subnet_name   = var.subnet_names[i]
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.${10 + (i * 10)}.0/24"
-      subnet_region = "us-west1"
-    }
-  ]
+  subnets = each.value
 }
