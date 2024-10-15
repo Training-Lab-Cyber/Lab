@@ -21,6 +21,5 @@ module "vpc" {
   network_name = var.env
 
   for_each = var.subnets
-
-  subnets = each.value
+  subnets  = each.value
 }
