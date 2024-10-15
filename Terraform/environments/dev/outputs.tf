@@ -14,49 +14,22 @@
 
 
 output "network" {
-  value = "${module.vpc.network}"
+  value = module.vpc.network
 }
 
-output "redirector_subnet" {
-  value = "${module.vpc.subnets.redirector}"
+output "subnets" {
+  value = module.vpc.subnets_names
 }
 
-output "c2_subnet" {
-  value = "${module.vpc.subnets.c2}"
-}
-output "test_subnet" {
-  value = "${module.vpc.subnets.test}"
+output "vm_redirector_name" {
+  value = module.vm_redirector.instance_name
 }
 
-output "phishing_subnet" {
-  value = "${module.vpc.subnets.phishing}"
+output "vm_redirector_internal_ip" {
+  value = module.vm_redirector.internal_ip
 }
 
-
-output "utils_subnet" {
-  value = "${module.vpc.subnets.utils}"
-}
-
-
-output "firewall_rule_http" {
-  value = "${module.firewall.firewall_rule_http}"
-}
-
-
-output "firewall_rule_ssh" {
-  value = "${module.firewall.firewall_rule_ssh}"
-}
-
-
-output "http_instance_name" {
-  value = "${module.http_server.instance_name}"
-}
-
-output "http_internal_ip" {
-  value = "${module.http_server.internal_ip}"
-}
-
-output "http_external_ip" {
-  value = "${module.http_server.external_ip}"
+output "vm_redirector_external_ip" {
+  value = module.vm_redirector.external_ip
 }
 
