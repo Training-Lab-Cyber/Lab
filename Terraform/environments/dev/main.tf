@@ -19,7 +19,6 @@ locals {
 
 provider "google" {
   project = var.project
-  version = ">= 4.51.0, < 7.0.0"
 }
 
 module "vpc" {
