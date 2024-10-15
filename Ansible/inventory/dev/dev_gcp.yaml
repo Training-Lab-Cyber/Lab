@@ -4,6 +4,6 @@ projects:
 auth_kind: application
 keyed_groups:
   - prefix: gcp
-    key: tags
+    key: labels
 hostnames:
   - name
