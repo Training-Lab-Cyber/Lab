@@ -2,12 +2,8 @@ plugin: gcp_compute
 projects:
   - crafty-airfoil-438000-g9
 auth_kind: application
-groups:
-  redirector:
-    filters:
-      tags: redirector
-  c2:
-    filters:
-      tags: c2
+keyed_groups:
+  - prefix: gcp
+    key: tags
 hostnames:
   - name
