@@ -24,11 +24,10 @@ module "vpc" {
 
 
   subnets = [
-    for i in range(length(var.subnet_names)) : {
-      subnet_name   = var.subnet_names[i]
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.${10 + i * 10}.0/24"
+    for subnet_name in var.subnet_names : {
+      subnet_name   = subnet_name
+      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.${10 + (index(var.subnet_names, subnet_name) * 10)}.0/24"
       subnet_region = "us-west1"
     }
   ]
-
 }
