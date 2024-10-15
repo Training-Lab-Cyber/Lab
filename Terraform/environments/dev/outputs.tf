@@ -21,10 +21,6 @@ output "subnets" {
   value = module.vpc.subnets
 }
 
-output "subnets2" {
-  value = module.vpc.subnets2
-}
-
 output "vm_redirector_name" {
   value = module.vm_redirector.instance_name
 }

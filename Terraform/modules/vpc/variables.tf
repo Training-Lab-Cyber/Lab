@@ -16,5 +16,5 @@
 variable "project" {}
 variable "env" {}
 variable "subnets" {
-  type = map(string)
+  type = map(map(string))
 }
