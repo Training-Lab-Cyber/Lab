@@ -40,11 +40,11 @@ module "vm_redirector" {
   source          = "../../modules/vm_redirector"
   project         = var.project
   public_key_path = var.public_key_path
-  subnet          = module.vpc.subnets[1]
+  subnet          = module.vpc.subnets["${local.env}-subnet-redirector"]
 }
 
 module "firewall" {
   source            = "../../modules/firewall"
   project           = var.project
-  subnet_redirector = module.vpc.subnets[1]
+  subnet_redirector = module.vpc.subnets["${local.env}-subnet-redirector"]
 }
