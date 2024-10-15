@@ -15,6 +15,3 @@
 
 variable "project" {}
 variable "env" {}
-variable "subnets" {
-  type = list(map(string))
-}

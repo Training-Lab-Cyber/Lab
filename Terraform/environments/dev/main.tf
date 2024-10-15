@@ -25,28 +25,6 @@ module "vpc" {
   source  = "../../modules/vpc"
   project = var.project
   env     = local.env
-  subnets = {
-    c2 = {
-      subnet_name = "${local.env}-subnet-c2",
-      subnet_ip   = "10.10.0.0/24"
-    },
-    redirector = {
-      subnet_name = "${local.env}-subnet-redirector",
-      subnet_ip   = "10.10.1.0/24"
-    },
-
-    test = {
-      subnet_name = "${local.env}-subnet-test",
-      subnet_ip   = "10.10.2.0/24"
-    },
-
-    phishing = {
-      subnet_name = "${local.env}-subnet-phishing",
-      subnet_ip   = "10.10.3.0/24"
-    },
-  }
-
-
 }
 
 
