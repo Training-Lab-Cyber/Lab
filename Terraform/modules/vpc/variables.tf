@@ -16,12 +16,5 @@
 variable "project" {}
 variable "env" {}
 variable "subnets" {
-  type = list(map(
-    {
-      subnet_name = string
-      subnet_ip   = string
-    }
-    )
-  )
-
+  type = list(map(string))
 }
