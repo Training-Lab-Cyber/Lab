@@ -39,3 +39,20 @@ module "vpc" {
       next_hop_internet = "true"
   }, ]
 }
+
+resource "google_compute_router" "router" {
+  project = var.project
+  name    = "nat-router"
+  network = module.vpc.network_name
+  region  = "us-west1"
+}
+
+module "cloud-nat" {
+  source                             = "terraform-google-modules/cloud-nat/google"
+  version                            = "~> 5.0"
+  project_id                         = var.project
+  region                             = "us-west1"
+  name                               = "nat-config"
+  router                             = google_compute_router.router.name
+  source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+}
