@@ -25,5 +25,11 @@ output "subnets" {
 }
 
 output "subnets2" {
-  value = zipmap(var.subnet_names, module.vpc.subnets_self_links)
+  value = zipmap(
+    # サブネット名のセット
+    set(var.subnet_names),
+
+    # サブネットの自己リンクをfor_eachでマッピング
+    [for subnet_name in var.subnet_names : module.vpc.subnets_names[for_each.key]]
+  )
 }
