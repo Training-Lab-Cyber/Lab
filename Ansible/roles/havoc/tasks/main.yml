@@ -35,19 +35,19 @@
       - nasm
     state: present
     update_cache: yes
-    become: yes
+  become: yes
 
 - name: Add Debian bookworm repository
   lineinfile:
     path: /etc/apt/sources.list
     line: "deb http://ftp.de.debian.org/debian bookworm main"
     state: present
-    become: yes
+  become: yes
 
 - name: Update apt cache after adding the repository
   apt:
     update_cache: yes
-    become: yes
+  become: yes
 
 - name: Install additional Python packages
   apt:
@@ -58,7 +58,7 @@
       - libpython3.10-dev
       - python3.10
     state: present
-    become: yes
+  become: yes
 
 - name: Clone teamserver repository (assuming you don't have it yet)
   git:
