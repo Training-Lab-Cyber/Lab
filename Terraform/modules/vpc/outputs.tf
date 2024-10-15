@@ -14,15 +14,12 @@
 
 
 output "network" {
-  value = "${module.vpc.network_name}"
+  value = module.vpc.network_name
 }
 
 output "subnets" {
   value = {
-    c2         = element(module.vpc.subnets_names, 0)
-    redirector = element(module.vpc.subnets_names, 1)
-    test       = element(module.vpc.subnets_names, 2)
-    phishing   = element(module.vpc.subnets_names, 3)
-    utils      = element(module.vpc.subnets_names, 4)
+    for i in range(length(module.vpc.subnets_names)) :
+    var.subnet_names[i] => module.vpc.subnets_names[i]
   }
 }

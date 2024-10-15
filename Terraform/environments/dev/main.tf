@@ -18,24 +18,33 @@ locals {
 }
 
 provider "google" {
-  project = "${var.project}"
+  project = var.project
 }
 
 module "vpc" {
   source  = "../../modules/vpc"
-  project = "${var.project}"
-  env     = "${local.env}"
+  project = var.project
+  env     = local.env
+  subnet_names = [
+    "${local.env}-subnet-c2",
+    "${local.env}-subnet-redirector",
+    "${local.env}-subnet-test",
+    "${local.env}-subnet-phishing",
+    "${local.env}-subnet-utils"
+  ]
 }
 
-module "http_server" {
-  source  = "../../modules/http_server"
-  project = "${var.project}"
-  public_key_path = "${var.public_key_path}"
-  subnet  = "${module.vpc.subnets.redirector}"
+
+
+module "vm_redirector" {
+  source          = "../../modules/vm_redirector"
+  project         = var.project
+  public_key_path = var.public_key_path
+  subnet          = module.vpc.subnets.redirector
 }
 
 module "firewall" {
-  source  = "../../modules/firewall"
-  project = "${var.project}"
-  subnet_redirector  = "${module.vpc.subnets.redirector}"
+  source            = "../../modules/firewall"
+  project           = var.project
+  subnet_redirector = module.vpc.subnets.redirector
 }
