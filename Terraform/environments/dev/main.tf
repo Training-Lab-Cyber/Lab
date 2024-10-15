@@ -27,9 +27,9 @@ module "vpc" {
   env     = local.env
   subnet_names = [
     "${local.env}-subnet-c2",
+    "${local.env}-subnet-phishing",
     "${local.env}-subnet-redirector",
     "${local.env}-subnet-test",
-    "${local.env}-subnet-phishing"
 
   ]
 }
