@@ -23,3 +23,7 @@ output "subnets" {
     var.subnet_names[i] => module.vpc.subnets_names[i]
   }
 }
+
+output "subnets2" {
+  value = zipmap(var.subnet_names, module.vpc.subnets_names)
+}
