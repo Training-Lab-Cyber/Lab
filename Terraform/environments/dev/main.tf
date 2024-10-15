@@ -27,17 +27,15 @@ module "vpc" {
   env     = local.env
 }
 
-
-
 module "vm_redirector" {
   source          = "../../modules/vm_redirector"
   project         = var.project
   public_key_path = var.public_key_path
-  subnet          = "${local.env}-subnet-redirector"
+  subnet          = module.vpc.subnets.redirector
 }
 
 module "firewall" {
   source            = "../../modules/firewall"
   project           = var.project
-  subnet_redirector = "${local.env}-subnet-redirector"
+  subnet_redirector = module.vpc.subnets.redirector
 }
