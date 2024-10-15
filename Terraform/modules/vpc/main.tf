@@ -24,21 +24,9 @@ module "vpc" {
 
 
   subnets = [
-    {
-      subnet_name   = "${var.env}-subnet-c2"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.10.0/24"
-      subnet_region = "us-west1"
-      }, {
-      subnet_name   = "${var.env}-subnet-redirector"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.20.0/24"
-      subnet_region = "us-west1"
-      }, {
-      subnet_name   = "${var.env}-subnet-test"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.30.0/24"
-      subnet_region = "us-west1"
-      }, {
-      subnet_name   = "${var.env}-subnet-phishing"
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.40.0/24"
+    for i in range(length(var.subnet_names)) : {
+      subnet_name   = var.subnet_names[i]
+      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.${10 + i * 10}.0/24"
       subnet_region = "us-west1"
     }
   ]
