@@ -33,3 +33,11 @@ output "vm_redirector_external_ip" {
   value = module.vm_redirector.external_ip
 }
 
+
+output "vm_c2_name" {
+  value = module.vm_c2.instance_name
+}
+
+output "vm_c2_internal_ip" {
+  value = module.vm_c2.internal_ip
+}

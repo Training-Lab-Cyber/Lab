@@ -14,9 +14,9 @@
 
 
 output "instance_name" {
-  value = google_compute_instance.http_server.name
+  value = google_compute_instance.c2.name
 }
 
 output "internal_ip" {
-  value = google_compute_instance.http_server.network_interface[0].network_ip
+  value = google_compute_instance.c2.network_interface[0].network_ip
 }

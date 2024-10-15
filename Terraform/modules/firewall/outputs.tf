@@ -12,11 +12,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-output "firewall_rule_http" {
-  value = "${google_compute_firewall.allow-http-from-internet.name}"
-}
-
-output "firewall_rule_ssh" {
-  value = "${google_compute_firewall.allow-ssh-from-iap.name}"
-}
