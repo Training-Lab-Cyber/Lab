@@ -25,5 +25,5 @@ output "subnets" {
 }
 
 output "subnets2" {
-  value = zipmap(var.subnet_names, module.vpc.subnets_names)
+  value = zipmap(var.subnet_names, module.vpc.subnets_self_links)
 }
