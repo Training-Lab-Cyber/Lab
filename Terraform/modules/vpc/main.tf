@@ -14,7 +14,7 @@
 
 
 
-resource "google_compute_network" "vpc_network" {
+resource "google_compute_network" "vpc" {
   name                    = var.env
   project                 = var.project
   auto_create_subnetworks = false
@@ -23,7 +23,7 @@ resource "google_compute_network" "vpc_network" {
 resource "google_compute_subnetwork" "subnet" {
   project      = var.project
   for_each      = var.subnets
-  name          = each.key            
+  name          = "${var.env}-subnet-${each.key}"            
   region        = each.value.region
   ip_cidr_range = each.value.cidr
   network       = google_compute_network.vpc_network.id
