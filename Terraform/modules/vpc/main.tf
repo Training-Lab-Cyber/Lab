@@ -19,10 +19,6 @@ module "vpc" {
 
   project_id   = var.project
   network_name = var.env
-
-
-
-
   subnets = [
     for subnet_name in var.subnet_names : {
       subnet_name   = subnet_name
@@ -49,6 +45,7 @@ resource "google_compute_router" "router" {
 
 module "cloud-nat" {
   source                             = "terraform-google-modules/cloud-nat/google"
+  version    = "~> 5.0"
   project_id                         = var.project
   region                             = "us-west1"
   name                               = "nat-config"
