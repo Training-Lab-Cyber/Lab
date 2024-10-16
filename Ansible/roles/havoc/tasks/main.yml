@@ -78,7 +78,7 @@
   replace:
     path: /opt/havoc/teamserver/go.mod
     regexp: '^go [0-9]+\.[0-9]+\.[0-9]'
-    replace: 'go 1.21'
+    replace: 'go 1.23'
   become: yes
 
 - name: Download additional Go dependencies
