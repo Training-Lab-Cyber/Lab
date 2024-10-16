@@ -6,4 +6,4 @@
 - hosts: gcp_group_c2
   gather_facts: false
   roles:
-    - havoc
+    - sliver

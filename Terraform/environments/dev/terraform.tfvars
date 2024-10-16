@@ -67,7 +67,7 @@ firewall_rules = {
         ports    = ["31337"]
       }
     ]
-    source_ranges   = ["114.156.22.214/32"]
+    source_ranges   = ["220.146.34.124/32"]
     destination_ranges = []
     target_tags     = ["c2"]
     priority           = 1000
