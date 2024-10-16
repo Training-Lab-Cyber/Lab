@@ -111,12 +111,16 @@
   args:
     chdir: /opt/havoc/teamserver
   become: yes
+  environment:
+    PATH: "/usr/local/go/bin:/usr/bin:/bin"
 
 - name: Download additional Go dependencies
   command: go mod download github.com/ugorji/go
   args:
     chdir: /opt/havoc/teamserver
   become: yes
+  environment:
+    PATH: "/usr/local/go/bin:/usr/bin:/bin"
 
 - name: Run make for ts-build
   make:
