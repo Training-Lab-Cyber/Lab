@@ -63,6 +63,8 @@ resource "google_compute_router" "router" {
   region  = "us-west1"
 }
 
+
+
 resource "google_compute_router_nat" "nat" {
   name   = "nat-config"
   router = google_compute_router.router.id
@@ -77,4 +79,3 @@ resource "google_compute_router_nat" "nat" {
     enable = true
     filter = "ERRORS_ONLY"
   }
-}
