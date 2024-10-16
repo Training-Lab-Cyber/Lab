@@ -15,6 +15,9 @@
 
 variable "project" {}
 variable "public_key_path" {}
+variable "subnet_ids" {
+  type = map(string)
+}
 
 variable "vm_configs" {
   type = map(object({

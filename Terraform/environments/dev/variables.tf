@@ -22,7 +22,6 @@ variable "subnets" {
     cidr   = string
   }))
 }
-
 variable "vm_configs" {
   type = map(object({
     name   = string

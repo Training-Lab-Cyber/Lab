@@ -29,7 +29,7 @@ resource "google_compute_instance" "vms" {
   }
 
   network_interface {
-    subnetwork = google_compute_subnetwork.subnet[var.vm_configs.subnet_name].id
+    subnetwork = var.subnet_ids[var.vm_configs.subnet_name]
 
   }
 

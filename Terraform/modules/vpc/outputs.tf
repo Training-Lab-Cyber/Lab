@@ -13,10 +13,6 @@
 # limitations under the License.
 
 
-output "network" {
-  value = module.vpc.network_name
-}
-
-output "subnets" {
-  value = module.vpc.subnet
+output "subnet_ids" {
+  value = { for key, subnet in google_compute_subnetwork.subnet : key => subnet.id }
 }

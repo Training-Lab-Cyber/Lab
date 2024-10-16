@@ -34,4 +34,5 @@ module "vm" {
   project         = var.project
   public_key_path = var.public_key_path
   vm_configs      = var.vm_configs
+  subnet_ids      = module.vpc.subnet_ids
 }
