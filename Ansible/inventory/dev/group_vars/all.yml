@@ -1,1 +1,2 @@
 ansible_ssh_common_args: "-o ProxyCommand='gcloud compute start-iap-tunnel %h %p --listen-on-stdin --zone {{ vars.zone }} --project {{ vars.project }}'"
+lhost_ip: "{{ ansible_default_ipv4.address }}"
