@@ -62,7 +62,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME
-          terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID" -var-file="terraform.tfvars"
+          terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
           for dir in Terraform/environments/*/
           do 
@@ -87,7 +87,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME
-          terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID" -var-file="terraform.tfvars"
+          terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
           for dir in Terraform/environments/*/
           do 
@@ -112,7 +112,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME      
-          terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID" -var-file="terraform.tfvars"
+          terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
           echo "***************************** SKIPPING APPLYING *******************************"
           echo "Branch '$BRANCH_NAME' does not represent an official environment."
@@ -159,7 +159,7 @@ steps:
       - |
         if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
           cd Terraform/environments/$BRANCH_NAME      
-          terraform destroy -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID" -var-file="terraform.tfvars"
+          terraform destroy -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
         else
           echo "***************************** SKIPPING APPLYING *******************************"
           echo "Branch '$BRANCH_NAME' does not represent an official environment."
