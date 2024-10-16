@@ -60,6 +60,36 @@
     state: present
   become: yes
 
+- name: Download Go 1.21
+  get_url:
+    url: "https://go.dev/dl/go1.21.0.linux-amd64.tar.gz"
+    dest: "/tmp/go1.21.0.linux-amd64.tar.gz"
+  become: yes
+
+- name: Remove old Go version (if any)
+  file:
+    path: /usr/local/go
+    state: absent
+  become: yes
+
+- name: Extract Go archive
+  unarchive:
+    src: "/tmp/go1.21.0.linux-amd64.tar.gz"
+    dest: /usr/local
+    remote_src: yes
+  become: yes
+
+- name: Add Go to PATH
+  lineinfile:
+    path: /etc/profile
+    regexp: '^export PATH=.*'
+    line: 'export PATH=$PATH:/usr/local/go/bin'
+    state: present
+  become: yes
+
+- name: Source profile to update PATH for current session
+  shell: source /etc/profile
+  become: yes
 
 - name: Create /opt/havoc directory
   file:
@@ -78,7 +108,7 @@
   replace:
     path: /opt/havoc/teamserver/go.mod
     regexp: '^go [0-9]+\.[0-9]+\.[0-9]'
-    replace: 'go 1.23'
+    replace: 'go 1.21'
   become: yes
 
 - name: Download additional Go dependencies
