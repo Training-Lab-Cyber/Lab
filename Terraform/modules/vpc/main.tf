@@ -57,12 +57,24 @@ resource "google_compute_router" "router" {
   region  = "us-west1"
 }
 
-module "cloud-nat" {
-  source                             = "terraform-google-modules/cloud-nat/google"
-  version    = "~> 5.0"
-  project_id                         = var.project
-  region                             = "us-west1"
-  name                               = "nat-config"
-  router                             = google_compute_router.router.id
+resource "google_compute_address" "nat_ip" {
+  name    = "nat-ip"
+  project = var.project
+  region  = "us-west1"
+}
+
+resource "google_compute_router_nat" "nat" {
+  name   = "nat-config"
+  router = google_compute_router.router.name
+  region = "us-west1"
+
+  nat_ip_allocate_option = "AUTO_ONLY" 
+  nat_ips               = [google_compute_address.nat_ip.address]
+
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+
+  log_config {
+    enable = true
+    filter = "ERRORS_ONLY"
+  }
 }
