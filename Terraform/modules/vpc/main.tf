@@ -29,6 +29,27 @@ resource "google_compute_subnetwork" "subnet" {
   network       = google_compute_network.vpc.id
 }
 
+resource "google_compute_firewall" "firewall_rules" {
+  for_each = var.firewall_rules
+
+  project = var.project
+  name    = each.value.name
+  network = google_compute_network.vpc.id
+  direction = each.value.direction
+
+  allow {
+    protocol = each.value.allow_protocols[0].protocol
+    ports    = each.value.allow_protocols[0].ports
+  }
+
+  source_ranges      = each.value.direction == "INGRESS" ? each.value.source_ranges : null
+  destination_ranges = each.value.direction == "EGRESS" ? each.value.destination_ranges : null
+
+  target_tags = each.value.target_tags
+  priority    = each.value.priority
+}
+
+
 resource "google_compute_router" "router" {
   project = var.project
   name    = "nat-router"
