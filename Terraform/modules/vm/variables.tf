@@ -24,6 +24,6 @@ variable "vm_configs" {
     image = string
     subnet_name = string
     tags = list(string)
-  labels = map(object({}))
+  labels = map(string)
   }))
 }

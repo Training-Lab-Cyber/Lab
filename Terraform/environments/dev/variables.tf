@@ -31,7 +31,7 @@ variable "vm_configs" {
     machine_type   = string
     image = string
     tags = list(string)
-  labels = map(object({}))
+  labels = map(string)
   }))
 }
 
@@ -45,7 +45,7 @@ variable "firewall_rules" {
       ports    = list(string)
     }))
     source_ranges   = list(string)    # For ingress rules
-    dest_ranges = list(string) # For egress rules
+    destination_ranges = list(string) # For egress rules
     target_tags     = list(string)    # Optional, to target specific instances
     priority           = number  # Default priority is 1000
   }))
