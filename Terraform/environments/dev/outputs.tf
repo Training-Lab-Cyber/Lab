@@ -12,32 +12,3 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-output "network" {
-  value = module.vpc.network
-}
-
-output "subnets" {
-  value = module.vpc.subnets
-}
-
-output "vm_redirector_name" {
-  value = module.vm_redirector.instance_name
-}
-
-output "vm_redirector_internal_ip" {
-  value = module.vm_redirector.internal_ip
-}
-
-output "vm_redirector_external_ip" {
-  value = module.vm_redirector.external_ip
-}
-
-
-output "vm_c2_name" {
-  value = module.vm_c2.instance_name
-}
-
-output "vm_c2_internal_ip" {
-  value = module.vm_c2.internal_ip
-}

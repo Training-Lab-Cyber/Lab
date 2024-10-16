@@ -22,3 +22,18 @@ variable "subnets" {
     cidr   = string
   }))
 }
+
+variable "firewall_rules" {
+  type = map(object({
+    name            = string
+    direction       = string    # INGRESS or EGRESS
+    allow_protocols = list(object({
+      protocol = string
+      ports    = list(string)
+    }))
+    source_ranges   = list(string)    # For ingress rules
+    destination_ranges = list(string) # For egress rules
+    target_tags     = list(string)    # Optional, to target specific instances
+    priority        = optional(number, 1000)  # Default priority is 1000
+  }))
+}

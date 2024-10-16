@@ -26,27 +26,12 @@ module "vpc" {
   project = var.project
   env     = local.env
   subnets = var.subnets
+  firewall_rules      = var.firewall_rules
 }
 
-module "vm_redirector" {
-  source          = "../../modules/vm_redirector"
+module "vms" {
+  source          = "../../modules/vms"
   project         = var.project
   public_key_path = var.public_key_path
-  subnet          = module.vpc.subnets["${local.env}-subnet-redirector"]
-}
-
-
-module "vm_c2" {
-  source          = "../../modules/vm_c2"
-  project         = var.project
-  public_key_path = var.public_key_path
-  subnet          = module.vpc.subnets["${local.env}-subnet-c2"]
-}
-
-
-module "firewall" {
-  source            = "../../modules/firewall"
-  project           = var.project
-  subnet_redirector = module.vpc.subnets["${local.env}-subnet-redirector"]
-  subnet_c2         = module.vpc.subnets["${local.env}-subnet-c2"]
+  vm_configs      = var.vm_configs
 }

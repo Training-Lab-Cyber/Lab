@@ -13,10 +13,6 @@
 # limitations under the License.
 
 
-output "instance_name" {
-  value = google_compute_instance.c2.name
-}
-
-output "internal_ip" {
-  value = google_compute_instance.c2.network_interface[0].network_ip
+output "vms" {
+  value = google_compute_instance.vms
 }

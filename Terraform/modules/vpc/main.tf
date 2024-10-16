@@ -26,13 +26,13 @@ resource "google_compute_subnetwork" "subnet" {
   name          = "${var.env}-subnet-${each.key}"            
   region        = each.value.region
   ip_cidr_range = each.value.cidr
-  network       = google_compute_network.vpc_network.id
+  network       = google_compute_network.vpc.id
 }
 
 resource "google_compute_router" "router" {
   project = var.project
   name    = "nat-router"
-  network = module.vpc.network_name
+  network       = google_compute_network.vpc.id
   region  = "us-west1"
 }
 
@@ -42,6 +42,6 @@ module "cloud-nat" {
   project_id                         = var.project
   region                             = "us-west1"
   name                               = "nat-config"
-  router                             = google_compute_router.router.name
+  router                             = google_compute_router.router.id
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 }

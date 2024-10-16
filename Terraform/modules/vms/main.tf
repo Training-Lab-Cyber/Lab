@@ -13,24 +13,23 @@
 # limitations under the License.
 
 
-locals {
-  network = element(split("-", var.subnet), 0)
-}
 
-resource "google_compute_instance" "c2" {
+resource "google_compute_instance" "vms" {
   project      = var.project
-  zone         = "us-west1-a"
-  name         = "${local.network}-c2-instance"
-  machine_type = "f1-micro"
+  zone         = var.vm_configs.zone
+  name         = var.vm_configs.name
+  machine_type = var.vm_configs.machine_type
+  tags =  var.vm_configs.tags
+  labels = var.vm_configs.labels
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-11"
+      image = var.vm_configs.image
     }
   }
 
   network_interface {
-    subnetwork = var.subnet
+    subnetwork = google_compute_subnetwork.subnet[var.vm_configs.subnet_name].id
 
   }
 
@@ -38,17 +37,10 @@ resource "google_compute_instance" "c2" {
   metadata = {
     ssh-keys = "ansible:${file(var.public_key_path)}"
   }
-
-
   metadata_startup_script = <<-EOT
     #!/bin/bash
     useradd -m -s /bin/bash ansible
     echo 'ansible ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
   EOT
 
-  # Apply the firewall rule to allow external IPs to access this instance
-  tags = ["c2"]
-  labels = {
-    group = "c2"
-  }
 }

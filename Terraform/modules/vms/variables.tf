@@ -14,5 +14,16 @@
 
 
 variable "project" {}
-variable "subnet" {}
 variable "public_key_path" {}
+
+variable "vm_configs" {
+  type = map(object({
+    name = string
+    zone   = string
+    machine_type   = string
+    image = string
+    subnet_name = string
+    tags = list(string)
+  labels = map(object({}))
+  }))
+}
