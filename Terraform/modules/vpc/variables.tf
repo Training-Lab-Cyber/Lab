@@ -34,6 +34,6 @@ variable "firewall_rules" {
     source_ranges   = list(string)    # For ingress rules
     destination_ranges = list(string) # For egress rules
     target_tags     = list(string)    # Optional, to target specific instances
-    priority        = optional(number)  # Default priority is 1000
+    priority        = optional(number, 1000)  # Default priority is 1000
   }))
 }
