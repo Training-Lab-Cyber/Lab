@@ -59,7 +59,7 @@ firewall_rules = {
   }
 
   sliver = {
-    name            = "dev-allow-gRPC-from-terminal"
+    name            = "dev-allow-grpc-from-terminal"
     direction       = "INGRESS"
     allow_protocols = [
       {
