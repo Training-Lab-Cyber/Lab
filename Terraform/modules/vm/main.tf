@@ -14,22 +14,23 @@
 
 
 
-resource "google_compute_instance" "vms" {
+resource "google_compute_instance" "vm" {
+  for_each = var.vm_configs
   project      = var.project
-  zone         = var.vm_configs.zone
-  name         = var.vm_configs.name
-  machine_type = var.vm_configs.machine_type
-  tags =  var.vm_configs.tags
-  labels = var.vm_configs.labels
+  zone         = each.value.zone
+  name         = each.value.name
+  machine_type = each.value.machine_type
+  tags =  each.value.tags
+  labels = each.value.labels
 
   boot_disk {
     initialize_params {
-      image = var.vm_configs.image
+      image = each.value.image
     }
   }
 
   network_interface {
-    subnetwork = var.subnet_ids[var.vm_configs.subnet_name]
+    subnetwork = var.subnet_ids[each.value.subnet_name]
 
   }
 

@@ -14,5 +14,5 @@
 
 
 output "vms" {
-  value = google_compute_instance.vms
+  value = google_compute_instance.vm
 }
