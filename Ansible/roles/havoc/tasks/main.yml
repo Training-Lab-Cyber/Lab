@@ -60,24 +60,32 @@
     state: present
   become: yes
 
+
+- name: Create /opt/havoc directory
+  file:
+    path: /opt/havoc
+    state: directory
+    mode: '0755'
+  become: yes
+
 - name: Clone teamserver repository (assuming you don't have it yet)
   git:
     repo: "https://github.com/HavocFramework/Havoc.git"
-    dest: /path/to/teamserver
+    dest: /opt/havoc
 
 - name: Download Go dependencies
   command: go mod download
   args:
-    chdir: /path/to/teamserver
+    chdir: /opt/havoc
 
 - name: Run make for ts-build
   make:
-    chdir: /path/to/teamserver
+    chdir: /opt/havoc
     target: ts-build
 
 - name: Run the havoc server
   command: ./havoc server --profile ./profiles/havoc.yaotl -v --debug
   args:
-    chdir: /path/to/teamserver
+    chdir: /opt/havoc
   async: 300
   poll: 0
