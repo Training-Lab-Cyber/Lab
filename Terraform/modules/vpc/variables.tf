@@ -16,6 +16,9 @@
 variable "project" {}
 variable "env" {}
 
-variable "subnet_names" {
-  type = list(string)
+variable "subnets" {
+  type = map(object({
+    region = string
+    cidr   = string
+  }))
 }

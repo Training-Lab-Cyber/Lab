@@ -18,7 +18,5 @@ output "network" {
 }
 
 output "subnets" {
-  value = {
-    for idx, subnet in module.vpc.subnets_names : var.subnet_names[idx] => subnet
-  }
+  value = module.vpc.subnet
 }

@@ -13,27 +13,20 @@
 # limitations under the License.
 
 
-module "vpc" {
-  source  = "terraform-google-modules/network/google"
-  version = "3.3.0"
 
-  project_id   = var.project
-  network_name = var.env
-  subnets = [
-    for subnet_name in var.subnet_names : {
-      subnet_name   = subnet_name
-      subnet_ip     = "10.${var.env == "dev" ? 10 : 20}.${10 + (index(var.subnet_names, subnet_name) * 10)}.0/24"
-      subnet_region = "us-west1"
-    }
-  ]
-  routes = [
-    {
-      name              = "egress-internet"
-      description       = "route through IGW to access internet"
-      destination_range = "0.0.0.0/0"
-      tags              = "egress-inet"
-      next_hop_internet = "true"
-  }, ]
+resource "google_compute_network" "vpc_network" {
+  name                    = var.env
+  project                 = var.project
+  auto_create_subnetworks = false
+}
+
+resource "google_compute_subnetwork" "subnet" {
+  project      = var.project
+  for_each      = var.subnets
+  name          = each.key            
+  region        = each.value.region
+  ip_cidr_range = each.value.cidr
+  network       = google_compute_network.vpc_network.id
 }
 
 resource "google_compute_router" "router" {

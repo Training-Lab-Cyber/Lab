@@ -15,3 +15,10 @@
 
 variable "project" {}
 variable "public_key_path" {}
+
+variable "subnets" {
+  type = map(object({
+    region = string
+    cidr   = string
+  }))
+}
