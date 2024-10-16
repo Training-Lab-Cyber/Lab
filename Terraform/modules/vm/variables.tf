@@ -27,5 +27,6 @@ variable "vm_configs" {
     subnet_name = string
     tags = list(string)
   labels = map(string)
+  add_access_config = bool
   }))
 }

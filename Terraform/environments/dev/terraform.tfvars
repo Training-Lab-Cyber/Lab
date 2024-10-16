@@ -26,6 +26,7 @@ vm_configs={
     tags            = ["c2"]
     labels          = { group = "c2"}
     image           = "debian-cloud/debian-11"
+    add_access_config = true
   }
 
   redirector = {
@@ -36,12 +37,13 @@ vm_configs={
     tags            = ["redirector"]
     labels          = { group = "redirector"}
     image           = "debian-cloud/debian-11"
+    add_access_config = true
   }
 
 }
 
 firewall_rules = {
-  ssh = {
+  http = {
     name            = "dev-allow-http-from-internet"
     direction       = "INGRESS"
     allow_protocols = [
@@ -56,7 +58,22 @@ firewall_rules = {
     priority           = 1000
   }
 
-  egress = {
+  sliver = {
+    name            = "dev-allow-gRPC-from-terminal"
+    direction       = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["31337"]
+      }
+    ]
+    source_ranges   = ["114.156.22.214/32"]
+    destination_ranges = []
+    target_tags     = ["c2"]
+    priority           = 1000
+  }
+
+  iap = {
     name            = "dev-allow-ssh-from-iap"
     direction       = "INGRESS"
     allow_protocols = [

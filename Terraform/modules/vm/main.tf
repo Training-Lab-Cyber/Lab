@@ -31,10 +31,13 @@ resource "google_compute_instance" "vm" {
 
   network_interface {
     subnetwork = var.subnet_ids[each.value.subnet_name]
-
+        dynamic "access_config" {
+      for_each = each.value.add_access_config ? [1] : []
+      content {}
+    }
   }
 
-
+  
   metadata = {
     ssh-keys = "ansible:${file(var.public_key_path)}"
   }

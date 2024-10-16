@@ -31,6 +31,7 @@ variable "vm_configs" {
     image = string
     tags = list(string)
   labels = map(string)
+  add_access_config = bool
   }))
 }
 
