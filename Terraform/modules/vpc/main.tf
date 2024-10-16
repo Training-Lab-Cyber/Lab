@@ -59,7 +59,7 @@ resource "google_compute_router" "router" {
 
 resource "google_compute_router_nat" "nat" {
   name   = "nat-config"
-  router = google_compute_router.router.id
+  router = google_compute_router.router.name
   region = google_compute_router.router.region
 
   nat_ip_allocate_option = "AUTO_ONLY" 
