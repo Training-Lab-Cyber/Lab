@@ -72,16 +72,19 @@
   git:
     repo: "https://github.com/HavocFramework/Havoc.git"
     dest: /opt/havoc
+  become: yes
 
 - name: Download Go dependencies
   command: go mod download
   args:
     chdir: /opt/havoc
+  become: yes
 
 - name: Run make for ts-build
   make:
     chdir: /opt/havoc
     target: ts-build
+  become: yes
 
 - name: Run the havoc server
   command: ./havoc server --profile ./profiles/havoc.yaotl -v --debug
@@ -89,3 +92,4 @@
     chdir: /opt/havoc
   async: 300
   poll: 0
+  become: yes
