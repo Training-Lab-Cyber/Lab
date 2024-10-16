@@ -1,137 +1,26 @@
 ---
-- name: Install required packages
-  apt:
-    name:
-      - git
-      - build-essential
-      - apt-utils
-      - cmake
-      - libfontconfig1
-      - libglu1-mesa-dev
-      - libgtest-dev
-      - libspdlog-dev
-      - libboost-all-dev
-      - libncurses5-dev
-      - libgdbm-dev
-      - libssl-dev
-      - libreadline-dev
-      - libffi-dev
-      - libsqlite3-dev
-      - libbz2-dev
-      - mesa-common-dev
-      - qtbase5-dev
-      - qtchooser
-      - qt5-qmake
-      - qtbase5-dev-tools
-      - libqt5websockets5
-      - libqt5websockets5-dev
-      - qtdeclarative5-dev
-      - golang-go
-      - qtbase5-dev
-      - libqt5websockets5-dev
-      - python3-dev
-      - libboost-all-dev
-      - mingw-w64
-      - nasm
-    state: present
-    update_cache: yes
+- name: Install Sliver and configure operator
+  hosts: all
+  become: yes
+  vars:
+    lhost_ip: "{{ ansible_default_ipv4.address }}"
+
+  tasks:
+    - name: Install Sliver via curl
+      shell: "curl https://sliver.sh/install | bash"
+      args:
+        executable: /bin/bash
+      become: yes
+
+    - name: Create Sliver operator configuration
+      shell: "sliver operator --name zer0cool --lhost {{ lhost_ip }} --save zer0cool.cfg"
+      become: yes
+
+- name: Log content of zer0cool.cfg
+  command: cat zer0cool.cfg
+  register: cfg_content
   become: yes
 
-- name: Add Debian bookworm repository
-  lineinfile:
-    path: /etc/apt/sources.list
-    line: "deb http://ftp.de.debian.org/debian bookworm main"
-    state: present
-  become: yes
-
-- name: Update apt cache after adding the repository
-  apt:
-    update_cache: yes
-  become: yes
-
-- name: Install additional Python packages
-  apt:
-    name:
-      - python3-dev
-      - python3.11-dev
-      - libpython3.11
-      - libpython3.11-dev
-      - python3.11
-    state: present
-  become: yes
-
-- name: Download Go 1.21
-  get_url:
-    url: "https://go.dev/dl/go1.21.0.linux-amd64.tar.gz"
-    dest: "/tmp/go1.21.0.linux-amd64.tar.gz"
-  become: yes
-
-- name: Remove old Go version (if any)
-  file:
-    path: /usr/lib/go-1.15
-    state: absent
-  become: yes
-
-- name: Extract Go archive
-  unarchive:
-    src: "/tmp/go1.21.0.linux-amd64.tar.gz"
-    dest: /usr/local
-    remote_src: yes
-  become: yes
-
-- name: Add Go to PATH in /etc/environment
-  lineinfile:
-    path: /etc/environment
-    regexp: '^PATH=.*'
-    line: 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin"'
-    state: present
-  become: yes
-
-- name: Reload environment variables
-  shell: "bash -c 'source /etc/environment'"
-  become: yes
-  ignore_errors: yes
-
-- name: Create /opt/havoc directory
-  file:
-    path: /opt/havoc
-    state: directory
-    mode: '0755'
-  become: yes
-
-- name: Clone teamserver repository (assuming you don't have it yet)
-  git:
-    repo: "https://github.com/HavocFramework/Havoc.git"
-    dest: /opt/havoc
-    force: yes
-  become: yes
-
-- name: Download additional Go dependencies
-  command: go mod download golang.org/x/sys
-  args:
-    chdir: /opt/havoc/teamserver
-  become: yes
-  environment:
-    PATH: "/usr/local/go/bin:/usr/bin:/bin"
-
-- name: Download additional Go dependencies
-  command: go mod download github.com/ugorji/go
-  args:
-    chdir: /opt/havoc/teamserver
-  become: yes
-  environment:
-    PATH: "/usr/local/go/bin:/usr/bin:/bin"
-
-- name: Run make for ts-build
-  make:
-    chdir: /opt/havoc
-    target: ts-build
-  become: yes
-
-- name: Run the havoc server
-  command: ./havoc server --profile ./profiles/havoc.yaotl -v --debug
-  args:
-    chdir: /opt/havoc
-  async: 300
-  poll: 0
-  become: yes
+- name: Print zer0cool.cfg content
+  debug:
+    var: cfg_content.stdout
