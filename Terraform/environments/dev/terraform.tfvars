@@ -66,6 +66,7 @@ firewall_rules = {
       }
     ]
     source_ranges = ["35.235.240.0/20"]
+    destination_ranges = []
     target_tags     = ["redirector","c2"]
     priority           = 1000
   }
