@@ -49,33 +49,24 @@ resource "google_compute_firewall" "firewall_rules" {
   priority    = each.value.priority
 }
 
-resource "google_compute_address" "nat_ip" {
-  name    = "nat-ip"
-  project = var.project
-  region  = "us-west1"
-}
-
 
 resource "google_compute_router" "router" {
   project = var.project
   name    = "nat-router"
   network       = google_compute_network.vpc.id
-  region  = "us-west1"
+  region  = google_compute_network.vpc.region
 }
 
 resource "google_compute_router_nat" "nat" {
   name   = "nat-config"
   router = google_compute_router.router.id
-  region = "us-west1"
+  region = google_compute_router.router.region
 
   nat_ip_allocate_option = "AUTO_ONLY" 
-  nat_ips               = ["nat-ip"]
-
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 
   log_config {
     enable = true
     filter = "ERRORS_ONLY"
   }
-  depends_on = [google_compute_router.router]
 }
