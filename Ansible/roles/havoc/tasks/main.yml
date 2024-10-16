@@ -1,12 +1,19 @@
 ---
 - name: Install Sliver via curl
-  shell: "curl https://sliver.sh/install | bash"
+  shell: "wget https://github.com/BishopFox/sliver/releases/download/v1.5.38/sliver-server_linux"
   args:
     executable: /bin/bash
   become: yes
 
+- name: Make sliver-server_linux executable
+  file:
+    path: ./sliver-server_linux  # Update with the actual path
+    mode: '0755'  # Sets the file to be executable
+  become: yes
+
+
 - name: Create Sliver operator configuration
-  shell: "sliver operator --name zer0cool --lhost 127.0.0.1 --save zer0cool.cfg"
+  shell: "./sliver-server_linux operator --name zer0cool --lhost 127.0.0.1 --save zer0cool.cfg"
   become: yes
 
 - name: Log content of zer0cool.cfg
