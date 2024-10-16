@@ -74,10 +74,16 @@
     dest: /opt/havoc
   become: yes
 
-- name: Download Go dependencies
-  command: go mod download
+- name: Download additional Go dependencies
+  command: go mod download golang.org/x/sys
   args:
-    chdir: /opt/havoc
+    chdir: /opt/havoc/teamserver
+  become: yes
+
+- name: Download additional Go dependencies
+  command: go mod download github.com/ugorji/go
+  args:
+    chdir: /opt/havoc/teamserver
   become: yes
 
 - name: Run make for ts-build
