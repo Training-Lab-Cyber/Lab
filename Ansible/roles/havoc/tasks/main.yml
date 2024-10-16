@@ -74,11 +74,11 @@
     dest: /opt/havoc
   become: yes
 
-- name: Fix go.mod version
-  lineinfile:
+- name: Replace Go version in go.mod
+  replace:
     path: /opt/havoc/teamserver/go.mod
-    regexp: '^go [0-9]+\\.[0-9]+'
-    line: 'go 1.21'
+    regexp: '^go [0-9]+\.[0-9]+'
+    replace: 'go 1.21'
   become: yes
 
 - name: Download additional Go dependencies
