@@ -87,9 +87,10 @@
     state: present
   become: yes
 
-- name: Source profile to update PATH for current session
-  shell: . /etc/profile
+- name: Source profile to update PATH using bash
+  shell: "bash -c 'source /etc/profile'"
   become: yes
+  ignore_errors: yes
 
 - name: Create /opt/havoc directory
   file:
@@ -103,13 +104,6 @@
     repo: "https://github.com/HavocFramework/Havoc.git"
     dest: /opt/havoc
     force: yes
-  become: yes
-
-- name: Replace Go version in go.mod
-  replace:
-    path: /opt/havoc/teamserver/go.mod
-    regexp: '^go [0-9]+\.[0-9]+\.[0-9]'
-    replace: 'go 1.23'
   become: yes
 
 - name: Download additional Go dependencies
