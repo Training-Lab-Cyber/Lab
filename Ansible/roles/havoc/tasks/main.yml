@@ -6,10 +6,8 @@
   become: yes
 
 - name: Create Sliver operator configuration
-  shell: "sliver operator --name zer0cool --lhost {{ lhost_ip }} --save zer0cool.cfg"
+  shell: "sliver operator --name zer0cool --lhost {{  ansible_default_ipv4.address }} --save zer0cool.cfg"
   become: yes
-  vars:
-    lhost_ip: "{{ ansible_default_ipv4.address }}"
 
 - name: Log content of zer0cool.cfg
   command: cat zer0cool.cfg
