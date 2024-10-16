@@ -88,7 +88,7 @@
   become: yes
 
 - name: Source profile to update PATH for current session
-  shell: source /etc/profile
+  shell: . /etc/profile
   become: yes
 
 - name: Create /opt/havoc directory
