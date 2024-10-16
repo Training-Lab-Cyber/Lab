@@ -43,7 +43,7 @@ vm_configs={
 }
 
 firewall_rules = {
-  http = {
+  ssh = {
     name            = "dev-allow-http-from-internet"
     direction       = "INGRESS"
     allow_protocols = [
@@ -73,7 +73,7 @@ firewall_rules = {
     priority           = 1000
   }
 
-  iap = {
+  egress = {
     name            = "dev-allow-ssh-from-iap"
     direction       = "INGRESS"
     allow_protocols = [
