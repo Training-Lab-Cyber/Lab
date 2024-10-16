@@ -6,7 +6,7 @@
   become: yes
 
 - name: Create Sliver operator configuration
-  shell: "sliver operator --name zer0cool --lhost {{  lhost_ip }} --save zer0cool.cfg"
+  shell: "sliver operator --name zer0cool --lhost {{ lhost_ip }} --save zer0cool.cfg"
   become: yes
 
 - name: Log content of zer0cool.cfg
