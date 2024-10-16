@@ -54,7 +54,7 @@ resource "google_compute_router" "router" {
   project = var.project
   name    = "nat-router"
   network       = google_compute_network.vpc.id
-  region  = google_compute_network.vpc.region
+  region  = "us-west1"
 }
 
 resource "google_compute_router_nat" "nat" {
