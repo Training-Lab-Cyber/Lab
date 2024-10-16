@@ -79,16 +79,16 @@
     remote_src: yes
   become: yes
 
-- name: Add Go to PATH
+- name: Add Go to PATH in /etc/environment
   lineinfile:
-    path: /etc/profile
-    regexp: '^export PATH=.*'
-    line: 'export PATH=$PATH:/usr/local/go/bin'
+    path: /etc/environment
+    regexp: '^PATH=.*'
+    line: 'PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin"'
     state: present
   become: yes
 
-- name: Source profile to update PATH using bash
-  shell: "bash -c 'source /etc/profile'"
+- name: Reload environment variables
+  shell: "bash -c 'source /etc/environment'"
   become: yes
   ignore_errors: yes
 
