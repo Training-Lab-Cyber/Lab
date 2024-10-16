@@ -29,8 +29,8 @@ module "vpc" {
   firewall_rules      = var.firewall_rules
 }
 
-module "vms" {
-  source          = "../../modules/vms"
+module "vm" {
+  source          = "../../modules/vm"
   project         = var.project
   public_key_path = var.public_key_path
   vm_configs      = var.vm_configs
