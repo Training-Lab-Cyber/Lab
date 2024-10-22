@@ -148,9 +148,11 @@ steps:
         apt-get install -y python3-google-auth > /dev/null 2>&1
         cd Ansible
         ansible-inventory --graph -i inventory/$BRANCH_NAME/dev_gcp.yaml
-        ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml
 
   # [END Ansible Playbook]2
+
+#        ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml
+
 #  - id: "tf destroy"
 #    name: "hashicorp/terraform:1.0.0"
 #    entrypoint: "sh"
@@ -158,10 +160,10 @@ steps:
 #      - "-c"
 #      - |
 #        if [ -d "Terraform/environments/$BRANCH_NAME/" ]; then
-#          cd Terraform/environments/$BRANCH_NAME      
+#          cd Terraform/environments/$BRANCH_NAME
 #          terraform destroy -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 ##        else
- #         echo "***************************** SKIPPING APPLYING *******************************"
+#         echo "***************************** SKIPPING APPLYING *******************************"
 #          echo "Branch '$BRANCH_NAME' does not represent an official environment."
 #          echo "*******************************************************************************"
 #        fi

@@ -22,11 +22,11 @@ provider "google" {
 }
 
 module "vpc" {
-  source  = "../../modules/vpc"
-  project = var.project
-  env     = local.env
-  subnets = var.subnets
-  firewall_rules      = var.firewall_rules
+  source         = "../../modules/vpc"
+  project        = var.project
+  env            = local.env
+  subnets        = var.subnets
+  firewall_rules = var.firewall_rules
 }
 
 module "vm" {
