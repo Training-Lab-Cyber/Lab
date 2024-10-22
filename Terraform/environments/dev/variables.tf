@@ -22,31 +22,33 @@ variable "subnets" {
     cidr   = string
   }))
 }
+
 variable "vm_configs" {
   type = map(object({
-    name   = string
-    subnet_name   = string
-    zone   = string
-    machine_type   = string
-    image = string
-    tags = list(string)
-  labels = map(string)
-  add_access_config = bool
+    name              = string
+    zone              = string
+    machine_type      = string
+    image             = string
+    subnet_name       = string
+    tags              = list(string)
+    os                = string
+    labels            = map(string)
+    add_access_config = bool
   }))
 }
 
 
 variable "firewall_rules" {
   type = map(object({
-    name            = string
-    direction       = string    # INGRESS or EGRESS
+    name      = string
+    direction = string # INGRESS or EGRESS
     allow_protocols = list(object({
       protocol = string
       ports    = list(string)
     }))
-    source_ranges   = list(string)    # For ingress rules
+    source_ranges      = list(string) # For ingress rules
     destination_ranges = list(string) # For egress rules
-    target_tags     = list(string)    # Optional, to target specific instances
-    priority           = number  # Default priority is 1000
+    target_tags        = list(string) # Optional, to target specific instances
+    priority           = number       # Default priority is 1000
   }))
 }
