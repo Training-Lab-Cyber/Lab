@@ -26,6 +26,7 @@ vm_configs = {
     tags              = ["c2"]
     labels            = { group = "c2" }
     image             = "debian-cloud/debian-11"
+    os                = "linux"
     add_access_config = true
   }
 
@@ -37,6 +38,7 @@ vm_configs = {
     tags              = ["redirector"]
     labels            = { group = "redirector" }
     image             = "debian-cloud/debian-11"
+    os                = "linux"
     add_access_config = true
   }
 
@@ -48,6 +50,7 @@ vm_configs = {
     tags              = ["bastion"]
     labels            = { group = "bastion" }
     image             = "debian-cloud/debian-11"
+    os                = "linux"
     add_access_config = false
   }
   ad = {
@@ -58,6 +61,7 @@ vm_configs = {
     tags              = ["ad"]
     labels            = { group = "ad" }
     image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
     add_access_config = false
   }
 

@@ -20,13 +20,14 @@ variable "subnet_ids" {
 }
 variable "vm_configs" {
   type = map(object({
-    name = string
-    zone   = string
-    machine_type   = string
-    image = string
-    subnet_name = string
-    tags = list(string)
-  labels = map(string)
-  add_access_config = bool
+    name              = string
+    zone              = string
+    machine_type      = string
+    image             = string
+    subnet_name       = string
+    tags              = list(string)
+    os                = string
+    labels            = map(string)
+    add_access_config = bool
   }))
 }
