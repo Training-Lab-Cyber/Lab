@@ -40,7 +40,17 @@ vm_configs = {
     add_access_config = true
   }
 
-  redirector = {
+  bastion = {
+    zone              = "us-west1-a"
+    name              = "dev-vm-redirector"
+    machine_type      = "n1-standard-1"
+    subnet_name       = "test"
+    tags              = ["bastion"]
+    labels            = { group = "bastion" }
+    image             = "debian-cloud/debian-11"
+    add_access_config = false
+  }
+  ad = {
     zone              = "us-west1-a"
     name              = "dev-vm-ad"
     machine_type      = "n1-standard-1"
@@ -48,7 +58,7 @@ vm_configs = {
     tags              = ["ad"]
     labels            = { group = "ad" }
     image             = "windows-server-2022-dc-v20241010"
-    add_access_config = true
+    add_access_config = false
   }
 
 }
@@ -95,7 +105,22 @@ firewall_rules = {
     ]
     source_ranges      = ["35.235.240.0/20"]
     destination_ranges = []
-    target_tags        = ["redirector", "c2"]
+    target_tags        = ["redirector", "c2", "bastion"]
+    priority           = 1000
+  }
+
+  winrm = {
+    name      = "dev-allow-winrm-from-bastion"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["5985", "5986"]
+      }
+    ]
+    source_ranges      = ["10.30.10.0/24"]
+    destination_ranges = []
+    target_tags        = ["ad"]
     priority           = 1000
   }
 }

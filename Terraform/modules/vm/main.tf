@@ -15,13 +15,13 @@
 
 
 resource "google_compute_instance" "vm" {
-  for_each = var.vm_configs
+  for_each     = var.vm_configs
   project      = var.project
   zone         = each.value.zone
   name         = each.value.name
   machine_type = each.value.machine_type
-  tags =  each.value.tags
-  labels = each.value.labels
+  tags         = each.value.tags
+  labels       = each.value.labels
 
   boot_disk {
     initialize_params {
@@ -31,20 +31,19 @@ resource "google_compute_instance" "vm" {
 
   network_interface {
     subnetwork = var.subnet_ids[each.value.subnet_name]
-        dynamic "access_config" {
+    dynamic "access_config" {
       for_each = each.value.add_access_config ? [1] : []
       content {}
     }
   }
 
-  
-  metadata = {
+  metadata = each.value.os == "windows" ? null : {
     ssh-keys = "ansible:${file(var.public_key_path)}"
   }
-  metadata_startup_script = <<-EOT
+
+  metadata_startup_script = each.value.os == "windows" ? null : <<-EOT
     #!/bin/bash
     useradd -m -s /bin/bash ansible
     echo 'ansible ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
   EOT
-
 }
