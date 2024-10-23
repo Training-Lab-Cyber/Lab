@@ -119,10 +119,10 @@ firewall_rules = {
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["5985", "5986"]
+        ports    = ["5985", "5986", "22"]
       }
     ]
-    source_ranges      = ["10.30.10.0/24"]
+    source_ranges      = ["35.235.240.0/20"]
     destination_ranges = []
     target_tags        = ["ad"]
     priority           = 1000
