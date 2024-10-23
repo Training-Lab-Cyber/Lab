@@ -32,17 +32,6 @@ locals {
     Start-Service sshd
     Set-Service -Name sshd -StartupType 'Automatic'
 
-    $sshdConfigPath = "C:\\ProgramData\\ssh\\sshd_config"
-    (Get-Content $sshdConfigPath) -replace '#PasswordAuthentication yes', 'PasswordAuthentication no' | Set-Content $sshdConfigPath
-    Restart-Service sshd
-
-    Remove-LocalGroupMember -Group "Remote Desktop Users" -Member $username
-
-    $userSid = (New-Object System.Security.Principal.NTAccount($username)).Translate([System.Security.Principal.SecurityIdentifier]).Value
-    secedit /export /cfg C:\\Windows\\Temp\\secpol.cfg
-    (Get-Content C:\\Windows\\Temp\\secpol.cfg) -replace 'SeDenyInteractiveLogonRight =', 'SeDenyInteractiveLogonRight = $userSid' | Set-Content C:\\Windows\\Temp\\secpol.cfg
-    secedit /configure /db secedit.sdb /cfg C:\\Windows\\Temp\\secpol.cfg /quiet
-
     New-NetFirewallRule -Name sshd -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
 
   EOT
