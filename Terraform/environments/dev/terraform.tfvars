@@ -44,7 +44,7 @@ vm_configs = {
 
   bastion = {
     zone              = "us-west1-a"
-    name              = "dev-vm-redirector"
+    name              = "dev-vm-bastion"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["bastion"]
