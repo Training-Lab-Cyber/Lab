@@ -68,7 +68,7 @@ vm_configs = {
 }
 
 firewall_rules = {
-  ssh = {
+  http_from_internet = {
     name      = "dev-allow-http-from-internet"
     direction = "INGRESS"
     allow_protocols = [
@@ -83,7 +83,7 @@ firewall_rules = {
     priority           = 1000
   }
 
-  sliver = {
+  sliver_from_myip = {
     name      = "dev-allow-grpc-from-terminal"
     direction = "INGRESS"
     allow_protocols = [
@@ -98,7 +98,7 @@ firewall_rules = {
     priority           = 1000
   }
 
-  egress = {
+  ssh_from_iap = {
     name      = "dev-allow-ssh-from-iap"
     direction = "INGRESS"
     allow_protocols = [
@@ -113,7 +113,7 @@ firewall_rules = {
     priority           = 1000
   }
 
-  winrm = {
+  winrm_from_bastion = {
     name      = "dev-allow-winrm-from-bastion"
     direction = "INGRESS"
     allow_protocols = [
