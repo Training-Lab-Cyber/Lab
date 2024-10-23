@@ -80,5 +80,5 @@ resource "google_compute_instance" "vm" {
     ssh-keys = "ansible:${file(var.public_key_path)}"
   }
 
-  metadata_startup_script = each.value.os == "windows" ? locals.windows_metadata_startup_script : locals.linux_metadata_startup_script
+  metadata_startup_script = each.value.os == "windows" ? local.windows_metadata_startup_script : local.linux_metadata_startup_script
 }
