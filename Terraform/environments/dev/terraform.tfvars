@@ -142,4 +142,20 @@ firewall_rules = {
     target_tags        = ["ad"]
     priority           = 1000
   }
+
+
+  ssh_from_test = {
+    name      = "dev-allow-ssh-from-test"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    ]
+    source_ranges      = ["10.30.10.0/24"]
+    destination_ranges = []
+    target_tags        = ["ad"]
+    priority           = 1000
+  }
 }
