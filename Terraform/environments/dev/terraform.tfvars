@@ -62,7 +62,7 @@ vm_configs = {
     labels            = { group = "ad" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
-    add_access_config = false
+    add_access_config = true
   }
 
 }
@@ -123,6 +123,21 @@ firewall_rules = {
       }
     ]
     source_ranges      = ["35.235.240.0/20"]
+    destination_ranges = []
+    target_tags        = ["ad"]
+    priority           = 1000
+  }
+
+  rdp_from_myip = {
+    name      = "dev-allow-rdp-from-myip"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["3389"]
+      }
+    ]
+    source_ranges      = ["121.103.83.2/32"]
     destination_ranges = []
     target_tags        = ["ad"]
     priority           = 1000
