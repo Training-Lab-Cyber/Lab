@@ -28,6 +28,7 @@ locals {
     icacls "$sshDir\\authorized_keys" /inheritance:r
     icacls "$sshDir\\authorized_keys" /grant:r ansible:F
 
+    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
     Start-Service sshd
     Set-Service -Name sshd -StartupType 'Automatic'
 
@@ -76,9 +77,14 @@ resource "google_compute_instance" "vm" {
     }
   }
 
-  metadata = each.value.os == "windows" ? null : {
+  metadata = each.value.os == "windows" ? {
+    "windows-startup-script-ps1" = local.windows_metadata_startup_script
+    } : {
     ssh-keys = "ansible:${file(var.public_key_path)}"
   }
 
-  metadata_startup_script = each.value.os == "windows" ? local.windows_metadata_startup_script : local.linux_metadata_startup_script
+
+  # WindowsとLinuxで適切なスタートアップスクリプトを適用
+  metadata_startup_script = each.value.os == "windows" ? null : local.linux_metadata_startup_script
+
 }
