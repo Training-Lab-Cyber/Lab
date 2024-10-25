@@ -23,7 +23,7 @@ vm_configs = {
     name              = "dev-vm-c2"
     machine_type      = "n1-standard-1"
     subnet_name       = "c2"
-    tags              = ["c2","linux"]
+    tags              = ["c2", "linux"]
     labels            = { group = "c2" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
@@ -35,7 +35,7 @@ vm_configs = {
     name              = "dev-vm-redirector"
     machine_type      = "n1-standard-1"
     subnet_name       = "redirector"
-    tags              = ["redirector","linux"]
+    tags              = ["redirector", "linux"]
     labels            = { group = "redirector" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
@@ -47,7 +47,7 @@ vm_configs = {
     name              = "dev-vm-proxy"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["proxy","linux"]
+    tags              = ["proxy", "linux"]
     labels            = { group = "proxy" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
@@ -59,30 +59,30 @@ vm_configs = {
     name              = "dev-vm-bastion"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["bastion","windows"]
+    tags              = ["bastion", "windows"]
     labels            = { group = "windows-bastion" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = true
   }
-  ad_prod = {
+  ad-prod = {
     zone              = "us-west1-a"
     name              = "dev-vm-ad-prod"
     machine_type      = "n1-standard-2"
     subnet_name       = "test"
-    tags              = ["ad_prod","windows"]
-    labels            = { group = "windows-ad_prod" }
+    tags              = ["ad-prod", "windows"]
+    labels            = { group = "windows-ad-prod" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
   }
-  ad_dev = {
+  ad-dev = {
     zone              = "us-west1-a"
     name              = "dev-vm-ad-dev"
     machine_type      = "n1-standard-2"
     subnet_name       = "test"
-    tags              = ["ad_dev","windows"]
-    labels            = { group = "windows-ad_dev" }
+    tags              = ["ad-dev", "windows"]
+    labels            = { group = "windows-ad-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -92,7 +92,7 @@ vm_configs = {
     name              = "dev-vm-terminal1"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal","windows"]
+    tags              = ["terminal", "windows"]
     labels            = { group = "windows-terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -104,19 +104,19 @@ vm_configs = {
     name              = "dev-vm-terminal2"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal","windows"]
+    tags              = ["terminal", "windows"]
     labels            = { group = "windows-terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
   }
-  
+
   terminal3 = {
     zone              = "us-west1-a"
     name              = "dev-vm-terminal3"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal","windows"]
+    tags              = ["terminal", "windows"]
     labels            = { group = "windows-terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -166,7 +166,7 @@ firewall_rules = {
     ]
     source_ranges      = ["10.30.0.0/24"]
     destination_ranges = []
-    target_tags        = ["ad","terminal","bastion"]
+    target_tags        = ["ad", "terminal", "bastion"]
     priority           = 1000
   }
 
@@ -179,7 +179,7 @@ firewall_rules = {
         ports    = ["3389"]
       }
     ]
-    source_ranges      = ["121.103.83.2/32","220.146.34.124/32"]
+    source_ranges      = ["121.103.83.2/32", "220.146.34.124/32"]
     destination_ranges = []
     target_tags        = ["bastion"]
     priority           = 1000
@@ -221,7 +221,7 @@ firewall_rules = {
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["5985","5986"]
+        ports    = ["5985", "5986"]
       }
     ]
     source_ranges      = ["10.254.0.0/24"]
@@ -229,5 +229,5 @@ firewall_rules = {
     target_tags        = ["windows"]
     priority           = 1000
   }
-  
+
 }
