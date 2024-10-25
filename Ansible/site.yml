@@ -12,6 +12,8 @@
   gather_facts: false
   roles:
     - ad
+  vars:
+    domain: dev.com
 
 - hosts: gcp_group_proxy
   gather_facts: false

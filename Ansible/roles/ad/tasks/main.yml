@@ -8,10 +8,10 @@
   ansible.builtin.win_shell: |
     Import-Module ADDSDeployment
     Install-ADDSForest `
-      -DomainName "example.local" `
-      -DomainNetbiosName "EXAMPLE" `
+      -DomainName "{{ domain }}" `
+      -DomainNetbiosName "{{ domain.split('.')[0] | upper }}" `
       -InstallDNS `
-      -NoRebootOnCompletion $true `
+      -NoRebootOnCompletion `
       -SafeModeAdministratorPassword (ConvertTo-SecureString "your_safemode_password" -AsPlainText -Force) `
       -Force
 
