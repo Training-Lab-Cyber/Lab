@@ -7,3 +7,10 @@ keyed_groups:
     key: labels
 hostnames:
   - private_ip
+compose:
+  ansible_connection: >
+    {{ 'winrm' if 'windows' in labels else 'ssh' }}
+  ansible_user: "ansible"
+  ansible_password: "StrongPassword123!"
+  ansible_winrm_transport: ntlm
+  ansible_winrm_server_cert_validation: ignore 

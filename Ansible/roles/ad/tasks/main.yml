@@ -1,0 +1,20 @@
+---
+- name: Install the Active Directory Domain Services feature
+  ansible.builtin.win_feature:
+    name: AD-Domain-Services
+    state: present
+
+- name: Configure Active Directory
+  ansible.builtin.win_shell: |
+    Import-Module ADDSDeployment
+    Install-ADDSForest `
+      -DomainName "example.local" `
+      -DomainNetbiosName "EXAMPLE" `
+      -InstallDNS `
+      -NoRebootOnCompletion $true `
+      -SafeModeAdministratorPassword (ConvertTo-SecureString "your_safemode_password" -AsPlainText -Force) `
+      -Force
+
+- name: Reboot the server to complete AD installation
+  ansible.builtin.win_reboot:
+    reboot_timeout: 600

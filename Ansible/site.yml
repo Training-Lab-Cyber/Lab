@@ -7,8 +7,13 @@
   gather_facts: false
   roles:
     - sliver
+    
+- hosts: gcp_group_ad
+  gather_facts: false
+  roles:
+    - ad
+
 - hosts: gcp_group_proxy
   gather_facts: false
   roles:
     - squid
-

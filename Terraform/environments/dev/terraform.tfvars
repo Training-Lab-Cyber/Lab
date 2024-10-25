@@ -60,18 +60,29 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["bastion","windows"]
-    labels            = { group = "bastion" }
+    labels            = { group = "windows-bastion" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = true
   }
-  ad = {
+  ad_prod = {
     zone              = "us-west1-a"
-    name              = "dev-vm-ad"
-    machine_type      = "n1-standard-1"
+    name              = "dev-vm-ad-prod"
+    machine_type      = "n1-standard-2"
     subnet_name       = "test"
-    tags              = ["ad","windows"]
-    labels            = { group = "ad" }
+    tags              = ["ad_prod","windows"]
+    labels            = { group = "windows-ad_prod" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
+  }
+  ad_dev = {
+    zone              = "us-west1-a"
+    name              = "dev-vm-ad-dev"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "test"
+    tags              = ["ad_dev","windows"]
+    labels            = { group = "windows-ad_dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -82,7 +93,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal","windows"]
-    labels            = { group = "terminal" }
+    labels            = { group = "windows-terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -94,7 +105,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal","windows"]
-    labels            = { group = "terminal" }
+    labels            = { group = "windows-terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -106,7 +117,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal","windows"]
-    labels            = { group = "terminal" }
+    labels            = { group = "windows-terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
