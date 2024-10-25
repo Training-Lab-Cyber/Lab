@@ -42,6 +42,18 @@ vm_configs = {
     add_access_config = true
   }
 
+  proxy = {
+    zone              = "us-west1-a"
+    name              = "dev-vm-proxy"
+    machine_type      = "n1-standard-1"
+    subnet_name       = "test"
+    tags              = ["proxy"]
+    labels            = { group = "proxy" }
+    image             = "debian-cloud/debian-11"
+    os                = "linux"
+    add_access_config = true
+  }
+
   bastion = {
     zone              = "us-west1-a"
     name              = "dev-vm-bastion"
@@ -49,9 +61,9 @@ vm_configs = {
     subnet_name       = "test"
     tags              = ["bastion"]
     labels            = { group = "bastion" }
-    image             = "debian-cloud/debian-11"
-    os                = "linux"
-    add_access_config = false
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = true
   }
   ad = {
     zone              = "us-west1-a"
@@ -62,63 +74,43 @@ vm_configs = {
     labels            = { group = "ad" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
-    add_access_config = true
+    add_access_config = false
+  }
+  terminal1 = {
+    zone              = "us-west1-a"
+    name              = "dev-vm-terminal1"
+    machine_type      = "n1-standard-1"
+    subnet_name       = "test"
+    tags              = ["terminal"]
+    labels            = { group = "terminal" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
   }
 
+  terminal2 = {
+    zone              = "us-west1-a"
+    name              = "dev-vm-terminal2"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "test"
+    tags              = ["terminal"]
+    labels            = { group = "terminal" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
+  }
   
-  ad = {
-  zone            = "us-west1-a"
-  name            = "dev-vm-ad"
-  machine_type    = "n1-standard-1"
-  subnet_name     = "test"
-  tags            = ["ad"]
-  labels          = { group = "ad"}
-  image           = "windows-cloud/windows-server-2022-dc-v20230912"
-  add_access_config = false
-}
-
-terminal1 = { 
-  zone            = "us-west1-a"
-  name            = "dev-vm-terminal-1"
-  machine_type    = "n1-standard-1"
-  subnet_name     = "test"
-  tags            = ["terminal"]
-  labels          = { group = "terminal"}
-  image           = "windows-cloud/windows-server-2022-dc-v20230912"
-  add_access_config = false
-}
-terminal2 = { 
-  zone            = "us-west1-a"
-  name            = "dev-vm-terminal-2"
-  machine_type    = "n1-standard-1"
-  subnet_name     = "test"
-  tags            = ["terminal"]
-  labels          = { group = "terminal"}
-  image           = "windows-cloud/windows-server-2022-dc-v20230912"
-  add_access_config = false
-}
-file = { 
-  zone            = "us-west1-a"
-  name            = "dev-vm-file"
-  machine_type    = "n1-standard-1"
-  subnet_name     = "test"
-  tags            = ["file"]
-  labels          = { group = "file"}
-  image           = "windows-cloud/windows-server-2022-dc-v20230912"
-  add_access_config = false
-}
-
-bastion = { 
-  zone            = "us-west1-a"
-  name            = "dev-vm-bastion"
-  machine_type    = "n1-standard-1"
-  subnet_name     = "test"
-  tags            = ["bastion"]
-  labels          = { group = "bastion"}
-  image           = "windows-cloud/windows-server-2022-dc-v20230912"
-  add_access_config = true
-}
-
+  terminal3 = {
+    zone              = "us-west1-a"
+    name              = "dev-vm-terminal3"
+    machine_type      = "n1-standard-3"
+    subnet_name       = "test"
+    tags              = ["terminal"]
+    labels            = { group = "terminal" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
+  }
 }
 
 firewall_rules = {
@@ -163,22 +155,22 @@ firewall_rules = {
     ]
     source_ranges      = ["35.235.240.0/20"]
     destination_ranges = []
-    target_tags        = ["redirector", "c2", "bastion"]
+    target_tags        = ["redirector", "c2", "proxy"]
     priority           = 1000
   }
 
-  winrm_from_bastion = {
-    name      = "dev-allow-winrm-from-bastion"
+  rdp_inside_bastion = {
+    name      = "dev-allow-rdp-inside-test"
     direction = "INGRESS"
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["5985", "5986", "22", "3389"]
+        ports    = ["3389"]
       }
     ]
-    source_ranges      = ["35.235.240.0/20"]
+    source_ranges      = ["10.30.0.0/24"]
     destination_ranges = []
-    target_tags        = ["ad"]
+    target_tags        = ["ad","terminal","bastion"]
     priority           = 1000
   }
 
@@ -191,56 +183,25 @@ firewall_rules = {
         ports    = ["3389"]
       }
     ]
-    source_ranges      = ["121.103.83.2/32"]
+    source_ranges      = ["121.103.83.2/32","220.146.34.124/32"]
     destination_ranges = []
-    target_tags        = ["ad"]
+    target_tags        = ["bastion"]
     priority           = 1000
   }
 
-
-  ssh_from_test = {
-    name      = "dev-allow-ssh-from-test"
+  proxy_inside_test = {
+    name      = "dev-allow-proxy-inside-test"
     direction = "INGRESS"
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["22"]
+        ports    = ["3128"]
       }
     ]
-    source_ranges      = ["10.30.10.0/24"]
+    source_ranges      = ["10.30.0.0/24"]
     destination_ranges = []
-    target_tags        = ["ad"]
+    target_tags        = ["proxy"]
     priority           = 1000
   }
-
-  egress = {
-    name            = "dev-allow-winrm-from-iap"
-    direction       = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["5985","5986"]
-      }
-    ]
-    source_ranges = ["35.235.240.0/20"]
-    destination_ranges = []
-    target_tags     = ["ad","terminal","file","bastion"]
-    priority           = 1000
-  }
-
   
-  bastion = {
-    name            = "dev-allow-rdp-from-myip"
-    direction       = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["3389"]
-      }
-    ]
-    source_ranges = ["220.146.34.124/20"]
-    destination_ranges = []
-    target_tags     = ["bastion"]
-    priority           = 1000
-  }
 }
