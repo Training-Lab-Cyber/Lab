@@ -1,8 +1,9 @@
 ---
 - name: Install Squid
-  ansible.builtin.yum:
+  ansible.builtin.apt:
     name: squid
     state: present
+    update_cache: yes 
 
 - name: Deploy custom squid.conf
   ansible.builtin.template:
