@@ -5,5 +5,3 @@ auth_kind: application
 keyed_groups:
   - prefix: gcp
     key: labels
-hostnames:
-  - name
