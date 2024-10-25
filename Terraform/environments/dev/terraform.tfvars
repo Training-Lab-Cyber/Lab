@@ -91,7 +91,7 @@ vm_configs = {
   terminal2 = {
     zone              = "us-west1-a"
     name              = "dev-vm-terminal2"
-    machine_type      = "n1-standard-2"
+    machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal"]
     labels            = { group = "terminal" }
@@ -103,7 +103,7 @@ vm_configs = {
   terminal3 = {
     zone              = "us-west1-a"
     name              = "dev-vm-terminal3"
-    machine_type      = "n1-standard-3"
+    machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal"]
     labels            = { group = "terminal" }
