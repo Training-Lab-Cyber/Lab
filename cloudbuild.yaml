@@ -17,7 +17,9 @@ substitutions:
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-
+  pool:
+    name: projects/$PROJECT_ID/locations/us-west1/workerPools/dev-private-pool	
+    
 steps:
   - id: "branch name"
     name: "alpine"

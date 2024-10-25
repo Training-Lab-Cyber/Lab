@@ -203,5 +203,20 @@ firewall_rules = {
     target_tags        = ["proxy"]
     priority           = 1000
   }
+
+  ssh_from_privatepool = {
+    name      = "dev-allow-ssh-from-privatepool"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    ]
+    source_ranges      = ["10.254.0.0/24"]
+    destination_ranges = []
+    target_tags        = ["redirector", "c2", "proxy"]
+    priority           = 1000
+  }
   
 }
