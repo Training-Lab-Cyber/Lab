@@ -7,5 +7,4 @@ groups:
   http-server:
     filters:
       tags: http-server
-hostnames:
-  - name
+use_internal_ip: true
