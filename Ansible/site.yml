@@ -8,7 +8,7 @@
   roles:
     - sliver
 
-- hosts: gcp_group_ad_dev
+- hosts: gcp_group_windows_ad_dev
   gather_facts: false
   roles:
     - ad
