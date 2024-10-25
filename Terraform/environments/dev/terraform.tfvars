@@ -23,7 +23,7 @@ vm_configs = {
     name              = "dev-vm-c2"
     machine_type      = "n1-standard-1"
     subnet_name       = "c2"
-    tags              = ["c2"]
+    tags              = ["c2","linux"]
     labels            = { group = "c2" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
@@ -35,7 +35,7 @@ vm_configs = {
     name              = "dev-vm-redirector"
     machine_type      = "n1-standard-1"
     subnet_name       = "redirector"
-    tags              = ["redirector"]
+    tags              = ["redirector","linux"]
     labels            = { group = "redirector" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
@@ -47,7 +47,7 @@ vm_configs = {
     name              = "dev-vm-proxy"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["proxy"]
+    tags              = ["proxy","linux"]
     labels            = { group = "proxy" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
@@ -59,7 +59,7 @@ vm_configs = {
     name              = "dev-vm-bastion"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["bastion"]
+    tags              = ["bastion","windows"]
     labels            = { group = "bastion" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -70,7 +70,7 @@ vm_configs = {
     name              = "dev-vm-ad"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["ad"]
+    tags              = ["ad","windows"]
     labels            = { group = "ad" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -81,7 +81,7 @@ vm_configs = {
     name              = "dev-vm-terminal1"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal"]
+    tags              = ["terminal","windows"]
     labels            = { group = "terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -93,7 +93,7 @@ vm_configs = {
     name              = "dev-vm-terminal2"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal"]
+    tags              = ["terminal","windows"]
     labels            = { group = "terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -105,7 +105,7 @@ vm_configs = {
     name              = "dev-vm-terminal3"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal"]
+    tags              = ["terminal","windows"]
     labels            = { group = "terminal" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -141,21 +141,6 @@ firewall_rules = {
     source_ranges      = ["220.146.34.124/32"]
     destination_ranges = []
     target_tags        = ["c2"]
-    priority           = 1000
-  }
-
-  ssh_from_iap = {
-    name      = "dev-allow-ssh-from-iap"
-    direction = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["22"]
-      }
-    ]
-    source_ranges      = ["35.235.240.0/20"]
-    destination_ranges = []
-    target_tags        = ["redirector", "c2", "proxy"]
     priority           = 1000
   }
 
@@ -215,7 +200,22 @@ firewall_rules = {
     ]
     source_ranges      = ["10.254.0.0/24"]
     destination_ranges = []
-    target_tags        = ["redirector", "c2", "proxy"]
+    target_tags        = ["linux"]
+    priority           = 1000
+  }
+
+  winrm_from_privatepool = {
+    name      = "dev-allow-winrm-from-privatepool"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["5985","5986"]
+      }
+    ]
+    source_ranges      = ["10.254.0.0/24"]
+    destination_ranges = []
+    target_tags        = ["windows"]
     priority           = 1000
   }
   
