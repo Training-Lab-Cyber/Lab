@@ -15,6 +15,13 @@
   vars:
     domain: dev.com
 
+- hosts: gcp_group_windows_ad_prod
+  gather_facts: false
+  roles:
+    - ad
+  vars:
+    domain: prod.com
+
 - hosts: gcp_group_proxy
   gather_facts: false
   roles:

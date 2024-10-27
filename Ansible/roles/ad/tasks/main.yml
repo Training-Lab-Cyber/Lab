@@ -16,7 +16,7 @@
       -DomainNetbiosName "{{ domain.split('.')[0] | upper }}" `
       -InstallDNS `
       -NoRebootOnCompletion `
-      -SafeModeAdministratorPassword (ConvertTo-SecureString "your_safemode_password" -AsPlainText -Force) `
+      -SafeModeAdministratorPassword (ConvertTo-SecureString "StrongPassword123!" -AsPlainText -Force) `
       -Force
 
 - name: Reboot the server to complete AD installation
