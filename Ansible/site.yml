@@ -16,6 +16,14 @@
     domain: dev.com
     netbios_name: DEV
 
+- hosts: gcp_group_windows_terminal_dev
+  gather_facts: false
+  roles:
+    - terminal
+  vars:
+    domain: dev.com
+    hostname: "{{ hostvars[inventory_hostname]['gce_instance']['name'] }}"
+
 - hosts: gcp_group_windows_ad_prod
   gather_facts: false
   roles:

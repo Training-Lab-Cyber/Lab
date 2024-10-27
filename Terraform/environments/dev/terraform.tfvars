@@ -93,7 +93,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal", "windows"]
-    labels            = { group = "windows-terminal" }
+    labels            = { group = "windows-terminal-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -105,7 +105,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal", "windows"]
-    labels            = { group = "windows-terminal" }
+    labels            = { group = "windows-terminal-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -117,7 +117,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal", "windows"]
-    labels            = { group = "windows-terminal" }
+    labels            = { group = "windows-terminal-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
