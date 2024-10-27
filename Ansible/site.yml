@@ -22,7 +22,7 @@
     - terminal
   vars:
     domain: dev.com
-    dns_server_ip: "{{ hostvars[groups['gcp_group_windows_ad_dev'][0]]['private_ip'] }}"
+    dns_server_ip: "{{ hostvars[groups['gcp_group_ad_dev'][0]]['private_ip'] }}"
 
 - hosts: gcp_group_ad_prod
   gather_facts: false
