@@ -17,12 +17,12 @@
     netbios_name: DEV
 
 - hosts: gcp_group_terminal_dev
-  gather_facts: false
+  gather_facts: true
   roles:
     - terminal
   vars:
     domain: dev.com
-    dns_server_ip: "{{ hostvars[groups['gcp_group_ad_dev'][0]]['ansible_host'] }}"
+    dns_server_ip: "{{ hostvars[groups['gcp_group_ad_dev'][0]]['gce_instance']['private_ip'] }}"
 
 - hosts: gcp_group_ad_prod
   gather_facts: false
