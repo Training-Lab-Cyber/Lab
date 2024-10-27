@@ -1,4 +1,10 @@
 ---
+- name: Ensure Administrator password is not blank
+  ansible.windows.win_user:
+    name: Administrator
+    password: "{{domain_password}}"
+    state: present
+
 - name: Create new domain in a new forest on the target host and reboot
   microsoft.ad.domain:
     dns_domain_name: "{{ domain }}"
@@ -24,7 +30,7 @@
 - name: Ensure a server is a domain controller
   microsoft.ad.domain_controller:
     dns_domain_name: "{{ domain }}"
-    domain_admin_user: "Admin@{{ domain }}"
+    domain_admin_user: "Administrator@{{ domain }}"
     domain_admin_password: "{{domain_password}}"
     safe_mode_password: "{{domain_password}}"
     state: domain_controller
