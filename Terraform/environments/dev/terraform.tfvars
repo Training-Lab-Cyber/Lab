@@ -60,7 +60,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["bastion", "windows"]
-    labels            = { group = "windows-bastion" }
+    labels            = { group = "bastion" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = true
@@ -71,7 +71,7 @@ vm_configs = {
     machine_type      = "n1-standard-2"
     subnet_name       = "test"
     tags              = ["ad", "windows"]
-    labels            = { group = "windows-ad-prod" }
+    labels            = { group = "ad-prod" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -82,7 +82,7 @@ vm_configs = {
     machine_type      = "n1-standard-2"
     subnet_name       = "test"
     tags              = ["ad", "windows"]
-    labels            = { group = "windows-ad-dev" }
+    labels            = { group = "ad-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -93,7 +93,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal", "windows"]
-    labels            = { group = "windows-terminal-dev" }
+    labels            = { group = "terminal-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -105,7 +105,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal", "windows"]
-    labels            = { group = "windows-terminal-dev" }
+    labels            = { group = "terminal-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -117,7 +117,7 @@ vm_configs = {
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
     tags              = ["terminal", "windows"]
-    labels            = { group = "windows-terminal-dev" }
+    labels            = { group = "terminal-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false

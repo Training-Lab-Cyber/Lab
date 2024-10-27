@@ -8,7 +8,7 @@
   roles:
     - sliver
 
-- hosts: gcp_group_windows_ad_dev
+- hosts: gcp_group_ad_dev
   gather_facts: false
   roles:
     - ad
@@ -16,7 +16,7 @@
     domain: dev.com
     netbios_name: DEV
 
-- hosts: gcp_group_windows_terminal_dev
+- hosts: gcp_group_terminal_dev
   gather_facts: false
   roles:
     - terminal
@@ -24,7 +24,7 @@
     domain: dev.com
     dns_server_ip: "{{ hostvars[groups['gcp_group_windows_ad_dev'][0]]['private_ip'] }}"
 
-- hosts: gcp_group_windows_ad_prod
+- hosts: gcp_group_ad_prod
   gather_facts: false
   roles:
     - ad
