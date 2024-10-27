@@ -22,7 +22,7 @@
     - terminal
   vars:
     domain: dev.com
-    hostname: "{{ hostvars[inventory_hostname]['gce_instance']['name'] }}"
+    hostname: "{{ hostvars[inventory_hostname]['name'] }}"
 
 - hosts: gcp_group_windows_ad_prod
   gather_facts: false
