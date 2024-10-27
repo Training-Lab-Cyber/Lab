@@ -70,7 +70,7 @@ vm_configs = {
     name              = "dev-vm-ad-prod"
     machine_type      = "n1-standard-2"
     subnet_name       = "test"
-    tags              = ["ad-prod", "windows"]
+    tags              = ["ad", "windows"]
     labels            = { group = "windows-ad-prod" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
@@ -81,7 +81,7 @@ vm_configs = {
     name              = "dev-vm-ad-dev"
     machine_type      = "n1-standard-2"
     subnet_name       = "test"
-    tags              = ["ad-dev", "windows"]
+    tags              = ["ad", "windows"]
     labels            = { group = "windows-ad-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
