@@ -14,6 +14,7 @@
     - ad
   vars:
     domain: dev.com
+    netbios_name: DEV
 
 - hosts: gcp_group_windows_ad_prod
   gather_facts: false
@@ -21,6 +22,7 @@
     - ad
   vars:
     domain: prod.com
+    netbios_name: PROD
 
 - hosts: gcp_group_proxy
   gather_facts: false
