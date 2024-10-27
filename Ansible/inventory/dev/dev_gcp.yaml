@@ -7,4 +7,3 @@ keyed_groups:
     key: labels
 hostnames:
   - private_ip
-  - name
