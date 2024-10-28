@@ -87,7 +87,9 @@
   become: yes
 
 - name: Run Team Server
-  command: ./havoc server --profile ./profiles/havoc.yaotl -v --debug > /tmp/log.txt &
+  command: ./havoc server --profile ./profiles/havoc.yaotl -v --debug
+  async: 300
+  poll: 0
   args:
     chdir: /opt/Havoc
   become: yes
