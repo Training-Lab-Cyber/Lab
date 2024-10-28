@@ -6,7 +6,6 @@
 
 - name: join host to domain with automatic reboot
   microsoft.ad.membership:
-    domain_server: "{{domain_controller}}"
     dns_domain_name: "{{domain}}"
     domain_admin_user: "Administrator@{{domain}}"
     domain_admin_password: "{{domain_password}}"
