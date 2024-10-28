@@ -36,3 +36,5 @@
   gather_facts: false
   roles:
     - squid
+  vars:
+    allowed_subnet: "10.30.10.0/24"
