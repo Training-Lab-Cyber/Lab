@@ -12,7 +12,7 @@
 
 - name: Configure Apache to redirect to the specified IP on port 8080
   template:
-    src: apache_redirect.conf.j2
+    src: apache.conf.j2
     dest: /etc/apache2/sites-available/000-default.conf
 
 - name: Enable the new site configuration
