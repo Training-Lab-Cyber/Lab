@@ -19,21 +19,6 @@ locals {
     $user = New-LocalUser $username -Password $password -FullName "Ansible User" -Description "Ansible management user"
     Add-LocalGroupMember -Group "Administrators" -Member $username
 
-    $sshDir = "C:\\Users\\ansible\\.ssh"
-    New-Item -ItemType Directory -Force -Path $sshDir
-    $publicKey = "${file(var.public_key_path)}"
-    Set-Content -Path "$sshDir\\authorized_keys" -Value $publicKey
-    icacls $sshDir /inheritance:r
-    icacls $sshDir /grant:r ansible:F
-    icacls "$sshDir\\authorized_keys" /inheritance:r
-    icacls "$sshDir\\authorized_keys" /grant:r ansible:F
-
-    Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
-    Start-Service sshd
-    Set-Service -Name sshd -StartupType 'Automatic'
-
-    New-NetFirewallRule -Name sshd -DisplayName "OpenSSH Server (sshd)" -Enabled True -Direction Inbound -Protocol TCP -Action Allow -LocalPort 22
-
   EOT
 
   linux_metadata_startup_script = <<-EOT

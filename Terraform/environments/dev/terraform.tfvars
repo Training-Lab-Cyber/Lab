@@ -87,37 +87,37 @@ vm_configs = {
     os                = "windows"
     add_access_config = false
   }
-  terminal1 = {
+  pc1 = {
     zone              = "us-west1-a"
-    name              = "dev-vm-terminal1"
+    name              = "dev-vm-pc1"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal", "windows"]
-    labels            = { group = "terminal-dev" }
+    tags              = ["pc", "windows"]
+    labels            = { group = "pc-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
   }
 
-  terminal2 = {
+  pc2 = {
     zone              = "us-west1-a"
-    name              = "dev-vm-terminal2"
+    name              = "dev-vm-pc2"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal", "windows"]
-    labels            = { group = "terminal-dev" }
+    tags              = ["pc", "windows"]
+    labels            = { group = "pc-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
   }
 
-  terminal3 = {
+  pc3 = {
     zone              = "us-west1-a"
-    name              = "dev-vm-terminal3"
+    name              = "dev-vm-pc3"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["terminal", "windows"]
-    labels            = { group = "terminal-dev" }
+    tags              = ["pc", "windows"]
+    labels            = { group = "pc-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -141,7 +141,7 @@ firewall_rules = {
   }
 
   sliver_from_myip = {
-    name      = "dev-allow-grpc-from-terminal"
+    name      = "dev-allow-grpc-from-pc"
     direction = "INGRESS"
     allow_protocols = [
       {
@@ -166,7 +166,7 @@ firewall_rules = {
     ]
     source_ranges      = ["10.30.10.0/24"]
     destination_ranges = []
-    target_tags        = ["ad", "terminal", "bastion"]
+    target_tags        = ["ad", "pc", "bastion"]
     priority           = 1000
   }
 
