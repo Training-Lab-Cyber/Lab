@@ -37,13 +37,7 @@
       - nginx
       - ufw
       - snapd
-    state: present   
-  become: yes
-
-- name: Remove any existing Go installation
-  ansible.builtin.file:
-    path: /usr/local/go
-    state: absent
+    state: present
   become: yes
 
 - name: Download Go 1.21.1
@@ -58,11 +52,12 @@
     remote_src: yes
   become: yes
 
-- name: Add Go binary to PATH
-  ansible.builtin.lineinfile:
-    path: ~/.profile
-    line: 'export PATH=$PATH:/usr/local/go/bin'
-    create: yes
+- name: Change symbolic link for /usr/bin/go
+  ansible.builtin.file:
+    path: /usr/bin/go
+    src: /usr/local/go/bin/go
+    state: link
+  become: yes
 
 - name: Source the profile
   ansible.builtin.shell: source ~/.profile
@@ -72,7 +67,7 @@
 - name: Clone Havoc Framework repository
   git:
     repo: https://github.com/HavocFramework/Havoc.git
-    dest: /opt/Havoc 
+    dest: /opt/Havoc
     force: yes
   become: yes
 
