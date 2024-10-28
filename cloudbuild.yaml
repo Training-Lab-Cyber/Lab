@@ -152,7 +152,7 @@ steps:
         ansible-galaxy collection install -f microsoft.ad --upgrade
         cd Ansible
         ansible-inventory --graph -i inventory/$BRANCH_NAME/dev_gcp.yaml
-        ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml -vvvvv
+        ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml
 
 #  - id: "tf destroy"
 #    name: "hashicorp/terraform:1.0.0"
