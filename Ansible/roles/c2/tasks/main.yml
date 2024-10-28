@@ -10,6 +10,7 @@
     path: files/Dockerfile
     name: havoc_teamserver
     tag: latest
+  become: yes
 
 - name: Run Docker container
   docker_container:
@@ -20,3 +21,4 @@
     published_ports:
       - "8080:8080"
       - "40056:40056"
+  become: yes
