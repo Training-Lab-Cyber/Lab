@@ -21,9 +21,9 @@ resource "google_compute_network" "vpc" {
 }
 
 resource "google_compute_subnetwork" "subnet" {
-  project      = var.project
+  project       = var.project
   for_each      = var.subnets
-  name          = "${var.env}-subnet-${each.key}"            
+  name          = "${var.env}-subnet-${each.key}"
   region        = each.value.region
   ip_cidr_range = each.value.cidr
   network       = google_compute_network.vpc.id
@@ -32,9 +32,9 @@ resource "google_compute_subnetwork" "subnet" {
 resource "google_compute_firewall" "firewall_rules" {
   for_each = var.firewall_rules
 
-  project = var.project
-  name    = each.value.name
-  network = google_compute_network.vpc.id
+  project   = var.project
+  name      = each.value.name
+  network   = google_compute_network.vpc.id
   direction = each.value.direction
 
   allow {
@@ -53,7 +53,7 @@ resource "google_compute_firewall" "firewall_rules" {
 resource "google_compute_router" "router" {
   project = var.project
   name    = "nat-router"
-  network       = google_compute_network.vpc.id
+  network = google_compute_network.vpc.id
   region  = "us-west1"
 }
 
@@ -62,7 +62,7 @@ resource "google_compute_router_nat" "nat" {
   router = google_compute_router.router.name
   region = google_compute_router.router.region
 
-  nat_ip_allocate_option = "AUTO_ONLY" 
+  nat_ip_allocate_option             = "AUTO_ONLY"
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 
   log_config {

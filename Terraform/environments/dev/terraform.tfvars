@@ -230,4 +230,33 @@ firewall_rules = {
     priority           = 1000
   }
 
+  ad_tcp_inside_test = {
+    name      = "dev-allow-ad-tcp-inside-test"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["53", "88", "135", "139", "445", "464", "3268", "636", "3269", "9389"]
+      }
+    ]
+    source_ranges      = ["10.30.10.0/24"]
+    destination_ranges = []
+    target_tags        = ["ad"]
+    priority           = 1000
+  }
+
+  ad_udp_inside_test = {
+    name      = "dev-allow-ad-udp-inside-test"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "udp"
+        ports    = ["53", "88", "123", "137", "138", "389"]
+      }
+    ]
+    source_ranges      = ["10.30.10.0/24"]
+    destination_ranges = []
+    target_tags        = ["ad"]
+    priority           = 1000
+  }
 }
