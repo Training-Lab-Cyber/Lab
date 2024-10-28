@@ -23,6 +23,7 @@
   service:
     name: apache2
     state: restarted
+  become: yes
   
 
 - name: Start and enable Apache service
