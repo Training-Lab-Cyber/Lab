@@ -1,27 +1,22 @@
 ---
-- name: Build and run Docker container from Dockerfile
-  hosts: localhost
-  tasks:
-    - name: Ensure Docker is installed
-      apt:
-        name: docker.io
-        state: present
-      become: true
+- name: Ensure Docker is installed
+  apt:
+    name: docker.io
+    state: present
+  become: true
 
-    - name: Build Docker image
-      docker_image:
-        path: files/Dockerfile  # Dockerfileがあるディレクトリのパス
-        name: havoc_teamserver
-        tag: latest
+- name: Build Docker image
+  docker_image:
+    path: files/Dockerfile
+    name: havoc_teamserver
+    tag: latest
 
-    - name: Run Docker container
-      docker_container:
-        name: havoc_teamserver
-        image: havoc_teamserver:latest
-        state: started
-        restart_policy: unless-stopped
-        published_ports:
-          - "8080:8080"
-          - "40056:40056"
-        env:
-          SOME_ENV_VAR: "value"  # 必要な環境変数をここに追加
+- name: Run Docker container
+  docker_container:
+    name: havoc_teamserver
+    image: havoc_teamserver:latest
+    state: started
+    restart_policy: unless-stopped
+    published_ports:
+      - "8080:8080"
+      - "40056:40056"
