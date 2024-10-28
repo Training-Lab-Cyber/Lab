@@ -1,17 +1,26 @@
 ---
-- name: install apache
+- name: Install Apache
   apt:
     name: apache2
     state: present
-  become: yes
-- name: copy default page
-  copy:
-    src: index.html
-    dest: /var/www/html/index.html
-  become: yes
-- name: start service
+
+- name: Start Apache service
   service:
     name: apache2
     state: started
     enabled: yes
-  become: yes
+
+- name: Configure Apache to redirect to the specified IP on port 8080
+  template:
+    src: apache_redirect.conf.j2
+    dest: /etc/apache2/sites-available/000-default.conf
+
+- name: Enable the new site configuration
+  command: a2ensite 000-default
+  notify: restart apache
+
+- name: Start and enable Apache service
+  service:
+    name: apache2
+    state: started
+    enabled: yes
