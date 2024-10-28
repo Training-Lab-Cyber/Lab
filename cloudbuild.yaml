@@ -148,7 +148,7 @@ steps:
         apt-get update > /dev/null 2>&1
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
-        ansible-galaxy collection install microsoft.ad --upgrade > /dev/null 2>&1
+        ansible-galaxy collection install -f microsoft.ad --upgrade
         cd Ansible
         ansible-inventory --graph -i inventory/$BRANCH_NAME/dev_gcp.yaml
         ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml
