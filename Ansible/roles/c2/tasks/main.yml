@@ -1,24 +1,57 @@
 ---
-- name: Ensure Docker is installed
+- name: Update the system
   apt:
-    name: docker.io
-    state: present
-  become: true
+    update_cache: yes
+- name: Install required packages
+  apt:
+    name:
+      - git
+      - build-essential
+      - apt-utils
+      - cmake
+      - libfontconfig1
+      - libglu1-mesa-dev
+      - libgtest-dev
+      - libspdlog-dev
+      - libboost-all-dev
+      - libncurses5-dev
+      - libgdbm-dev
+      - libssl-dev
+      - libreadline-dev
+      - libffi-dev
+      - libsqlite3-dev
+      - libbz2-dev
+      - mesa-common-dev
+      - qtbase5-dev
+      - qtchooser
+      - qt5-qmake
+      - qtbase5-dev-tools
+      - libqt5websockets5
+      - libqt5websockets5-dev
+      - qtdeclarative5-dev
+      - golang-go
+      - python3-dev
+      - mingw-w64
+      - nasm
+      - nginx
+      - ufw
+      - snapd
+    state: present   
+- name: Clone Havoc Framework repository
+  git:
+    repo: https://github.com/HavocFramework/Havoc.git
+    dest: /opt/Havoc 
+    force: yes
 
-- name: Build Docker image
-  docker_image:
-    path: "{{ playbook_dir }}/c2/files"
-    name: havoc_teamserver
-    tag: latest
-  become: yes
+- name: Install dependencies for Team Server
+  command: "{{ item }}"
+  args:
+    chdir: /opt/Havoc/teamserver
+  loop:
+    - go mod download golang.org/x/sys
+    - go mod download github.com/ugorji/go
 
-- name: Run Docker container
-  docker_container:
-    name: havoc_teamserver
-    image: havoc_teamserver:latest
-    state: started
-    restart_policy: unless-stopped
-    published_ports:
-      - "8080:8080"
-      - "40056:40056"
-  become: yes
+- name: Build Team Server
+  command: make ts-build
+  args:
+    chdir: /opt/Havoc
