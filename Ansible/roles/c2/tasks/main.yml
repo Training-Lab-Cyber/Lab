@@ -77,7 +77,7 @@
     chdir: /opt/Havoc/teamserver
   loop:
     - go mod download golang.org/x/sys
-    - go mod download github.com/ugorji/go
+  #   - go mod download github.com/ugorji/go
   become: yes
 
 - name: Build Team Server
