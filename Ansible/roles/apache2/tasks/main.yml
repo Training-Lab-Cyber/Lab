@@ -17,7 +17,7 @@
   become: yes
 
 - name: Enable the new site configuration
-  command: a2ensite 000-default
+  command: /usr/sbin/a2ensite 000-default
   notify: restart apache
 
 - name: Start and enable Apache service
