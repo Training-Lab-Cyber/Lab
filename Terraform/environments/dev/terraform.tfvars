@@ -140,16 +140,31 @@ firewall_rules = {
     priority           = 1000
   }
 
-  sliver_from_myip = {
-    name      = "dev-allow-grpc-from-pc"
+  c2_from_myip = {
+    name      = "dev-allow-c2-from-pc"
     direction = "INGRESS"
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["31337"]
+        ports    = ["40056"]
       }
     ]
     source_ranges      = ["220.146.34.124/32"]
+    destination_ranges = []
+    target_tags        = ["c2"]
+    priority           = 1000
+  }
+
+  http_from_redirector = {
+    name      = "dev-allow-http-from-redirector"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["8080"]
+      }
+    ]
+    source_ranges      = ["10.20.10.0/24"]
     destination_ranges = []
     target_tags        = ["c2"]
     priority           = 1000

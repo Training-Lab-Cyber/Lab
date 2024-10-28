@@ -1,12 +1,15 @@
 ---
 - hosts: gcp_group_redirector
   gather_facts: false
+  vars:
+    redirect_ip: "{{ groups['gcp_group_c2'] | map('extract', hostvars, 'inventory_hostname') | list }}"
   roles:
     - apache2
+
 - hosts: gcp_group_c2
   gather_facts: false
   roles:
-    - sliver
+    - c2
 
 - hosts: gcp_group_ad_dev
   gather_facts: false
