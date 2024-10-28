@@ -1,7 +1,11 @@
 ---
+- name: Set multiple lookup addresses on all visible adapters (usually physical adapters that are in the Up state), with debug logging to a file
+  ansible.windows.win_dns_client:
+    adapter_names: "*"
+    dns_servers: "{{domain_controller}}"
+
 - name: join host to domain with automatic reboot
   microsoft.ad.membership:
-    domain_server: "{{domain_controller}}"
     dns_domain_name: "{{domain}}"
     domain_admin_user: "Administrator@{{domain}}"
     domain_admin_password: "{{domain_password}}"

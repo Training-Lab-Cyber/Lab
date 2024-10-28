@@ -20,7 +20,7 @@
   gather_facts: false
   vars:
     domain: dev.com
-    domain_controller: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'name') | list }}"
+    domain_controller: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | list }}"
   roles:
     - terminal
 
