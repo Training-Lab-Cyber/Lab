@@ -21,7 +21,7 @@ vm_configs = {
   c2 = {
     zone              = "us-west1-a"
     name              = "dev-vm-c2"
-    machine_type      = "n1-standard-1"
+    machine_type      = "n1-standard-2"
     subnet_name       = "c2"
     tags              = ["c2", "linux"]
     labels            = { group = "c2" }
