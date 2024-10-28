@@ -149,6 +149,7 @@ steps:
         apt-get install -y ansible > /dev/null 2>&1
         apt-get install -y python3-google-auth > /dev/null 2>&1
         ansible-galaxy collection list | grep ad
+        chmod 600 ~/.netrc
         ansible-galaxy collection install -f microsoft.ad --upgrade
         ansible-galaxy collection install microsoft.ad --upgrade
         ansible-galaxy collection install -f microsoft.ad
