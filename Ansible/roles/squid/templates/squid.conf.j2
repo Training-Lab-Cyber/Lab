@@ -49,8 +49,10 @@ http_access deny CONNECT !SSL_ports
 # INSERT YOUR OWN RULE(S) HERE TO ALLOW ACCESS FROM YOUR CLIENTS
 #
 
-acl test_subnet src {{ allowed_subnet }}
-http_access allow test_subnet
+{% for host in groups[allowed_ip_group] %}
+acl allowed_ip_{{ loop.index }} src {{ hostvars[host].ansible_host }}
+{% endfor %}
+http_access allow {% for host in groups[allowed_ip_group] %}allowed_ip_{{ loop.index }} {% endfor %}
 
 # And finally deny all other access to this proxy
 #http_access deny all

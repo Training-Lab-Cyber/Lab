@@ -37,4 +37,4 @@
   roles:
     - squid
   vars:
-    allowed_subnet: "10.30.10.0/24"
+    allowed_ip_group: "gcp_group_pc_dev"
