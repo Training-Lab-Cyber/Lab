@@ -149,7 +149,7 @@ firewall_rules = {
         ports    = ["40056"]
       }
     ]
-    source_ranges      = ["220.146.34.124/32"]
+    source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
     target_tags        = ["c2"]
     priority           = 1000
