@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/opt/Havoc server --profile ./profiles/havoc.yaotl -v --debug
+ExecStart=/opt/Havoc/havoc server --profile /opt/Havoc/profiles/havoc.yaotl -v --debug
 Restart=always
 RestartSec=5
 WorkingDirectory=/opt/Havoc
