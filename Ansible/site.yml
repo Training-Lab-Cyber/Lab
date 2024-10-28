@@ -17,12 +17,12 @@
     netbios_name: DEV
 
 - hosts: gcp_group_terminal_dev
-  gather_facts: true
-  roles:
-    - terminal
+  gather_facts: false
   vars:
     domain: dev.com
-    dns_server_ip: {{ groups['gcp_group_ad_dev'][0]] }}
+    domain_controller: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | list }}"
+  roles:
+    - terminal
 
 - hosts: gcp_group_ad_prod
   gather_facts: false
