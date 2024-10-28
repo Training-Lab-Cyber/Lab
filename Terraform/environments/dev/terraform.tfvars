@@ -215,6 +215,21 @@ firewall_rules = {
     priority           = 1000
   }
 
+  ssh_from_myip = {
+    name      = "dev-allow-ssh-from-myip"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    ]
+    source_ranges      = ["121.103.83.2/32", "220.146.34.124/32"]
+    destination_ranges = []
+    target_tags        = ["linux"]
+    priority           = 1000
+  }
+
   winrm_from_privatepool = {
     name      = "dev-allow-winrm-from-privatepool"
     direction = "INGRESS"
