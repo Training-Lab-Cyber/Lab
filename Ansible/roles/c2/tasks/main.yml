@@ -7,7 +7,7 @@
 
 - name: Build Docker image
   docker_image:
-    path: ../files
+    path: "{{ playbook_dir }}/c2/files"
     name: havoc_teamserver
     tag: latest
   become: yes
