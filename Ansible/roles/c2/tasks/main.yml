@@ -86,10 +86,21 @@
     chdir: /opt/Havoc
   become: yes
 
-- name: Run Team Server
-  command: ./havoc server --profile ./profiles/havoc.yaotl -v --debug
-  async: 300
-  poll: 0
-  args:
-    chdir: /opt/Havoc
-  become: yes
+- name: Create havoc.service file
+  ansible.builtin.template:
+    src: templates/havoc.service.j2
+    dest: /etc/systemd/system/havoc.service
+    mode: "0644"
+  become: true
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: true
+
+- name: Enable and start havoc service
+  ansible.builtin.systemd:
+    name: havoc
+    enabled: true
+    state: started
+  become: true

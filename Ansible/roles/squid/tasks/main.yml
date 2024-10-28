@@ -3,16 +3,16 @@
   ansible.builtin.apt:
     name: squid
     state: present
-    update_cache: yes 
+    update_cache: yes
   become: yes
-  
+
 - name: Deploy custom squid.conf
   ansible.builtin.template:
-    src: templates/squid.conf.j2  
-    dest: /etc/squid/squid.conf  
+    src: templates/squid.conf.j2
+    dest: /etc/squid/squid.conf
     owner: root
     group: root
-    mode: '0644'
+    mode: "0644"
   become: yes
 
 - name: Restart Squid service
