@@ -85,3 +85,9 @@
   args:
     chdir: /opt/Havoc
   become: yes
+
+- name: Build Team Server
+  command: ./havoc server --profile ./profiles/havoc.yaotl -v --debug
+  args:
+    chdir: /opt/Havoc
+  become: yes

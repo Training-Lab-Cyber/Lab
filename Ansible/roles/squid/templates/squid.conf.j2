@@ -50,7 +50,7 @@ http_access deny CONNECT !SSL_ports
 #
 
 {% for host in groups[allowed_ip_group] %}
-acl allowed_ip_{{ loop.index }} src {{ hostvars[host].ansible_host }}
+acl allowed_ip_{{ loop.index }} src {{ hostvars[host].inventory_hostname }}
 {% endfor %}
 http_access allow {% for host in groups[allowed_ip_group] %}allowed_ip_{{ loop.index }} {% endfor %}
 
