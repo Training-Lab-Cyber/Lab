@@ -7,7 +7,7 @@
 
 - name: Build Docker image
   docker_image:
-    path: files/Dockerfile
+    path: files
     name: havoc_teamserver
     tag: latest
   become: yes
