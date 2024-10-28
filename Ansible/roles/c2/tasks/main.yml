@@ -2,6 +2,7 @@
 - name: Update the system
   apt:
     update_cache: yes
+  become: yes
 - name: Install required packages
   apt:
     name:
@@ -37,11 +38,14 @@
       - ufw
       - snapd
     state: present   
+  become: yes
+
 - name: Clone Havoc Framework repository
   git:
     repo: https://github.com/HavocFramework/Havoc.git
     dest: /opt/Havoc 
     force: yes
+  become: yes
 
 - name: Install dependencies for Team Server
   command: "{{ item }}"
@@ -50,8 +54,10 @@
   loop:
     - go mod download golang.org/x/sys
     - go mod download github.com/ugorji/go
+  become: yes
 
 - name: Build Team Server
   command: make ts-build
   args:
     chdir: /opt/Havoc
+  become: yes
