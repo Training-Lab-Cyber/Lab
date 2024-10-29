@@ -63,17 +63,3 @@
     group: tunneling
     mode: "0600"
   become: true
-
-- name: Update GatewayPorts setting in sshd_config
-  lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: "^#?GatewayPorts"
-    line: "GatewayPorts yes"
-    state: present
-  become: true
-
-- name: Restart SSH
-  service:
-    name: sshd
-    state: restarted
-  become: true

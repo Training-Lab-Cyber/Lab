@@ -141,7 +141,7 @@
   become: true
 
 - name: Configure autossh for reverse port forwarding
-  command: autossh -M 0 -f -N redirector
+  command: autossh -o StrictHostKeyChecking=no -o GatewayPorts=yes -M 0 -N redirector
   args:
     chdir: /home/tunneling
   become: true
