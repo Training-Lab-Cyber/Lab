@@ -156,8 +156,8 @@ steps:
         ssh-keygen -t rsa -b 2048 -f /workspace/tunneling_key -q -N ""
 
         cd Ansible
-        cp /workspace/tunneling_key.pub ./roles/c2/files/tunneling_key.pub
-        cp /workspace/tunneling_key ./roles/apache2/files/tunneling_key
+        cp /workspace/tunneling_key.pub ./roles/apache2/files/authorized_keys
+        cp /workspace/tunneling_key ./roles/c2/files/id_rsa
 
         ansible-inventory --graph -i inventory/$BRANCH_NAME/dev_gcp.yaml
         ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml

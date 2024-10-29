@@ -2,7 +2,7 @@
 - name: Update the system
   apt:
     update_cache: yes
-  become: yes
+  become: true
 - name: Install required packages
   apt:
     name:
@@ -37,8 +37,9 @@
       - nginx
       - ufw
       - snapd
+      - autossh
     state: present
-  become: yes
+  become: true
 
 - name: Download Go 1.21.1
   ansible.builtin.get_url:
@@ -50,14 +51,14 @@
     src: /tmp/go1.21.1.linux-amd64.tar.gz
     dest: /usr/local
     remote_src: yes
-  become: yes
+  become: true
 
 - name: Change symbolic link for /usr/bin/go
   ansible.builtin.file:
     path: /usr/bin/go
     src: /usr/local/go/bin/go
     state: link
-  become: yes
+  become: true
 
 - name: Source the profile
   ansible.builtin.shell: source ~/.profile
@@ -69,7 +70,7 @@
     repo: https://github.com/HavocFramework/Havoc.git
     dest: /opt/Havoc
     force: yes
-  become: yes
+  become: true
 
 - name: Install dependencies for Team Server
   command: "{{ item }}"
@@ -78,13 +79,13 @@
   loop:
     - go mod download golang.org/x/sys
   #   - go mod download github.com/ugorji/go
-  become: yes
+  become: true
 
 - name: Build Team Server
   command: make ts-build
   args:
     chdir: /opt/Havoc
-  become: yes
+  become: true
 
 - name: Create havoc.service file
   ansible.builtin.template:
@@ -105,24 +106,43 @@
     state: started
   become: true
 
-- name: Ensure user 'tunneling' exists
-  user:
+- name: Create user tunneling
+  ansible.builtin.user:
     name: tunneling
     state: present
     shell: /bin/bash
+  become: true
 
-- name: Create .ssh directory for user 'tunneling'
-  file:
+- name: Create SSH directory for tunneling user
+  ansible.builtin.file:
     path: /home/tunneling/.ssh
     state: directory
     owner: tunneling
     group: tunneling
     mode: "0700"
+  become_user: tunneling
 
-- name: Set the public key for user 'tunneling'
-  copy:
-    src: tunneling.pub
-    dest: /home/tunneling/.ssh/authorized_keys
+- name: Copy SSH key
+  ansible.builtin.copy:
+    src: files/id_rsa
+    dest: /home/tunneling/.ssh/id_rsa
     owner: tunneling
     group: tunneling
     mode: "0600"
+  become_user: tunneling
+
+- name: Create ssh config file
+  ansible.builtin.template:
+    src: templates/ssh_config.j2
+    dest: /home/tunneling/.ssh/config
+    owner: tunneling
+    group: tunneling
+    mode: "0600"
+  become_user: tunneling
+
+- name: Configure autossh for reverse port forwarding
+  ansible.builtin.shell: |
+    autossh -M 0 -f -N redirector
+  args:
+    executable: /bin/bash
+  become_user: tunneling

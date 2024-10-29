@@ -1,74 +1,69 @@
 ---
 - name: Install Apache and AutoSSH
   apt:
-    name:
-      - apache2
-      - autossh
+    name: apache2
     state: present
-  become: yes
+  become: true
 
 - name: Start Apache service
   service:
     name: apache2
     state: started
     enabled: yes
-  become: yes
+  become: true
 
 - name: Configure Apache to redirect to the specified IP on port 8080
   template:
     src: apache.conf.j2
     dest: /etc/apache2/sites-available/000-default.conf
-  become: yes
+  become: true
 
 - name: Enable the new site configuration
   command: /usr/sbin/a2ensite 000-default
-  become: yes
+  become: true
 
 - name: Enable mod_proxy
   command: /usr/sbin/a2enmod proxy
-  become: yes
+  become: true
 
 - name: Enable mod_proxy_http
   command: /usr/sbin/a2enmod proxy_http
-  become: yes
+  become: true
 
 - name: Start and enable Apache service
   service:
     name: apache2
     state: restarted
-  become: yes
+  become: true
 
 - name: Start and enable Apache service
   service:
     name: apache2
     state: started
     enabled: yes
-  become: yes
+  become: true
 
-- name: Create user tunneling
-  ansible.builtin.user:
+- name: Ensure user 'tunneling' exists
+  user:
     name: tunneling
     state: present
     shell: /bin/bash
+  become: true
 
-- name: Create SSH directory for tunneling user
-  ansible.builtin.file:
+- name: Create .ssh directory for user 'tunneling'
+  file:
     path: /home/tunneling/.ssh
     state: directory
     owner: tunneling
     group: tunneling
     mode: "0700"
+  become_user: tunneling
 
-- name: Copy SSH key
-  ansible.builtin.copy:
-    src: tunneling
-    dest: /home/tunneling/.ssh/id_rsa
+- name: Set the public key for user 'tunneling'
+  copy:
+    src: files/authorized_keys
+    dest: /home/tunneling/.ssh/authorized_keys
     owner: tunneling
     group: tunneling
     mode: "0600"
-
-- name: Configure autossh for reverse port forwarding
-  ansible.builtin.shell: |
-    autossh -M 0 -f -N -R 8080:localhost:8080 -i /home/tunneling/.ssh/id_rsa tunneling@{{ c2_ip }} -p 22
-  args:
-    executable: /bin/bash
+  become_user: tunneling

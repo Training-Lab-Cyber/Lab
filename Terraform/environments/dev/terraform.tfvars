@@ -143,18 +143,18 @@ firewall_rules = {
     priority           = 1000
   }
 
-  http_from_redirector = {
-    name      = "dev-allow-http-from-redirector"
+  ssh_from_c2 = {
+    name      = "dev-allow-ssh-from-c2"
     direction = "INGRESS"
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["8080"]
+        ports    = ["22"]
       }
     ]
-    source_ranges      = ["10.20.10.0/24"]
+    source_ranges      = ["10.10.10.0/24"]
     destination_ranges = []
-    target_tags        = ["c2"]
+    target_tags        = ["redirector"]
     priority           = 1000
   }
 

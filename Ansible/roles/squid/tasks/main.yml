@@ -4,7 +4,7 @@
     name: squid
     state: present
     update_cache: yes
-  become: yes
+  become: true
 
 - name: Deploy custom squid.conf
   ansible.builtin.template:
@@ -13,16 +13,16 @@
     owner: root
     group: root
     mode: "0644"
-  become: yes
+  become: true
 
 - name: Restart Squid service
   ansible.builtin.service:
     name: squid
     state: restarted
-  become: yes
+  become: true
 
 - name: Enable Squid to start on boot
   ansible.builtin.systemd:
     name: squid
     enabled: yes
-  become: yes
+  become: true

@@ -2,7 +2,7 @@
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
 
-    Redirect / http://{{ c2_ip }}:8080/
+    Redirect / http://localhost:8080/ [P]
     
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined

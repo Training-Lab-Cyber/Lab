@@ -1,0 +1,8 @@
+Host                 redirector
+HostName             {{ redirector_ip }}
+User                 tunneling
+Port                 22
+IdentityFile         /home/tunneling/.ssh/id_rsa
+RemoteForward        8080 localhost:80
+ServerAliveInterval  30
+ServerAliveCountMax  3
