@@ -99,25 +99,13 @@ vm_configs = {
     add_access_config = false
   }
 
-  pc2 = {
+  webserver = {
     zone              = "us-west1-a"
-    name              = "dev-vm-pc2"
+    name              = "dev-web"
     machine_type      = "n1-standard-1"
     subnet_name       = "test"
-    tags              = ["pc", "windows"]
-    labels            = { group = "pc-dev" }
-    image             = "windows-server-2022-dc-v20241010"
-    os                = "windows"
-    add_access_config = false
-  }
-
-  pc3 = {
-    zone              = "us-west1-a"
-    name              = "dev-vm-pc3"
-    machine_type      = "n1-standard-1"
-    subnet_name       = "test"
-    tags              = ["pc", "windows"]
-    labels            = { group = "pc-dev" }
+    tags              = ["server", "windows"]
+    labels            = { group = "server-dev" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
@@ -181,7 +169,7 @@ firewall_rules = {
     ]
     source_ranges      = ["10.30.10.0/24"]
     destination_ranges = []
-    target_tags        = ["ad", "pc", "bastion"]
+    target_tags        = ["ad", "pc", "bastion", "server"]
     priority           = 1000
   }
 
