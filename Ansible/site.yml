@@ -62,3 +62,10 @@
     target_domain: prod.com
     source_domain: dev.com
     target_dns_ip: "{{ groups['gcp_group_ad_prod'] | map('extract', hostvars, 'inventory_hostname') | list }}"
+
+- hosts: gcp_group_ad_dev
+  gather_facts: false
+  roles:
+    - ad_unconstrained_delegation
+  vars:
+    target_hostname: "{{ groups['gcp_group_server_dev'] | map('extract', hostvars, 'name') | list }}"
