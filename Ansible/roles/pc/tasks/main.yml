@@ -17,11 +17,11 @@
     path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings
     name: ProxyServer
     data: "http://{{ proxy_server }}:{{ proxy_port }}"
-    type: REG_SZ
+    type: string
 
 - name: Enable Proxy in Registry
   ansible.windows.win_regedit:
     path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Internet Settings
     name: ProxyEnable
     data: 1
-    type: REG_DWORD
+    type: dwor
