@@ -1,7 +1,9 @@
 ---
-- name: Install Apache
+- name: Install Apache and AutoSSH
   apt:
-    name: apache2
+    name:
+      - apache2
+      - autossh
     state: present
   become: yes
 
@@ -22,6 +24,14 @@
   command: /usr/sbin/a2ensite 000-default
   become: yes
 
+- name: Enable mod_proxy
+  command: /usr/sbin/a2enmod proxy
+  become: yes
+
+- name: Enable mod_proxy_http
+  command: /usr/sbin/a2enmod proxy_http
+  become: yes
+
 - name: Start and enable Apache service
   service:
     name: apache2
@@ -34,3 +44,31 @@
     state: started
     enabled: yes
   become: yes
+
+- name: Create user tunneling
+  ansible.builtin.user:
+    name: tunneling
+    state: present
+    shell: /bin/bash
+
+- name: Create SSH directory for tunneling user
+  ansible.builtin.file:
+    path: /home/tunneling/.ssh
+    state: directory
+    owner: tunneling
+    group: tunneling
+    mode: "0700"
+
+- name: Copy SSH key
+  ansible.builtin.copy:
+    src: tunneling
+    dest: /home/tunneling/.ssh/id_rsa
+    owner: tunneling
+    group: tunneling
+    mode: "0600"
+
+- name: Configure autossh for reverse port forwarding
+  ansible.builtin.shell: |
+    autossh -M 0 -f -N -R 8080:localhost:8080 -i /home/tunneling/.ssh/id_rsa tunneling@{{ c2_ip }} -p 22
+  args:
+    executable: /bin/bash

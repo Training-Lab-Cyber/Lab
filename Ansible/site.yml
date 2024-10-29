@@ -2,7 +2,7 @@
 - hosts: gcp_group_redirector
   gather_facts: false
   vars:
-    redirect_ip: "{{ groups['gcp_group_c2'] | map('extract', hostvars, 'inventory_hostname') | list }}"
+    c2_ip: "{{ groups['gcp_group_c2'] | map('extract', hostvars, 'inventory_hostname') | first }}"
   roles:
     - apache2
 

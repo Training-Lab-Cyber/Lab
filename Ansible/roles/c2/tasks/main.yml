@@ -104,3 +104,25 @@
     enabled: true
     state: started
   become: true
+
+- name: Ensure user 'tunneling' exists
+  user:
+    name: tunneling
+    state: present
+    shell: /bin/bash
+
+- name: Create .ssh directory for user 'tunneling'
+  file:
+    path: /home/tunneling/.ssh
+    state: directory
+    owner: tunneling
+    group: tunneling
+    mode: "0700"
+
+- name: Set the public key for user 'tunneling'
+  copy:
+    src: tunneling.pub
+    dest: /home/tunneling/.ssh/authorized_keys
+    owner: tunneling
+    group: tunneling
+    mode: "0600"
