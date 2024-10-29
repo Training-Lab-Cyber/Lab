@@ -11,6 +11,13 @@
   roles:
     - c2
 
+- hosts: gcp_group_proxy
+  gather_facts: false
+  roles:
+    - squid
+  vars:
+    allowed_ip_group: "gcp_group_pc_dev"
+
 - hosts: gcp_group_ad_dev
   gather_facts: false
   roles:
@@ -24,6 +31,7 @@
   vars:
     domain: dev.com
     dns_server: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | list }}"
+    proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | list }}"
   roles:
     - pc
 
@@ -43,10 +51,3 @@
     target_domain: prod.com
     source_domain: dev.com
     target_dns_ip: "{{ groups['gcp_group_ad_prod'] | map('extract', hostvars, 'inventory_hostname') | list }}"
-
-- hosts: gcp_group_proxy
-  gather_facts: false
-  roles:
-    - squid
-  vars:
-    allowed_ip_group: "gcp_group_pc_dev"
