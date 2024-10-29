@@ -27,7 +27,7 @@ vm_configs = {
     labels            = { group = "c2" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
-    add_access_config = true
+    add_access_config = false
   }
 
   redirector = {
@@ -139,7 +139,7 @@ firewall_rules = {
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
-    target_tags        = ["c2"]
+    target_tags        = ["redirector"]
     priority           = 1000
   }
 

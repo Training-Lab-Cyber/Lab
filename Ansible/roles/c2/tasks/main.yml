@@ -141,8 +141,8 @@
   become: true
 
 - name: Configure autossh for reverse port forwarding
-  ansible.builtin.shell: |
-    autossh -M 0 -f -N redirector
+  command: autossh -M 0 -f -N redirector
   args:
-    executable: /bin/bash
+    chdir: /home/tunneling
+  become: true
   become_user: tunneling
