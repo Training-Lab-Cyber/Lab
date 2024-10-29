@@ -120,7 +120,7 @@
     owner: tunneling
     group: tunneling
     mode: "0700"
-  become_user: tunneling
+  become: true
 
 - name: Copy SSH key
   ansible.builtin.copy:
