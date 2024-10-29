@@ -2,11 +2,11 @@
 - name: Create Conditional Forwarder
   ansible.windows.win_powershell:
     script: |
-      Add-DnsServerConditionalForwarderZone -Name "{{ target_domain }}" -MasterServers "{{ target_dns_ip }}" -ReplicationScope "Forest" -ComputerName "{{ source_dns_server }}"
+      Add-DnsServerConditionalForwarderZone -Name "{{ target_domain }}" -MasterServers "{{ target_dns_ip }}" -ReplicationScope "Domain"
   ignore_errors: yes
 
 - name: Create One-Way Trust
   ansible.windows.win_powershell:
     script: |
-      netdom trust {{ source_domain }} /d:{{ target_domain }} /add /realm /userD:{{ target_domain_admin }} /passwordD:{{ target_domain_password }} /userO:{{ source_domain_admin }} /passwordO:{{ source_domain_password }} /force
+      netdom trust {{ source_domain }} /d:{{ target_domain }} /add /realm /userD:"Administrator@{{ target_domain }}" /passwordD:{{ target_domain_password }} /userO:"Administrator@{{ source_domain }}" /passwordO:{{ source_domain_password }} /force
   ignore_errors: yes
