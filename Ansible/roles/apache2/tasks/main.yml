@@ -23,11 +23,7 @@
   become: true
 
 - name: Enable mod_proxy
-  command: /usr/sbin/a2enmod proxy
-  become: true
-
-- name: Enable mod_proxy_http
-  command: /usr/sbin/a2enmod proxy_http
+  command: /usr/sbin/a2enmod rewrite
   become: true
 
 - name: Start and enable Apache service

@@ -2,8 +2,9 @@
     ServerAdmin webmaster@localhost
     DocumentRoot /var/www/html
 
-    Redirect / http://localhost:8080/ [P]
-    
+    RewriteEngine on
+    RewriteRule ^.*$ http://localhost:8080%{REQUEST_URI} [P]
+
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
