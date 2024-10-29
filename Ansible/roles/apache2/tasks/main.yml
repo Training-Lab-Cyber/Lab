@@ -3,12 +3,14 @@
   apt:
     name: apache2
     state: present
+  become: yes
 
 - name: Start Apache service
   service:
     name: apache2
     state: started
     enabled: yes
+  become: yes
 
 - name: Configure Apache to redirect to the specified IP on port 8080
   template:
@@ -18,13 +20,13 @@
 
 - name: Enable the new site configuration
   command: /usr/sbin/a2ensite 000-default
+  become: yes
 
 - name: Start and enable Apache service
   service:
     name: apache2
     state: restarted
   become: yes
-  
 
 - name: Start and enable Apache service
   service:
