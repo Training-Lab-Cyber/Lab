@@ -154,13 +154,9 @@ steps:
         ansible-galaxy collection install -f microsoft.ad --upgrade
 
         ssh-keygen -t rsa -b 2048 -f /workspace/tunneling_key -q -N ""
-
-        apt-get install -y tree > /dev/null 2>&1
-        tree Ansible
-
         cd Ansible
-        cp /workspace/tunneling_key.pub roles/apache2/files/authorized_keys
-        cp /workspace/tunneling_key roles/c2/files/id_rsa
+        cp -f /workspace/tunneling_key.pub roles/apache2/files/authorized_keys
+        cp -f /workspace/tunneling_key roles/c2/files/id_rsa
 
         ansible-inventory --graph -i inventory/$BRANCH_NAME/dev_gcp.yaml
         ansible-playbook site.yml -i inventory/$BRANCH_NAME/dev_gcp.yaml
