@@ -7,5 +7,6 @@
         Set-ADComputer -Identity $ComputerName -TrustedForDelegation $true
     } else {
         Write-Error "Computer object $ComputerName not found in AD."
+    }
   args:
     executable: PowerShell
