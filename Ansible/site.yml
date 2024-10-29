@@ -41,6 +41,8 @@
   vars:
     domain: dev.com
     dns_server: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_port: "3128"
   roles:
     - server
 
