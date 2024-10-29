@@ -53,7 +53,7 @@
     owner: tunneling
     group: tunneling
     mode: "0700"
-  become_user: tunneling
+  become: true
 
 - name: Set the public key for user 'tunneling'
   copy:
@@ -62,4 +62,4 @@
     owner: tunneling
     group: tunneling
     mode: "0600"
-  become_user: tunneling
+  become: true

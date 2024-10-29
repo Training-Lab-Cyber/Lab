@@ -129,7 +129,7 @@
     owner: tunneling
     group: tunneling
     mode: "0600"
-  become_user: tunneling
+  become: true
 
 - name: Create ssh config file
   ansible.builtin.template:
@@ -138,7 +138,7 @@
     owner: tunneling
     group: tunneling
     mode: "0600"
-  become_user: tunneling
+  become: true
 
 - name: Configure autossh for reverse port forwarding
   ansible.builtin.shell: |
