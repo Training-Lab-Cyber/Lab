@@ -22,6 +22,14 @@
   command: /usr/sbin/a2ensite 000-default
   become: true
 
+- name: Enable rewrite
+  command: /usr/sbin/a2enmod rewrite
+  become: true
+
+- name: Enable mod_proxy
+  command: /usr/sbin/a2enmod proxy_http
+  become: true
+
 - name: Enable mod_proxy
   command: /usr/sbin/a2enmod rewrite
   become: true

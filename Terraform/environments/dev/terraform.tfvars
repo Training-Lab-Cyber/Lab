@@ -248,8 +248,8 @@ firewall_rules = {
     priority           = 1000
   }
 
-  ad_inside_test = {
-    name      = "dev-allow-ad-inside-test"
+  all_inside_test = {
+    name      = "dev-allow-all-inside-test"
     direction = "INGRESS"
     allow_protocols = [
       {
@@ -259,7 +259,7 @@ firewall_rules = {
     ]
     source_ranges      = ["10.30.10.0/24"]
     destination_ranges = []
-    target_tags        = ["ad"]
+    target_tags        = ["windows"]
     priority           = 1000
   }
 
