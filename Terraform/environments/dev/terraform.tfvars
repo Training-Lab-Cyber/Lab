@@ -128,6 +128,21 @@ firewall_rules = {
     priority           = 1000
   }
 
+  proxy_from_c2 = {
+    name      = "dev-allow-proxy-from-c2"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["3128"]
+      }
+    ]
+    source_ranges      = ["10.10.10.0/24"]
+    destination_ranges = []
+    target_tags        = ["proxy"]
+    priority           = 1000
+  }
+
   c2_from_myip = {
     name      = "dev-allow-c2-from-pc"
     direction = "INGRESS"
