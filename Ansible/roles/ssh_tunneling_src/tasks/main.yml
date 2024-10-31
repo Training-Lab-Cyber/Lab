@@ -1,4 +1,14 @@
 ---
+- name: Update the system
+  apt:
+    update_cache: yes
+  become: true
+- name: Install required packages
+  apt:
+    name: autossh
+    state: present
+  become: true
+  
 - name: Create user tunneling
   ansible.builtin.user:
     name: tunneling
