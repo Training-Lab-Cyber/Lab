@@ -6,9 +6,6 @@
     mode: '0755'
     use_proxy: yes
     validate_certs: no
-  register: download_result
-  failed_when: download_result.rc != 0
-  retries: 3
   environment:
     http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
     https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
