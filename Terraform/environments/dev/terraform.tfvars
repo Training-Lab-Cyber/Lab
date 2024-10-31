@@ -158,6 +158,21 @@ firewall_rules = {
     priority           = 1000
   }
 
+  ssh_test = {
+    name      = "test"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    ]
+    source_ranges      = ["10.20.10.0/24"]
+    destination_ranges = []
+    target_tags        = ["c2"]
+    priority           = 1000
+  }
+
   ssh_from_c2 = {
     name      = "dev-allow-ssh-from-c2"
     direction = "INGRESS"
