@@ -12,8 +12,8 @@
   roles:
     - sliver
   vars:
-    proxy-server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
-    proxy-port: 3128
+    proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_port: 3128
 
 - hosts: gcp_group_redirector
   gather_facts: false

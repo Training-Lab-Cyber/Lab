@@ -2,8 +2,8 @@
 - name: Install Sliver via curl
   shell: "wget https://github.com/BishopFox/sliver/releases/download/v1.5.38/sliver-server_linux"
   environment:
-    http_proxy: "http://{{ proxy-server }}:{{ port }}" 
-    https_proxy: "http://{{ proxy-server }}:{{ port }}"
+    http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
+    https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
   args:
     executable: /bin/bash
   become: yes
