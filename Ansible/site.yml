@@ -31,8 +31,11 @@
     - src_port: 31337
       dest_host: localhost
       dest_port: 31337
+    proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_port: "3128"
   roles:
     - ssh_tunneling_src
+    
 
 - hosts: gcp_group_proxy
   gather_facts: false
@@ -80,11 +83,23 @@
 - hosts: gcp_group_ad_dev
   gather_facts: false
   roles:
-    - ad_trust_outbound
+    - ad_trust
   vars:
     target_domain: prod.com
-    source_domain: dev.com
     target_dns_ip: "{{ groups['gcp_group_ad_prod'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    direction: OutBound
+    trust_password: "TrustPassword123!"
+
+    
+- hosts: gcp_group_ad_prod
+  gather_facts: false
+  roles:
+    - ad_trust
+  vars:
+    target_domain: dev.com
+    target_dns_ip: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    direction: InBound
+    trust_password: "TrustPassword123!"
 
 - hosts: gcp_group_ad_dev
   gather_facts: false

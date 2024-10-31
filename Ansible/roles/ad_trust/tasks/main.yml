@@ -1,0 +1,18 @@
+---
+- name: Create Conditional Forwarder
+  ansible.windows.win_powershell:
+    script: |
+      Add-DnsServerConditionalForwarderZone -Name "{{ target_domain }}" -MasterServers "{{ target_dns_ip }}" -ReplicationScope "Domain"
+  ignore_errors: true
+
+- name: Create One-Way Trust
+  ansible.windows.win_powershell:
+    script: |
+      $targetForestName = "{{ target_domain }}"
+      $targetAdmin = "Administrator" 
+      $targetAdminPassword = "{{ target_admin_password  }}"
+      $targetContext = New-Object -TypeName "System.DirectoryServices.ActiveDirectory.DirectoryContext" -ArgumentList @( "Forest",$targetForestName, $targetAdmin, $targetAdminPassword) 
+      $targetForest =[System.DirectoryServices.ActiveDirectory.Forest]::getForest($targetContext)
+      $localforest=[System.DirectoryServices.ActiveDirectory.Forest]::getCurrentForest() 
+      $localForest.CreateLocalSideOfTrustRelationship($targetForest,"{{ direction  }}","{{ trust_password  }}")
+  ignore_errors: true

@@ -4,5 +4,4 @@ ansible_password: "StrongPassword123!"
 ansible_winrm_transport: ntlm
 ansible_winrm_server_cert_validation: ignore
 
-source_domain_password: "StrongPassword123!"
-target_domain_password: "StrongPassword123!"
+remote_admin_password: "StrongPassword123!"
