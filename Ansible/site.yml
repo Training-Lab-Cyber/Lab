@@ -3,12 +3,17 @@
   gather_facts: false
   roles:
     - apache2
+    - squid
+  vars:
+    allowed_ip_group: "gcp_group_c2"
 
 - hosts: gcp_group_c2
   gather_facts: false
   roles:
     - sliver
-
+  vars:
+    proxy-server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy-port: 3128
 
 - hosts: gcp_group_redirector
   gather_facts: false
