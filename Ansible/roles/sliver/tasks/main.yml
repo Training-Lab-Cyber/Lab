@@ -1,11 +1,17 @@
 ---
-- name: Install Sliver via curl
-  shell: "wget https://github.com/BishopFox/sliver/releases/download/v1.5.38/sliver-server_linux"
+- name: Download the specified file under proxy environment
+  get_url:
+    url: https://github.com/BishopFox/sliver/releases/download/v1.5.38/sliver-server_linux
+    dest: /tmp/
+    mode: '0755'
+    use_proxy: yes
+    validate_certs: no
+  register: download_result
+  until: download_result | succeeded
+  retries: 3
   environment:
     http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
     https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
-  args:
-    executable: /bin/bash
   become: yes
 
 - name: Make sliver-server_linux executable
@@ -14,8 +20,16 @@
     mode: '0755'
   become: yes
 
-
 - name: Create Sliver operator configuration
   shell: "./sliver-server_linux operator --name zer0cool --lhost 127.0.0.1 --save zer0cool.cfg"
   become: yes
   ignore_errors: yes
+
+- name: Read file content
+  slurp:
+    src: ./zer0cool.cfg
+  register: file_content
+
+- name: Display file content in log
+  debug:
+    msg: "{{ file_content['content'] | b64decode }}"
