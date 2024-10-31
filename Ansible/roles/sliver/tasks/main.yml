@@ -2,7 +2,7 @@
 - name: Download the specified file under proxy environment
   get_url:
     url: https://github.com/BishopFox/sliver/releases/download/v1.5.38/sliver-server_linux
-    dest: /tmp/
+    dest: /opt/sliver/
     mode: '0755'
     use_proxy: yes
     validate_certs: no
@@ -13,18 +13,18 @@
 
 - name: Make sliver-server_linux executable
   file:
-    path: ./sliver-server_linux 
+    path: /opt/sliver/sliver-server_linux 
     mode: '0755'
   become: yes
 
 - name: Create Sliver operator configuration
-  shell: "./sliver-server_linux operator --name zer0cool --lhost 127.0.0.1 --save zer0cool.cfg"
+  shell: "/opt/sliver/sliver-server_linux operator --name zer0cool --lhost 127.0.0.1 --save zer0cool.cfg"
   become: yes
   ignore_errors: yes
 
 - name: Read file content
   slurp:
-    src: ./zer0cool.cfg
+    src: /opt/sliver/zer0cool.cfg
   register: file_content
 
 - name: Display file content in log
