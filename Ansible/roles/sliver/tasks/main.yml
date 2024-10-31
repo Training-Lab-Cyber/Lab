@@ -1,0 +1,148 @@
+---
+- name: Update the system
+  apt:
+    update_cache: yes
+  become: true
+- name: Install required packages
+  apt:
+    name:
+      - git
+      - build-essential
+      - apt-utils
+      - cmake
+      - libfontconfig1
+      - libglu1-mesa-dev
+      - libgtest-dev
+      - libspdlog-dev
+      - libboost-all-dev
+      - libncurses5-dev
+      - libgdbm-dev
+      - libssl-dev
+      - libreadline-dev
+      - libffi-dev
+      - libsqlite3-dev
+      - libbz2-dev
+      - mesa-common-dev
+      - qtbase5-dev
+      - qtchooser
+      - qt5-qmake
+      - qtbase5-dev-tools
+      - libqt5websockets5
+      - libqt5websockets5-dev
+      - qtdeclarative5-dev
+      - golang-go
+      - python3-dev
+      - mingw-w64
+      - nasm
+      - nginx
+      - ufw
+      - snapd
+      - autossh
+    state: present
+  become: true
+
+- name: Download Go 1.21.1
+  ansible.builtin.get_url:
+    url: https://go.dev/dl/go1.21.1.linux-amd64.tar.gz
+    dest: /tmp/go1.21.1.linux-amd64.tar.gz
+
+- name: Extract Go to /usr/local
+  ansible.builtin.unarchive:
+    src: /tmp/go1.21.1.linux-amd64.tar.gz
+    dest: /usr/local
+    remote_src: yes
+  become: true
+
+- name: Change symbolic link for /usr/bin/go
+  ansible.builtin.file:
+    path: /usr/bin/go
+    src: /usr/local/go/bin/go
+    state: link
+  become: true
+
+- name: Source the profile
+  ansible.builtin.shell: source ~/.profile
+  args:
+    executable: /bin/bash
+
+- name: Clone Havoc Framework repository
+  git:
+    repo: https://github.com/HavocFramework/Havoc.git
+    dest: /opt/Havoc
+    force: yes
+  become: true
+
+- name: Install dependencies for Team Server
+  command: "{{ item }}"
+  args:
+    chdir: /opt/Havoc/teamserver
+  loop:
+    - go mod download golang.org/x/sys
+  #   - go mod download github.com/ugorji/go
+  become: true
+
+- name: Build Team Server
+  command: make ts-build
+  args:
+    chdir: /opt/Havoc
+  become: true
+
+- name: Create havoc.service file
+  ansible.builtin.template:
+    src: templates/havoc.service.j2
+    dest: /etc/systemd/system/havoc.service
+    mode: "0644"
+  become: true
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: true
+
+- name: Enable and start havoc service
+  ansible.builtin.systemd:
+    name: havoc
+    enabled: true
+    state: started
+  become: true
+
+- name: Create user tunneling
+  ansible.builtin.user:
+    name: tunneling
+    state: present
+    shell: /bin/bash
+  become: true
+
+- name: Create SSH directory for tunneling user
+  ansible.builtin.file:
+    path: /home/tunneling/.ssh
+    state: directory
+    owner: tunneling
+    group: tunneling
+    mode: "0700"
+  become: true
+
+- name: Copy SSH key
+  ansible.builtin.copy:
+    src: files/id_rsa
+    dest: /home/tunneling/.ssh/id_rsa
+    owner: tunneling
+    group: tunneling
+    mode: "0600"
+  become: true
+
+- name: Create ssh config file
+  ansible.builtin.template:
+    src: templates/ssh_config.j2
+    dest: /home/tunneling/.ssh/config
+    owner: tunneling
+    group: tunneling
+    mode: "0600"
+  become: true
+
+- name: Configure autossh for reverse port forwarding
+  command: autossh -o StrictHostKeyChecking=no -o GatewayPorts=yes -M 0 -N -f redirector
+  args:
+    chdir: /home/tunneling
+  become: true
+  become_user: tunneling

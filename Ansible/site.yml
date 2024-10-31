@@ -6,10 +6,28 @@
 
 - hosts: gcp_group_c2
   gather_facts: false
-  vars:
-    redirector_ip: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
   roles:
-    - c2
+    - sliver
+
+
+- hosts: gcp_group_redirector
+  gather_facts: false
+  roles:
+    - ssh_tunneling_dest
+
+- hosts: gcp_group_c2
+  gather_facts: false
+  vars:
+    target_ip: "{{ groups['gcp_group_c2'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    remote_ports:
+    - src_port: 8080
+      dest_host: localhost
+      dest_port: 8080
+    - src_port: 31337
+      dest_host: localhost
+      dest_port: 31337
+  roles:
+    - ssh_tunneling_src
 
 - hosts: gcp_group_proxy
   gather_facts: false

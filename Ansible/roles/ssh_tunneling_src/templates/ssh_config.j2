@@ -1,0 +1,10 @@
+Host                 tunneling
+HostName             {{ target_ip }}
+User                 tunneling
+Port                 22
+IdentityFile         /home/tunneling/.ssh/id_rsa
+{% for port in remote_ports %}
+RemoteForward        {{ port.src_port }} {{ port.dest_host }}:{{ port.dest_port }}
+{% endfor %}
+ServerAliveInterval  30
+ServerAliveCountMax  3
