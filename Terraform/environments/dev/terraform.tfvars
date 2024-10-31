@@ -139,7 +139,7 @@ firewall_rules = {
     ]
     source_ranges      = ["10.10.10.0/24"]
     destination_ranges = []
-    target_tags        = ["proxy"]
+    target_tags        = ["redirector"]
     priority           = 1000
   }
 
