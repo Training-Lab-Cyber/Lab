@@ -27,7 +27,7 @@
   become: yes
 
 - name: Create Sliver operator configuration
-  shell: "/opt/sliver/sliver-server_linux operator --name zer0cool --lhost 127.0.0.1 --save zer0cool.cfg"
+  shell: "/opt/sliver/sliver-server_linux operator --name zer0cool --lhost 127.0.0.1 --save /opt/sliver/zer0cool.cfg"
   become: yes
   ignore_errors: yes
 
@@ -35,7 +35,9 @@
   slurp:
     src: /opt/sliver/zer0cool.cfg
   register: file_content
+  become: yes
 
 - name: Display file content in log
   debug:
     msg: "{{ file_content['content'] | b64decode }}"
+  become: yes

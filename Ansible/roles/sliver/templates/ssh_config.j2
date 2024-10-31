@@ -1,9 +1,0 @@
-Host                 redirector
-HostName             {{ redirector_ip }}
-User                 tunneling
-Port                 22
-IdentityFile         /home/tunneling/.ssh/id_rsa
-RemoteForward        8080 localhost:8080
-RemoteForward        0.0.0.0:40056 localhost:40056
-ServerAliveInterval  30
-ServerAliveCountMax  3
