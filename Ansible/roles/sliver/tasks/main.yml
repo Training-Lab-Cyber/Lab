@@ -2,42 +2,46 @@
 - name: Ensure /opt/sliver directory exists
   file:
     path: /opt/sliver
-    state: directory  
-    owner: root  
-    group: root  
-    mode: '0755'  
-  become: yes
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
 
-- name: Download the specified file under proxy environment
-  get_url:
-    url: https://github.com/BishopFox/sliver/releases/download/v1.5.38/sliver-server_linux
-    dest: /opt/sliver/
-    mode: '0755'
-    use_proxy: yes
-    validate_certs: no
-  environment:
-    http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
-    https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
-  become: yes
+- name: Create proxy file in /etc/sudoers.d
+  copy:
+    dest: /etc/sudoers.d/proxy
+    content: 'Defaults env_keep = "http_proxy https_proxy"'
+    owner: root
+    group: root
+    mode: "0440"
+  become: true
 
-- name: Make sliver-server_linux executable
-  file:
-    path: /opt/sliver/sliver-server_linux 
-    mode: '0755'
-  become: yes
+- name: Set http_proxy environment variable
+  lineinfile:
+    path: /etc/environment
+    line: "http_proxy=http://dev-vm-redirector:3128"
+    create: true
+  become: true
 
-- name: Create Sliver operator configuration
-  shell: "/opt/sliver/sliver-server_linux operator --name zer0cool --lhost 127.0.0.1 --save /opt/sliver/zer0cool.cfg"
-  become: yes
-  ignore_errors: yes
+- name: Set https_proxy environment variable
+  lineinfile:
+    path: /etc/environment
+    line: "https_proxy=http://dev-vm-redirector:3128"
+    create: true
+  become: true
+
+- name: Install Sliver
+  shell: curl https://sliver.sh/install | sudo bash
+  become: true
 
 - name: Read file content
   slurp:
-    src: /opt/sliver/zer0cool.cfg
+    src: /root/.sliver-client/configs/root_localhost.cfg
   register: file_content
-  become: yes
+  become: true
 
 - name: Display file content in log
   debug:
     msg: "{{ file_content['content'] | b64decode }}"
-  become: yes
+  become: true
