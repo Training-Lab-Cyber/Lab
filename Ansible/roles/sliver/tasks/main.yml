@@ -1,4 +1,13 @@
 ---
+- name: Ensure /opt/sliver directory exists
+  file:
+    path: /opt/sliver
+    state: directory  
+    owner: root  
+    group: root  
+    mode: '0755'  
+  become: yes
+
 - name: Download the specified file under proxy environment
   get_url:
     url: https://github.com/BishopFox/sliver/releases/download/v1.5.38/sliver-server_linux
