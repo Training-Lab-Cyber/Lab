@@ -23,7 +23,7 @@
 - hosts: gcp_group_c2
   gather_facts: false
   vars:
-    target_ip: "{{ groups['gcp_group_c2'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    target_ip: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     remote_ports:
       - src_port: 8080
         dest_host: localhost

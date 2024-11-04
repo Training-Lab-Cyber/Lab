@@ -20,14 +20,14 @@
 - name: Set http_proxy environment variable
   lineinfile:
     path: /etc/environment
-    line: "http_proxy=http://dev-vm-redirector:3128"
+    line: "http_proxy=http://{{proxy_server}}:{{proxy_port}}"
     create: true
   become: true
 
 - name: Set https_proxy environment variable
   lineinfile:
     path: /etc/environment
-    line: "https_proxy=http://dev-vm-redirector:3128"
+    line: "https_proxy=http://{{proxy_server}}:{{proxy_port}}"
     create: true
   become: true
 
