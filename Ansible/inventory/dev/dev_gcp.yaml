@@ -1,5 +1,5 @@
 plugin: gcp_compute
-projects: "{{ gcp_project }}"
+projects: "{{  gcp_project  }}"
 auth_kind: application
 keyed_groups:
   - prefix: gcp
