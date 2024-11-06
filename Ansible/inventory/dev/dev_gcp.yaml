@@ -1,6 +1,5 @@
 plugin: gcp_compute
-projects:
-  - crafty-airfoil-438000-g9
+projects: "{{ gcp_project }}"
 auth_kind: application
 keyed_groups:
   - prefix: gcp
