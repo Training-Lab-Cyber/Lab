@@ -49,7 +49,7 @@ steps:
       - "-c"
       - |
         cd Terraform
-        terraform import module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc
+        terraform import module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc -var="project=$PROJECT_ID" -var="public_key_path=/workspace/ansible_key.pub"
         terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
   # [END tf-plan]
