@@ -18,7 +18,7 @@ substitutions:
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
   pool:
-    name: projects/$PROJECT_ID/locations/asia-northeast1-a/workerPools/private-pool
+    name: projects/$PROJECT_ID/locations/asia-northeast1/workerPools/private-pool
 
 steps:
   # [START ssh-keygen]
