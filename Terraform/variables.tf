@@ -23,20 +23,6 @@ variable "subnets" {
   }))
 }
 
-variable "vm_configs" {
-  type = map(object({
-    name              = string
-    zone              = string
-    machine_type      = string
-    image             = string
-    subnet_name       = string
-    tags              = list(string)
-    os                = string
-    labels            = map(string)
-    add_access_config = bool
-  }))
-}
-
 
 variable "firewall_rules" {
   type = map(object({
@@ -50,5 +36,20 @@ variable "firewall_rules" {
     destination_ranges = list(string) # For egress rules
     target_tags        = list(string) # Optional, to target specific instances
     priority           = number       # Default priority is 1000
+  }))
+}
+
+
+variable "vm_configs" {
+  type = map(object({
+    name              = string
+    zone              = string
+    machine_type      = string
+    image             = string
+    subnet_name       = string
+    tags              = list(string)
+    os                = string
+    labels            = map(string)
+    add_access_config = bool
   }))
 }
