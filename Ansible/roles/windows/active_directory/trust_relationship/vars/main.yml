@@ -1,0 +1,11 @@
+ansible_connection: winrm
+ansible_user: "ansible"
+ansible_password: "StrongPassword123!"
+ansible_winrm_transport: ntlm
+ansible_winrm_server_cert_validation: ignore
+
+<<<<<<< HEAD:Ansible/roles/ad_trust/vars/main.yml
+target_admin_password: "StrongPassword123!"
+=======
+target_admin_password: "StrongPassword123!"
+>>>>>>> 57b30bcfa3476c77fb492a6aa900a13ecab10ca9:Ansible/roles/windows/active_directory/trust_relationship/vars/main.yml

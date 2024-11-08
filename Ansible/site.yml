@@ -1,16 +1,20 @@
 ---
+###
+# Create Redirector and C2 infra
+###
+
 - hosts: gcp_group_redirector
   gather_facts: false
   roles:
-    - apache2
-    - squid
+    - roles/linux/redirector
+    - roles/linux/proxy
   vars:
     allowed_ip_group: "gcp_group_c2"
 
 - hosts: gcp_group_c2
   gather_facts: false
   roles:
-    - sliver
+    - roles/linux/c2/sliver
   vars:
     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
@@ -18,41 +22,72 @@
 - hosts: gcp_group_redirector
   gather_facts: false
   roles:
-    - ssh_tunneling_dest
+    - roles/linux/ssh_tunneling/dest
 
 - hosts: gcp_group_c2
   gather_facts: false
   vars:
-    target_ip: "{{ groups['gcp_group_c2'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    target_ip: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     remote_ports:
-    - src_port: 8080
-      dest_host: localhost
-      dest_port: 8080
-    - src_port: 31337
-      dest_host: localhost
-      dest_port: 31337
+      - src_port: 8080
+        dest_host: localhost
+        dest_port: 8080
+      - src_port: 31337
+        dest_host: localhost
+        dest_port: 31337
     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
   roles:
-    - ssh_tunneling_src
-    
+    - roles/linux/ssh_tunneling/src
+
+###
+# Create Test environment
+###
 
 - hosts: gcp_group_proxy
   gather_facts: false
   roles:
-    - squid
+    - roles/linux/proxy
   vars:
-    allowed_ip_group: "gcp_group_pc_dev"
+    allowed_ip_group: "gcp_group_terminal_dev"
 
 - hosts: gcp_group_ad_dev
   gather_facts: false
   roles:
-    - ad
+    - roles/active_directory/domain_controller
   vars:
     domain: dev.com
     netbios_name: DEV
 
-- hosts: gcp_group_pc_dev
+- hosts: gcp_group_ad_prod
+  gather_facts: false
+  roles:
+    - roles/active_directory/domain_controller
+  vars:
+    domain: prod.com
+    netbios_name: PROD
+
+- hosts: gcp_group_ad_dev
+  gather_facts: false
+  roles:
+    - roles/windows/active_directory/trust_relationship
+  vars:
+    target_domain: prod.com
+    target_dns_ip: "{{ groups['gcp_group_ad_prod'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    direction: OutBound
+    trust_password: "TrustPassword123!"
+
+- hosts: gcp_group_ad_prod
+  gather_facts: false
+  roles:
+    - roles/windows/active_directory/trust_relationship
+  vars:
+    target_domain: dev.com
+    target_dns_ip: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    direction: InBound
+    trust_password: "TrustPassword123!"
+
+- hosts: gcp_group_terminal_dev
   gather_facts: false
   vars:
     domain: dev.com
@@ -60,7 +95,7 @@
     proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
   roles:
-    - pc
+    - roles/windows/servers
 
 - hosts: gcp_group_server_dev
   gather_facts: false
@@ -70,40 +105,15 @@
     proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
   roles:
-    - server
+    - roles/windows/terminals
 
-- hosts: gcp_group_ad_prod
-  gather_facts: false
-  roles:
-    - ad
-  vars:
-    domain: prod.com
-    netbios_name: PROD
+###
+# configure vulnerability to test attack techniques
+###
 
 - hosts: gcp_group_ad_dev
   gather_facts: false
   roles:
-    - ad_trust
-  vars:
-    target_domain: prod.com
-    target_dns_ip: "{{ groups['gcp_group_ad_prod'] | map('extract', hostvars, 'inventory_hostname') | first }}"
-    direction: OutBound
-    trust_password: "TrustPassword123!"
-
-    
-- hosts: gcp_group_ad_prod
-  gather_facts: false
-  roles:
-    - ad_trust
-  vars:
-    target_domain: dev.com
-    target_dns_ip: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | first }}"
-    direction: InBound
-    trust_password: "TrustPassword123!"
-
-- hosts: gcp_group_ad_dev
-  gather_facts: false
-  roles:
-    - ad_unconstrained_delegation
+    - roles/windows/vuln_congif/unconstrained_delegation
   vars:
     target_hostname: "{{ groups['gcp_group_server_dev'] | map('extract', hostvars, 'name') | first }}"

@@ -14,7 +14,7 @@
 
 
 variable "project" {}
-variable "env" {}
+variable "vpc_name" {}
 
 variable "subnets" {
   type = map(object({
