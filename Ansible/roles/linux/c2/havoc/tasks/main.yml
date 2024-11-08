@@ -54,11 +54,17 @@
       - autossh
     state: present
   become: true
+  environment:
+    http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
+    https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
   
 - name: Download Go 1.21.1
   ansible.builtin.get_url:
     url: https://go.dev/dl/go1.21.1.linux-amd64.tar.gz
     dest: /tmp/go1.21.1.linux-amd64.tar.gz
+  environment:
+    http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
+    https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
 
 - name: Extract Go to /usr/local
   ansible.builtin.unarchive:
@@ -85,6 +91,9 @@
     dest: /opt/Havoc
     force: yes
   become: true
+  environment:
+    http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
+    https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
 
 - name: Install dependencies for Team Server
   command: "{{ item }}"
@@ -94,6 +103,9 @@
     - go mod download golang.org/x/sys
   #   - go mod download github.com/ugorji/go
   become: true
+  environment:
+    http_proxy: "http://{{ proxy_server }}:{{ proxy_port }}" 
+    https_proxy: "http://{{ proxy_server }}:{{ proxy_port }}"
 
 - name: Build Team Server
   command: make ts-build
