@@ -114,6 +114,6 @@
 - hosts: gcp_group_ad_dev
   gather_facts: false
   roles:
-    - roles/windows/vuln_congif/unconstrained_delegation
+    - roles/windows/vuln_config/unconstrained_delegation
   vars:
     target_hostname: "{{ groups['gcp_group_server_dev'] | map('extract', hostvars, 'name') | first }}"
