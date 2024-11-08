@@ -95,7 +95,7 @@
     proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
   roles:
-    - roles/windows/servers
+    - roles/windows/terminals
 
 - hosts: gcp_group_server_dev
   gather_facts: false
@@ -105,7 +105,7 @@
     proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
   roles:
-    - roles/windows/terminals
+    - roles/windows/servers
 
 ###
 # configure vulnerability to test attack techniques

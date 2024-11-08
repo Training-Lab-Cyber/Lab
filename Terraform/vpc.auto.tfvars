@@ -87,7 +87,7 @@ firewall_rules = {
         ports    = ["3389"]
       }
     ]
-    source_ranges      = ["10.3.0.0/24"]
+    source_ranges      = ["10.4.0.0/24"]
     destination_ranges = []
     target_tags        = ["ad", "terminal", "bastion", "server"]
     priority           = 1000
@@ -117,7 +117,7 @@ firewall_rules = {
         ports    = ["3128"]
       }
     ]
-    source_ranges      = ["10.3.0.0/24"]
+    source_ranges      = ["10.4.0.0/24"]
     destination_ranges = []
     target_tags        = ["proxy"]
     priority           = 1000
@@ -133,7 +133,7 @@ firewall_rules = {
         ports    = []
       }
     ]
-    source_ranges      = ["10.3.0.0/24"]
+    source_ranges      = ["10.4.0.0/24"]
     destination_ranges = []
     target_tags        = ["windows"]
     priority           = 1000
