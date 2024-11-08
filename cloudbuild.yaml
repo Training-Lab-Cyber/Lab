@@ -94,8 +94,8 @@ steps:
 
         ssh-keygen -t rsa -b 2048 -f /workspace/tunneling_key -q -N ""
         cd Ansible
-        cp -f /workspace/tunneling_key.pub roles/ssh_tunneling_dest/files/authorized_keys
-        cp -f /workspace/tunneling_key roles/ssh_tunneling_src/files/id_rsa
+        cp -f /workspace/tunneling_key.pub roles/linux/ssh_tunneling/dest/files/authorized_keys
+        cp -f /workspace/tunneling_key roles/linux/ssh_tunneling/src/files/id_rsa
 
         python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
 

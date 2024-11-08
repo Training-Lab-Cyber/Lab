@@ -1,31 +1,41 @@
-# Managing infrastructure as code with Terraform, Cloud Build, and GitOps!
+# Automated Creation of Redteam Infrastructure using Terraform and Ansible
 
-This is the repo for the [Managing infrastructure as code with Terraform, Cloud Build, and GitOps](https://cloud.google.com/solutions/managing-infrastructure-as-code) tutorial. This tutorial explains how to manage infrastructure as code with Terraform and Cloud Build using the popular GitOps methodology. 
+## Overview
+This lab  is used for automatic creation of redteam infrastructure, including C2 server, HTTP redirector and testing environments like AD server and terminals.
 
-## Configuring your **dev** environment
 
-Just for demostration, this step will:
- 1. Configure an apache2 http server on network '**dev**' and subnet '**dev**-subnet-01'
- 2. Open port 80 on firewall for this http server 
+> Warning: This lab is still early PoC stage and there are lots of hardcoded credentials. Please DO NOT use this lab in a production environment.
 
-```bash
-cd ../environments/dev
-terraform init
-terraform plan
-terraform apply
-terraform destroy
-```
 
-## Promoting your environment to **production**
+## Diagrams
 
-Once you have tested your app (in this example an apache2 http server), you can promote your configuration to prodution. This step will:
- 1. Configure an apache2 http server on network '**prod**' and subnet '**prod**-subnet-01'
- 2. Open port 80 on firewall for this http server 
+![alt text](diagram.png)
 
-```bash
-cd ../prod
-terraform init
-terraform plan
-terraform apply
-terraform destroy
-```
+
+## GitOps style implementation
+The lab uses Google Cloud to host virtusl machines and virtual networks.  
+In order to make the environment disposable, almost all the components are implemented using IaC(terraform and ansible) for automatic construction.
+
+The codes is intended for continuous integration and delivery (CI/CD) pipeline on CloudBuild and Github. 
+
+## Requirements (manual creation)
+* Github repository which hosts these codes
+* Google Cloud project
+* Service Account which has all the privileges below
+    - under construction
+* Storage blob to store tfstate file
+* VPC (name: redteam-vpc)
+* VPC peering settings for cloudbuild private pool
+* CloudBuild settings
+    - Trigger: start building stage when pushed to the Github branch
+    - private pool
+
+## Usage
+To build the lab, push this repository to the Github branch.
+
+## Roadmap
+* Eliminate hardcoded creds
+* Eliminate manual creation parts described above
+* Create Phishing environments
+* Create CDNs
+* Documentation
