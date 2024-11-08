@@ -7,7 +7,6 @@ options:
     name: projects/$PROJECT_ID/locations/asia-northeast1/workerPools/private-pool
 
 steps:
-  # [START ssh-keygen]
   - id: "Create SSH Key Pair"
     name: "alpine"
     entrypoint: "sh"
@@ -16,8 +15,7 @@ steps:
       - |
         apk add --no-cache openssh
         ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
-  # [END ssh-keygen]
-  # [START Secrets create]
+
   - id: "Register SSH Private Key to Secret Manager"
     name: "google/cloud-sdk"
     entrypoint: "bash"
@@ -31,7 +29,7 @@ steps:
           echo "Creating new secret 'ansible_key'..."
           gcloud secrets create ansible_key --data-file=/workspace/ansible_key
         fi
-  # [END Secrets create]
+
   - id: "tf init"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
@@ -41,7 +39,6 @@ steps:
         cd Terraform
         terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-  # [START tf-plan]
   - id: "tf plan"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
@@ -52,9 +49,6 @@ steps:
         terraform import  -var "project=$PROJECT_ID" -var "public_key_path=/workspace/ansible_key.pub" module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc
         terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-  # [END tf-plan]
-
-  # [START tf-apply]
   - id: "tf apply"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
@@ -64,8 +58,6 @@ steps:
         cd Terraform    
         terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-  # [END tf-apply]
-  # [START terraform output]
   - id: "tf output"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
@@ -76,8 +68,6 @@ steps:
         terraform output -json > /workspace/terraform_output.json
         cat /workspace/terraform_output.json
 
-  # # [END terraform output]
-  # [START Ansible Playbook]
   - id: "Run Ansible Playbook"
     name: "google/cloud-sdk"
     entrypoint: "bash"
