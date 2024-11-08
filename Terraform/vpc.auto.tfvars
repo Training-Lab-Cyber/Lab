@@ -54,7 +54,7 @@ firewall_rules = {
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["31337"]
+        ports    = ["40056"]
       }
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
