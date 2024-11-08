@@ -54,7 +54,7 @@
 - hosts: gcp_group_ad_dev
   gather_facts: false
   roles:
-    - roles/active_directory/domain_controller
+    - roles/windows/active_directory/domain_controller
   vars:
     domain: dev.com
     netbios_name: DEV
@@ -62,7 +62,7 @@
 - hosts: gcp_group_ad_prod
   gather_facts: false
   roles:
-    - roles/active_directory/domain_controller
+    - roles/windows/active_directory/domain_controller
   vars:
     domain: prod.com
     netbios_name: PROD
