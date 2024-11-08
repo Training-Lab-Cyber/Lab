@@ -1,12 +1,4 @@
 ---
-- name: Ensure /opt/sliver directory exists
-  file:
-    path: /opt/sliver
-    state: directory
-    owner: root
-    group: root
-    mode: "0755"
-  become: true
 
 - name: Create proxy file in /etc/sudoers.d
   copy:
@@ -30,6 +22,16 @@
     line: "https_proxy=http://{{proxy_server}}:{{proxy_port}}"
     create: true
   become: true
+
+- name: Ensure /opt/sliver directory exists
+  file:
+    path: /opt/sliver
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
 
 - name: Install Sliver
   shell: curl https://sliver.sh/install | sudo bash
