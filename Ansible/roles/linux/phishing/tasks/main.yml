@@ -14,7 +14,7 @@
 
 - name: Copy index.html to the web server document root
   ansible.builtin.copy:
-    src: roles/apache/files/index.html
+    src: roles/linux/phishing/files/index.html
     dest: /var/www/html/index.html
     owner: www-data
     group: www-data
