@@ -11,6 +11,18 @@ vm_configs = {
     add_access_config = false
   }
 
+  phishing = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-phishing"
+    machine_type      = "n1-standard-1"
+    subnet_name       = "phishing"
+    tags              = ["phishing", "linux"]
+    labels            = { group = "phishing" }
+    image             = "debian-cloud/debian-11"
+    os                = "linux"
+    add_access_config = true
+  }
+
   redirector = {
     zone              = "asia-northeast1-a"
     name              = "vm-redirector"

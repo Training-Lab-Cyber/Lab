@@ -2,6 +2,10 @@
 ###
 # Create Redirector and C2 infra
 ###
+- hosts: gcp_group_phishing
+  gather_facts: false
+  roles:
+    - roles/linux/phishing
 
 - hosts: gcp_group_redirector
   gather_facts: false

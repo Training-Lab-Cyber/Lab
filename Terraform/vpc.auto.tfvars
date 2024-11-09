@@ -18,6 +18,22 @@ subnets = {
 }
 
 firewall_rules = {
+
+  ssh_from_myip = {
+    name      = "allow-c2-from-myip"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    ]
+    source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
+    destination_ranges = []
+    target_tags        = ["phishing"]
+    priority           = 1000
+  }
+
   http_from_internet = {
     name      = "allow-http-from-internet"
     direction = "INGRESS"
@@ -29,7 +45,7 @@ firewall_rules = {
     ]
     source_ranges      = ["0.0.0.0/0"]
     destination_ranges = []
-    target_tags        = ["redirector"]
+    target_tags        = ["redirector", "phishing"]
     priority           = 1000
   }
 
