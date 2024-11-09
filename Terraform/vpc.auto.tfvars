@@ -20,7 +20,7 @@ subnets = {
 firewall_rules = {
 
   ssh_from_myip = {
-    name      = "allow-c2-from-myip"
+    name      = "allow-ssh-from-myip"
     direction = "INGRESS"
     allow_protocols = [
       {
