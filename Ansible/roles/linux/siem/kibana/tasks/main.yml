@@ -25,7 +25,7 @@
   become: true
 
 - name: Run elasticsearch-reset-password and capture output
-  command: /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+  command: echo "y" | /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
   register: reset_password_output
   become: true
 
