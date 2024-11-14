@@ -27,10 +27,12 @@
 - name: Run elasticsearch-reset-password and capture output
   command: /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
   register: reset_password_output
+  become: true
 
 - name: Extract new password from output
   set_fact:
     elastic_password: "{{ reset_password_output.stdout | regex_search('New value: (.*)', '\\1') }}"
+  become: true
 
 - name: Deploy custom kibana config
   ansible.builtin.template:
