@@ -27,7 +27,6 @@
 - name: Run elasticsearch-reset-password and capture output
   command: ./elasticsearch-reset-password -u elastic
   register: reset_password_output
-  no_log: true # To avoid exposing the password in logs
 
 - name: Extract new password from output
   set_fact:
