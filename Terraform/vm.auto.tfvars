@@ -103,4 +103,16 @@ vm_configs = {
     os                = "windows"
     add_access_config = false
   }
+
+  elk = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-elk"
+    machine_type      = "n1-standard-4"
+    subnet_name       = "test"
+    tags              = ["elk", "linux"]
+    labels            = { group = "elk" }
+    image             = "debian-cloud/debian-11"
+    os                = "linux"
+    add_access_config = true
+  }
 }

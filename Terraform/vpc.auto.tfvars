@@ -199,4 +199,35 @@ firewall_rules = {
     target_tags        = ["windows"]
     priority           = 1000
   }
+
+
+  elasticsearch_from_test = {
+    name      = "allow-elasticsearch-from-test"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["9200", "8220", "5601"]
+      }
+    ]
+    source_ranges      = ["10.4.0.0/24"]
+    destination_ranges = []
+    target_tags        = ["elk"]
+    priority           = 1000
+  }
+
+  kibana_from_myip = {
+    name      = "allow-kibana-from-myip"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["5601", "22"]
+      }
+    ]
+    source_ranges      = ["121.103.83.2/32", "220.146.34.124/32"]
+    destination_ranges = []
+    target_tags        = ["elk"]
+    priority           = 1000
+  }
 }

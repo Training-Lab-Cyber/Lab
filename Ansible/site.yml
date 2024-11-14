@@ -124,3 +124,9 @@
     - roles/windows/vuln_config/unconstrained_delegation
   vars:
     target_hostname: "{{ groups['gcp_group_server_dev'] | map('extract', hostvars, 'name') | first }}"
+
+- hosts: gcp_group_elk
+  gather_facts: false
+  roles:
+    - roles/linux/siem/elasticsearch
+    - roles/linux/siem/kibana

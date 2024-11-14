@@ -1,0 +1,41 @@
+---
+- name: Add Elasticsearch GPG key
+  ansible.builtin.apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+  become: true
+
+- name: Add Elasticsearch repository
+  ansible.builtin.apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/8.x/apt stable main"
+    state: present
+    filename: "elastic-8.x"
+  become: true
+
+- name: Update the system
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install required packages
+  apt:
+    name:
+      - kibana
+    state: present
+  become: true
+
+- name: Deploy custom squid.conf
+  ansible.builtin.template:
+    src: templates/kibana.yml.j2
+    dest: /etc/kibana/kibana.yml
+    owner: root
+    group: elasticsearch
+    mode: "0644"
+  become: true
+  ignore_errors: true
+
+- name: Start and enable Elasticsearch service
+  ansible.builtin.systemd:
+    name: kibana
+    state: started
+    enabled: true
