@@ -39,6 +39,9 @@
       - src_port: 40056
         dest_host: localhost
         dest_port: 40056
+      - src_port: 1080
+        dest_host: localhost
+        dest_port: 1080
     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
   roles:
