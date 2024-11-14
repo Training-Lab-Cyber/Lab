@@ -36,6 +36,24 @@
   become: true
   ignore_errors: true
 
+# this seems like a packaging bug for 6.x
+- name: Create log directory structure for ES
+  file:
+    path: /usr/share/elasticsearch/logs
+    state: directory
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0755
+
+# another packaging bug, this should be done by RPM
+- name: Create datadir for elasticsearch
+  file:
+    path: /usr/share/elasticsearch/data
+    state: directory
+    owner: elasticsearch
+    group: elasticsearch
+    mode: 0755
+
 - name: Start and enable Elasticsearch service
   ansible.builtin.systemd:
     name: elasticsearch

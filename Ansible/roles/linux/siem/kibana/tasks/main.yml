@@ -24,7 +24,16 @@
     state: present
   become: true
 
-- name: Deploy custom squid.conf
+- name: Run elasticsearch-reset-password and capture output
+  command: ./elasticsearch-reset-password -u elastic
+  register: reset_password_output
+  no_log: true # To avoid exposing the password in logs
+
+- name: Extract new password from output
+  set_fact:
+    elastic_password: "{{ reset_password_output.stdout | regex_search('New value: (.*)', '\\1') }}"
+
+- name: Deploy custom kibana config
   ansible.builtin.template:
     src: templates/kibana.yml.j2
     dest: /etc/kibana/kibana.yml
@@ -34,7 +43,7 @@
   become: true
   ignore_errors: true
 
-- name: Start and enable Elasticsearch service
+- name: Start and enable Kibana service
   ansible.builtin.systemd:
     name: kibana
     state: started
