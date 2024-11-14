@@ -44,6 +44,7 @@
     owner: elasticsearch
     group: elasticsearch
     mode: 0755
+  become: true
 
 # another packaging bug, this should be done by RPM
 - name: Create datadir for elasticsearch
@@ -53,6 +54,7 @@
     owner: elasticsearch
     group: elasticsearch
     mode: 0755
+  become: true
 
 - name: Start and enable Elasticsearch service
   ansible.builtin.systemd:
