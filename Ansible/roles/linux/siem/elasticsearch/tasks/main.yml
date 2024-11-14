@@ -26,7 +26,7 @@
     state: present
   become: true
 
-- name: Deploy custom squid.conf
+- name: Deploy custom elasticsearch config
   ansible.builtin.template:
     src: templates/elasticsearch.yml.j2
     dest: /etc/elasticsearch/elasticsearch.yml
@@ -41,3 +41,4 @@
     name: elasticsearch
     state: started
     enabled: true
+  become: true
