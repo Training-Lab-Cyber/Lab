@@ -79,6 +79,21 @@ firewall_rules = {
     priority           = 1000
   }
 
+  socks_from_myip = {
+    name      = "allow-socks-from-myip"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["1080"]
+      }
+    ]
+    source_ranges      = ["220.146.34.124/32", "121.103.83.2/32"]
+    destination_ranges = []
+    target_tags        = ["redirector"]
+    priority           = 1000
+  }
+
   ssh_from_c2 = {
     name      = "allow-ssh-from-c2"
     direction = "INGRESS"
