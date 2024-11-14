@@ -56,6 +56,16 @@
     mode: 0755
   become: true
 
+- name: Remove the elasticsearch.keystore file
+  file:
+    path: /etc/elasticsearch/elasticsearch.keystore
+    state: absent
+  become: true
+
+- name: Create a new elasticsearch.keystore
+  command: /usr/share/elasticsearch/bin/elasticsearch-keystore create
+  become: true
+
 - name: Start and enable Elasticsearch service
   ansible.builtin.systemd:
     name: elasticsearch
