@@ -1,0 +1,32 @@
+---
+- name: Install Docker
+  apt:
+    name: docker.io
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Install Docker Compose
+  apt:
+    name: docker-compose
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Clone the docker-elk repository
+  git:
+    repo: https://github.com/deviantony/docker-elk.git
+    dest: /opt/docker-elk
+  become: true
+
+- name: Start Docker Compose services
+  command: docker-compose up -d
+  args:
+    chdir: /opt/docker-elk
+  become: true
+
+- name: Display Docker Compose services status
+  command: docker-compose ps
+  args:
+    chdir: /opt/docker-elk
+  become: true

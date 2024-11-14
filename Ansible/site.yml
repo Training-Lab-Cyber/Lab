@@ -2,8 +2,7 @@
 - hosts: gcp_group_elk
   gather_facts: false
   roles:
-    - roles/linux/siem/elasticsearch
-    - roles/linux/siem/kibana
+    - roles/linux/siem/elk
 
 ###
 # Create Redirector and C2 infra
