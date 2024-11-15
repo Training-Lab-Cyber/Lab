@@ -66,21 +66,26 @@
     chdir: /opt/docker-elk
   become: true
 
-- name: Ensure Python is installed
+- name: Copy 'file' directory recursively to the target machine
+  ansible.builtin.copy:
+    src: file
+    dest: "/tmp/file"
+    mode: '0755'
+    remote_src: no
+    recurse: yes
+
+- name: Ensure Python 3 is installed on the target machine
   ansible.builtin.apt:
     name: python3
     state: present
   become: true
 
-- name: Run the Python script to create agent policies and package policies
+- name: Run the Python script in the copied directory
   ansible.builtin.command:
-    cmd: python3 files/createPolicy.py --path files/windows
+    cmd: >
+      python3 /tmp/file/createPolicy.py --path /tmp/file/windows
+      python3 /tmp/file/createPolicy.py --path /tmp/file/proxy
   environment:
-    KIBANA_USERNAME: "elastic"
-    KIBANA_PASSWORD: "changeme"
     KIBANA_URL: "http://localhost:5601"
-  register: python_script_output
-
-- name: Print output of Python script
-  ansible.builtin.debug:
-    var: python_script_output.stdout
+    KIBANA_USERNAME: "elastic" 
+    KIBANA_PASSWORD: "changeme"
