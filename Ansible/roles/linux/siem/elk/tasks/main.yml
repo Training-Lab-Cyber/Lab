@@ -53,7 +53,6 @@
     dest: /opt/docker-elk
   become: true
 
-
 - name: Start Docker Compose services
   command: docker compose up setup
   args:
@@ -70,7 +69,7 @@
   ansible.builtin.copy:
     src: AgentPolicies
     dest: "/tmp/"
-    mode: '0755'
+    mode: "0755"
     remote_src: no
 
 - name: Ensure Python 3 is installed on the target machine
@@ -79,12 +78,18 @@
     state: present
   become: true
 
-- name: Run the Python script in the copied directory
+- name: Run the Python script for windows
   ansible.builtin.command:
-    cmd: >
-      python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/windows
-      python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/proxy
+    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/windows
   environment:
     KIBANA_URL: "http://localhost:5601"
-    KIBANA_USERNAME: "elastic" 
+    KIBANA_USERNAME: "elastic"
+    KIBANA_PASSWORD: "changeme"
+
+- name: Run the Python script for proxy
+  ansible.builtin.command:
+    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/proxy
+  environment:
+    KIBANA_URL: "http://localhost:5601"
+    KIBANA_USERNAME: "elastic"
     KIBANA_PASSWORD: "changeme"
