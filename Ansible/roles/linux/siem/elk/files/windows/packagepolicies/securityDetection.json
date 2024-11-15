@@ -1,0 +1,11 @@
+{
+    "policy_id": "",
+    "package": {
+      "name": "security_detection_engine",
+      "version": "8.15.10"
+    },
+    "name": "security_detection_engine-1",
+    "description": "",
+    "namespace": "",
+    "inputs": {}
+  }

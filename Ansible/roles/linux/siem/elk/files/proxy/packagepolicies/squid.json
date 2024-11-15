@@ -1,0 +1,67 @@
+{
+  "policy_id": "",
+  "package": {
+    "name": "squid",
+    "version": "1.0.2"
+  },
+  "name": "squid-1",
+  "description": "",
+  "namespace": "",
+  "inputs": {
+    "log-udp": {
+      "enabled": false,
+      "streams": {
+        "squid.log": {
+          "enabled": false,
+          "vars": {
+            "tags": [
+              "squid-log",
+              "forwarded"
+            ],
+            "udp_host": "localhost",
+            "udp_port": 9537,
+            "preserve_original_event": false,
+            "udp_options": "#read_buffer: 100MiB\n#max_message_size: 50KiB\n#timeout: 300s\n"
+          }
+        }
+      }
+    },
+    "log-tcp": {
+      "enabled": false,
+      "streams": {
+        "squid.log": {
+          "enabled": false,
+          "vars": {
+            "tags": [
+              "squid-log",
+              "forwarded"
+            ],
+            "tcp_host": "localhost",
+            "tcp_port": 9537,
+            "preserve_original_event": false,
+            "ssl": "#certificate: \"/etc/server/cert.pem\"\n#key: \"/etc/server/key.pem\"",
+            "tcp_options": "# max_message_size: 50KiB"
+          }
+        }
+      }
+    },
+    "log-filestream": {
+      "enabled": true,
+      "streams": {
+        "squid.log": {
+          "enabled": true,
+          "vars": {
+            "paths": [
+              "/var/log/squid/access.log"
+            ],
+            "tags": [
+              "squid-log",
+              "forwarded"
+            ],
+            "preserve_original_event": false
+          }
+        }
+      }
+    }
+  }
+}

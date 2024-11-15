@@ -53,10 +53,6 @@
     dest: /opt/docker-elk
   become: true
 
-- name: Change to docker-elk directory
-  command: chdir=/opt/docker-elk pwd
-  register: docker_elk_dir
-  become: true
 
 - name: Start Docker Compose services
   command: docker compose up setup
@@ -69,3 +65,22 @@
   args:
     chdir: /opt/docker-elk
   become: true
+
+- name: Ensure Python is installed
+  ansible.builtin.yum:
+    name: python3
+    state: present
+  become: true
+
+- name: Run the Python script to create agent policies and package policies
+  ansible.builtin.command:
+    cmd: python3 files/createPolicy.py --path files/windows
+  environment:
+    KIBANA_USERNAME: "elastic"
+    KIBANA_PASSWORD: "changeme"
+    KIBANA_URL: "http://localhost:5601"
+  register: python_script_output
+
+- name: Print output of Python script
+  ansible.builtin.debug:
+    var: python_script_output.stdout
