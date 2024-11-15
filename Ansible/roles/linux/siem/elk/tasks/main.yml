@@ -65,7 +65,7 @@
   become: true
 
 - name: Display Docker Compose services status
-  command: docker compose up -d
+  command: docker compose -f docker-compose.yml -f extensions/fleet/fleet-compose.yml up -d
   args:
     chdir: /opt/docker-elk
   become: true
