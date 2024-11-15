@@ -67,7 +67,7 @@
   become: true
 
 - name: Ensure Python is installed
-  ansible.builtin.yum:
+  ansible.builtin.apt:
     name: python3
     state: present
   become: true
