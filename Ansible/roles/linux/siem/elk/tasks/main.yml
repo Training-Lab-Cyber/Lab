@@ -68,7 +68,7 @@
 
 - name: Copy 'file' directory recursively to the target machine
   ansible.builtin.copy:
-    src: file
+    src: AgentPolicies
     dest: "/tmp/file"
     mode: '0755'
     remote_src: no
