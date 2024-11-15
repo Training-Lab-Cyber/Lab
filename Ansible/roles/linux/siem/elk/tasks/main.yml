@@ -1,16 +1,50 @@
 ---
-- name: Install Docker
+- name: Update APT package index
   apt:
-    name: docker.io
-    state: present
     update_cache: yes
   become: true
 
-- name: Install Docker Compose
+- name: Install ca-certificates and curl
   apt:
-    name: docker-compose
+    name:
+      - ca-certificates
+      - curl
     state: present
+  become: true
+
+- name: Create directory for apt keyrings
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Download Docker GPG key
+  get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: "0644"
+  become: true
+
+- name: Add Docker repository to Apt sources
+  shell: |
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo \"$VERSION_CODENAME\") stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+  become: true
+
+- name: Update APT package index again
+  apt:
     update_cache: yes
+  become: true
+
+- name: Install Docker
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
   become: true
 
 - name: Clone the docker-elk repository
@@ -19,14 +53,19 @@
     dest: /opt/docker-elk
   become: true
 
+- name: Change to docker-elk directory
+  command: chdir=/opt/docker-elk pwd
+  register: docker_elk_dir
+  become: true
+
 - name: Start Docker Compose services
-  command: docker-compose up -d
+  command: docker compose up setup
   args:
     chdir: /opt/docker-elk
   become: true
 
 - name: Display Docker Compose services status
-  command: docker-compose ps
+  command: docker compose up -d
   args:
     chdir: /opt/docker-elk
   become: true
