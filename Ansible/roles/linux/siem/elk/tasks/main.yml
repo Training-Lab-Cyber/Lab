@@ -109,26 +109,26 @@
   until: kibana_status.status == 200 or 'Kibana server is not ready yet' not in (kibana_status.content | default(''))
   ignore_errors: true # Continue even if the check fails initially
 
-- name: Copy 'file' directory recursively to the target machine
-  ansible.builtin.copy:
-    src: Agents
-    dest: "/var/www/html/"
-    mode: "0755"
-    remote_src: no
+- name: Download Elastic Agent for linux
+  get_url:
+    url: https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.15.4-linux-x86_64.tar.gz
+    dest: /var/www/html/elastic-agent-8.15.4-linux-x86_64.tar.gz
+    mode: "0644"
   become: true
 
-- name: Run the Python script for windows
-  ansible.builtin.command:
-    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/windows --os=windows
-  environment:
-    KIBANA_URL: "http://localhost:5601"
-    KIBANA_USERNAME: "elastic"
-    KIBANA_PASSWORD: "changeme"
+- name: Download Elastic Agent for windows
+  get_url:
+    url: https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.15.4-windows-x86_64.zip
+    dest: /var/www/html/elastic-agent-8.15.4-windows-x86_64.zip
+    mode: "0644"
+  become: true
 
 - name: Run the Python script for proxy
   ansible.builtin.command:
-    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/proxy --os=linux
-  environment:
-    KIBANA_URL: "http://localhost:5601"
-    KIBANA_USERNAME: "elastic"
-    KIBANA_PASSWORD: "changeme"
+    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/windows --os=windows --url="http://localhost:5601" --username="elastic" --password="changeme"
+  become: true
+
+- name: Run the Python script for proxy
+  ansible.builtin.command:
+    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/proxy --os=linux --url="http://localhost:5601" --username="elastic" --password="changeme"
+  become: true

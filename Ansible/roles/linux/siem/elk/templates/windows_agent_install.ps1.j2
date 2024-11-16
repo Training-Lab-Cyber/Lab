@@ -2,4 +2,4 @@ $ProgressPreference = 'SilentlyContinue'
 Invoke-WebRequest -Uri http://{{ inventory_hostname }}/elastic-agent-8.15.4-windows-x86_64.zip -OutFile elastic-agent-8.15.4-windows-x86_64.zip
 Expand-Archive .\elastic-agent-8.15.4-windows-x86_64.zip -DestinationPath .
 cd elastic-agent-8.15.4-windows-x86_64
-.\elastic-agent.exe install --url=http://{{ inventory_hostname }}:8220 --enrollment-token
+.\elastic-agent.exe install --url=http://{{ inventory_hostname }}:8220 --enrollment-token=

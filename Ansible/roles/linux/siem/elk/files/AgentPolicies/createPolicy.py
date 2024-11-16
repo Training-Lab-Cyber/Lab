@@ -134,6 +134,12 @@ def parse_arguments():
                         help="Path to the directory containing AgentPolicy.json and packagepolicies")
     parser.add_argument('--os', required=True,
                         help="OS type for agent")
+    parser.add_argument('--url', required=True,
+                        help="kibana url")
+    parser.add_argument('--username', required=True,
+                        help="kibana user name")
+    parser.add_argument('--password', required=True,
+                        help="kibana password")
     return parser.parse_args()
 
 # Main function to orchestrate policy creation
@@ -153,9 +159,9 @@ def main():
         agent_policy_data = json.load(f)
 
     # Get Kibana credentials and URL from environment variables
-    kibana_url = os.getenv("KIBANA_URL")
-    kibana_username = os.getenv("KIBANA_USERNAME")
-    kibana_password = os.getenv("KIBANA_PASSWORD")
+    kibana_url = args.url
+    kibana_username = args.username
+    kibana_password = args.password
 
     # Create agent policy
     agent_policy_id = create_agent_policy(
