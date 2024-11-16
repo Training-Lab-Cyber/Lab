@@ -207,7 +207,7 @@ firewall_rules = {
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["9200", "8220", "5601"]
+        ports    = ["9200", "8220", "5601","80"]
       }
     ]
     source_ranges      = ["10.4.0.0/24"]
