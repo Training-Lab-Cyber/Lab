@@ -12,15 +12,6 @@
     enabled: yes
   become: true
 
-- name: Copy index.html to the web server document root
-  ansible.builtin.copy:
-    src: roles/linux/phishing/files/index.html
-    dest: /var/www/html/index.html
-    owner: www-data
-    group: www-data
-    mode: "0644"
-  become: true
-
 - name: Start and enable Apache service
   service:
     name: apache2
