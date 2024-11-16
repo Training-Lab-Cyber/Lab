@@ -89,8 +89,8 @@ steps:
 
         python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
 
-        wget https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.15.4-linux-x86_64.tar.gz -O roles/linux/siem/elk/files/Agents/elastic-agent-8.15.4-linux-x86_64.tar.gz
-        wget https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.15.4-windows-x86_64.zip -O roles/linux/siem/elk/files/Agents/elastic-agent-8.15.4-windows-x86_64.zip
+        curl https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.15.4-linux-x86_64.tar.gz -O roles/linux/siem/elk/files/Agents/elastic-agent-8.15.4-linux-x86_64.tar.gz
+        curl https://artifacts.elastic.co/downloads/beats/elastic-agent/elastic-agent-8.15.4-windows-x86_64.zip -O roles/linux/siem/elk/files/Agents/elastic-agent-8.15.4-windows-x86_64.zip
 
         ansible-inventory --graph -i inventory/gcp.yaml 
         ansible-playbook site.yml -i inventory/gcp.yaml

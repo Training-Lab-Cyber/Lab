@@ -1,0 +1,4 @@
+curl -L -O http://{{ inventory_hostname }}/elastic-agent-8.15.4-linux-x86_64.tar.gz
+tar xzvf elastic-agent-8.15.4-linux-x86_64.tar.gz
+cd elastic-agent-8.15.4-linux-x86_64
+sudo ./elastic-agent install --url=http://{{ inventory_hostname }}:8220 --enrollment-token
