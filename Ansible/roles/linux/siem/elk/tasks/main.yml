@@ -78,9 +78,48 @@
     state: present
   become: true
 
+- name: Ensure /tmp/AgentInstallerScripts directory exists
+  file:
+    path: /tmp/AgentInstallerScripts
+    state: directory
+    mode: "0755"
+
+- name: Copy agent.sh template to /tmp/AgentInstallerScripts
+  template:
+    src: templates/linux_agent_install.sh.j2
+    dest: /tmp/AgentInstallerScripts/linux_agent_install.sh
+    mode: "0755"
+
+- name: Copy agent.ps1 template to /tmp/AgentInstallerScripts
+  template:
+    src: templates/windows_agent_install.ps1.j2
+    dest: /tmp/AgentInstallerScripts/windows_agent_install.ps1
+    mode: "0755"
+
+- name: Wait until kibana status is 200
+  uri:
+    url: "http://localhost:5601/"
+    return_content: yes
+    validate_certs: no
+    status_code:
+      - 200
+  register: kibana_status
+  retries: 30 # Number of attempts
+  delay: 10 # Wait 10 seconds between attempts
+  until: kibana_status.status == 200 or 'Kibana server is not ready yet' not in (kibana_status.content | default(''))
+  ignore_errors: true # Continue even if the check fails initially
+
+- name: Copy 'file' directory recursively to the target machine
+  ansible.builtin.copy:
+    src: Agents
+    dest: "/var/www/html/"
+    mode: "0755"
+    remote_src: no
+  become: true
+
 - name: Run the Python script for windows
   ansible.builtin.command:
-    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/windows
+    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/windows --os=windows
   environment:
     KIBANA_URL: "http://localhost:5601"
     KIBANA_USERNAME: "elastic"
@@ -88,7 +127,7 @@
 
 - name: Run the Python script for proxy
   ansible.builtin.command:
-    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/proxy
+    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/proxy --os=linux
   environment:
     KIBANA_URL: "http://localhost:5601"
     KIBANA_USERNAME: "elastic"

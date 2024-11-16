@@ -92,30 +92,38 @@ def get_enrollment_api_key(agent_policy_id, kibana_url, kibana_username, kibana_
         return None
 
 
-def save_enrollment_api_key_to_file(agent_policy_name, api_key):
-    file_path = "/tmp/enrollment_tokens.txt"
+def create_enrollment_script(os_type, enrollment_api_key, policy_name):
+    # Determine the template file based on the OS type
+    if os_type == 'windows':
+        template_path = '/tmp/AgentInstallerScripts/windows_agent_install.ps1'
+        output_path = f'/var/www/html/{policy_name}.ps1'
+    elif os_type == 'linux':
+        template_path = '/tmp/AgentInstallerScripts/linux_agent_install.sh'
+        output_path = f'/var/www/html/{policy_name}.sh'
+    else:
+        print("Invalid OS type. Please use 'windows' or 'linux'.")
+        return
 
-    # Ensure the file exists and is a valid JSON object
-    if not os.path.exists(file_path):
-        with open(file_path, 'w') as f:
-            json.dump({}, f)
+    # Check if the template file exists
+    if not os.path.exists(template_path):
+        print(f"Template file {template_path} not found.")
+        return
 
-    # Load existing data
-    with open(file_path, 'r') as f:
-        try:
-            existing_data = json.load(f)
-        except json.JSONDecodeError:
-            existing_data = {}
+    # Read the template file
+    with open(template_path, 'r') as file:
+        content = file.read()
 
-    # Add or update the key-value pair
-    existing_data[agent_policy_name] = api_key
+    # Append the API key to the enrollment token line
+    updated_content = content.replace(
+        "--enrollment-token=", f"--enrollment-token={enrollment_api_key}")
 
-    # Write updated data back to the file
-    with open(file_path, 'w') as f:
-        json.dump(existing_data, f, indent=4)
-
-    print(
-        f"Enrollment API key for '{agent_policy_name}' saved to {file_path}.")
+    # Save the updated content to the output path
+    try:
+        with open(output_path, 'w') as file:
+            file.write(updated_content)
+        print(f"Updated file saved as {output_path}")
+    except IOError as e:
+        print(f"Failed to write the file: {e}")
 
 
 # Parse command-line arguments
@@ -124,6 +132,8 @@ def parse_arguments():
         description="Create Agent and Package Policies in Kibana")
     parser.add_argument('--path', required=True,
                         help="Path to the directory containing AgentPolicy.json and packagepolicies")
+    parser.add_argument('--os', required=True,
+                        help="OS type for agent")
     return parser.parse_args()
 
 # Main function to orchestrate policy creation
@@ -154,16 +164,6 @@ def main():
         print("Error: Agent policy creation failed. Exiting...")
         return
 
-    enrollment_api_key = get_enrollment_api_key(
-        agent_policy_id, kibana_url, kibana_username, kibana_password)
-    if not enrollment_api_key:
-        print("Error: Could not retrieve enrollment API key. Exiting...")
-        return
-
-    # Save the enrollment API key to the file
-    save_enrollment_api_key_to_file(
-        agent_policy_data['name'], enrollment_api_key)
-
     # Process the package policies
     package_policies_dir = os.path.join(path_to_files, 'packagepolicies')
     if not os.path.exists(package_policies_dir):
@@ -184,6 +184,15 @@ def main():
         # Create package policy
         create_package_policy(package_policy_data, kibana_url,
                               kibana_username, kibana_password)
+
+    enrollment_api_key = get_enrollment_api_key(
+        agent_policy_id, kibana_url, kibana_username, kibana_password)
+    if not enrollment_api_key:
+        print("Error: Could not retrieve enrollment API key. Exiting...")
+        return
+
+    create_enrollment_script(
+        args.os, enrollment_api_key, agent_policy_data['name'])
 
 
 if __name__ == '__main__':

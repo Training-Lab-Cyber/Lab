@@ -1,10 +1,7 @@
 {
-    "name": "Proxy Policy",
-    "description": "",
-    "namespace": "default",
-    "monitoring_enabled": [
-        "logs",
-        "metrics"
-    ],
-    "inactivity_timeout": 1209600
+  "name": "proxy",
+  "description": "",
+  "namespace": "default",
+  "monitoring_enabled": ["logs", "metrics"],
+  "inactivity_timeout": 1209600
 }

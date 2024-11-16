@@ -4,7 +4,7 @@
     "name": "elastic_agent",
     "version": "2.0.3"
   },
-  "name": "elastic_agent-1",
+  "name": "elastic_agent-proxy",
   "description": "",
   "namespace": "",
   "inputs": {}
