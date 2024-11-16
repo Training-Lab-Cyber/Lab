@@ -8,7 +8,7 @@ vm_configs = {
     labels            = { group = "c2" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
-    add_access_config = fals
+    add_access_config = false
     disksize          = 100
   }
 
