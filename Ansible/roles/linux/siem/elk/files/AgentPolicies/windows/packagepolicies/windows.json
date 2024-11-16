@@ -61,9 +61,7 @@
             "preserve_original_event": false,
             "ignore_older": "72h",
             "language": 0,
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "custom": "# Winlog configuration example\n#batch_read_size: 100"
           }
         },
@@ -145,9 +143,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Microsoft-Windows-AppLocker/EXE and DLL\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -156,9 +152,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Microsoft-Windows-AppLocker/MSI and Script\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -167,9 +161,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Microsoft-Windows-AppLocker/Packaged app-Deployment\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -178,9 +170,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Microsoft-Windows-AppLocker/Packaged app-Execution\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -189,9 +179,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:ForwardedEvents\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -200,9 +188,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Windows PowerShell\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -211,9 +197,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Microsoft-Windows-Powershell/Operational\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -222,9 +206,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Microsoft-Windows-Sysmon/Operational\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         },
@@ -233,9 +215,7 @@
           "vars": {
             "interval": "10s",
             "search": "search sourcetype=\"XmlWinEventLog:Microsoft-Windows-Windows Defender/Operational\"",
-            "tags": [
-              "forwarded"
-            ],
+            "tags": ["forwarded"],
             "preserve_original_event": false
           }
         }

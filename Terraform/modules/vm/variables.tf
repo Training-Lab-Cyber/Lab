@@ -29,5 +29,6 @@ variable "vm_configs" {
     os                = string
     labels            = map(string)
     add_access_config = bool
+    disksize          = number
   }))
 }

@@ -1,0 +1,12 @@
+---
+- name: Extract the Elastic Agent tarball
+  ansible.builtin.unarchive:
+    src: file/elastic-agent-8.15.4-linux-x86_64.tar.gz
+    dest: /tmp
+    remote_src: yes
+
+- name: Change to the Elastic Agent directory and install
+  ansible.builtin.shell: |
+    cd /tmp/elastic-agent-8.15.4-linux-x86_64 &&
+    sudo ./elastic-agent install --url=http://{{ fleet-server }}:8220 --enrollment-token={{ enrollment-token }}
+  become: true

@@ -8,7 +8,8 @@ vm_configs = {
     labels            = { group = "c2" }
     image             = "debian-cloud/debian-11"
     os                = "linux"
-    add_access_config = false
+    add_access_config = fals
+    disksize          = 100
   }
 
   phishing = {
@@ -21,6 +22,7 @@ vm_configs = {
     image             = "debian-cloud/debian-11"
     os                = "linux"
     add_access_config = true
+    disksize          = 20
   }
 
   redirector = {
@@ -33,6 +35,7 @@ vm_configs = {
     image             = "debian-cloud/debian-11"
     os                = "linux"
     add_access_config = true
+    disksize          = 20
   }
 
   proxy = {
@@ -45,6 +48,7 @@ vm_configs = {
     image             = "debian-cloud/debian-11"
     os                = "linux"
     add_access_config = true
+    disksize          = 20
   }
 
   bastion = {
@@ -57,6 +61,7 @@ vm_configs = {
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = true
+    disksize          = 50
   }
   ad-prod = {
     zone              = "asia-northeast1-a"
@@ -68,6 +73,7 @@ vm_configs = {
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
+    disksize          = 50
   }
   ad-dev = {
     zone              = "asia-northeast1-a"
@@ -79,6 +85,7 @@ vm_configs = {
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
+    disksize          = 50
   }
   pc1 = {
     zone              = "asia-northeast1-a"
@@ -90,6 +97,7 @@ vm_configs = {
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
+    disksize          = 50
   }
 
   webserver = {
@@ -102,6 +110,7 @@ vm_configs = {
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
+    disksize          = 50
   }
 
   elk = {
@@ -114,5 +123,6 @@ vm_configs = {
     image             = "debian-cloud/debian-11"
     os                = "linux"
     add_access_config = true
+    disksize          = 300
   }
 }

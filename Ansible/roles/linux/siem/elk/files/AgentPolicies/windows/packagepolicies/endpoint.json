@@ -1,29 +1,29 @@
 {
-    "name": "Protect",
-    "description": "",
-    "namespace": "default",
-    "policy_id": "", 
-    "enabled": true,
-    "inputs": [
-      {
-        "enabled": true,
-        "streams": [],
-        "type": "ENDPOINT_INTEGRATION_CONFIG",
-        "config": {
-          "_config": {
-            "value": {
-              "type": "endpoint",
-              "endpointConfig": {
-                "preset": "EDRComplete"
-              }
+  "name": "elastic_defend_1",
+  "description": "",
+  "namespace": "default",
+  "policy_id": "",
+  "enabled": true,
+  "inputs": [
+    {
+      "enabled": true,
+      "streams": [],
+      "type": "ENDPOINT_INTEGRATION_CONFIG",
+      "config": {
+        "_config": {
+          "value": {
+            "type": "endpoint",
+            "endpointConfig": {
+              "preset": "EDRComplete"
             }
           }
         }
       }
-    ],
-    "package": {
-      "name": "endpoint",
-      "title": "Elastic Defend",
-      "version": "8.15.2" 
     }
+  ],
+  "package": {
+    "name": "endpoint",
+    "title": "Elastic Defend",
+    "version": "8.15.2"
   }
+}
