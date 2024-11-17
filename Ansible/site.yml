@@ -133,7 +133,7 @@
   gather_facts: false
   roles:
     - roles/linux/web
-    - roles/linux/elk
+    - roles/linux/siem/elk
 
 - hosts: gcp_group_ad_dev, gcp_group_terminal_dev,gcp_group_server_dev, gcp_group_ad_prod
   gather_facts: false
