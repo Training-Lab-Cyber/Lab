@@ -3,10 +3,6 @@
   get_url:
     url: "http://{{ fleet_server }}/{{ file }}"
     dest: C:\\Users\\Ansible\\{{ file }}
-  become: true
-  become_method: runas
-  ansible_become_user: "{{ domain }}\\Administrator"
-  ansible_become_password: "{{ domain_password }}"
 
 - name: Execute the installation script on Windows
   win_shell: |
