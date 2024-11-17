@@ -140,7 +140,7 @@
   roles:
     - roles/windows/elastic_agent
   vars:
-    fleet-server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'name') | first }}"
+    fleet_server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'name') | first }}"
     file: windows.ps1
 
 - hosts: gcp_group_proxy
@@ -148,5 +148,5 @@
   roles:
     - roles/linux/elastic_agent
   vars:
-    fleet-server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'name') | first }}"
+    fleet_server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'name') | first }}"
     file: proxy.sh

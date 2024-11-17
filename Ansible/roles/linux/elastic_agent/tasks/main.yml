@@ -1,7 +1,7 @@
 ---
 - name: Download the installation script
   get_url:
-    url: "http://{{ fleet-server }}/{{ file }}"
+    url: "http://{{ fleet_server }}/{{ file }}"
     dest: "/tmp/{{ file }}"
   become: true
 
