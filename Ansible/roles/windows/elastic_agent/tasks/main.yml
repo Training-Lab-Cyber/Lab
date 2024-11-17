@@ -1,6 +1,6 @@
 ---
 - name: Download the installation script
-  get_url:
+  ansible.windows.win_get_url:
     url: "http://{{ fleet_server }}/{{ file }}"
     dest: C:\\Users\\Ansible\\{{ file }}
 
