@@ -9,3 +9,4 @@
   win_shell: |
     powershell.exe -ExecutionPolicy Bypass -File C:\\Users\\Ansible\\{{ file }}
   become: true
+  become_method: runas
