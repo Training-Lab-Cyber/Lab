@@ -4,6 +4,7 @@
     url: "http://{{ fleet_server }}/{{ file }}"
     dest: C:\\Users\\Ansible\\{{ file }}
   become: true
+  become_method: runas
 
 - name: Execute the installation script on Windows
   win_shell: |
