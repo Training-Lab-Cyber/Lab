@@ -7,7 +7,3 @@
 - name: Execute the installation script on Windows
   win_shell: |
     powershell.exe -ExecutionPolicy Bypass -File C:\\Users\\Ansible\\{{ file }}
-  become: true
-  become_method: runas
-  ansible_become_user: "{{ domain }}\\Administrator"
-  ansible_become_pass: "{{ domain_password }}"
