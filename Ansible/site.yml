@@ -1,10 +1,4 @@
 ---
-- hosts: gcp_group_elk
-  gather_facts: false
-  roles:
-    - roles/linux/web
-    - roles/linux/siem/elk
-
 ###
 # Create Redirector and C2 infra
 ###
@@ -130,3 +124,29 @@
     - roles/windows/vuln_config/unconstrained_delegation
   vars:
     target_hostname: "{{ groups['gcp_group_server_dev'] | map('extract', hostvars, 'name') | first }}"
+
+###
+# Install EDR to test servers
+###
+
+- hosts: gcp_group_elk
+  gather_facts: false
+  roles:
+    - roles/linux/web
+    - roles/linux/elk
+
+- hosts: gcp_group_ad_dev, gcp_group_terminal_dev,gcp_group_server_dev, gcp_group_ad_prod
+  gather_facts: false
+  roles:
+    - roles/windows/elastic_agent
+  vars:
+    fleet-server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'name') | first }}"
+    file: windows.ps1
+
+- hosts: gcp_group_proxy
+  gather_facts: false
+  roles:
+    - roles/linux/elastic_agent
+  vars:
+    fleet-server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'name') | first }}"
+    file: proxy.sh
