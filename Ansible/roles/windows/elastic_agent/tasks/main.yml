@@ -10,4 +10,4 @@
   become: true
   become_method: runas
   ansible_become_user: "{{ domain }}\\Administrator"
-  ansible_become_password: "{{ domain_password }}"
+  ansible_become_pass: "{{ domain_password }}"
