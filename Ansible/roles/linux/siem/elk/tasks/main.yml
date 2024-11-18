@@ -53,6 +53,13 @@
     dest: /opt/docker-elk
   become: true
 
+- name: Copy agent.sh template to /tmp/AgentInstallerScripts
+  template:
+    src: templates/kibana.yml
+    dest: /opt/docker-elk/kibana/config/kibana.yml
+    mode: "0755"
+  become: true
+
 - name: Start Docker Compose services
   command: docker compose up setup
   args:
