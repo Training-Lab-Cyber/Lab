@@ -51,6 +51,7 @@
   git:
     repo: https://github.com/deviantony/docker-elk.git
     dest: /opt/docker-elk
+    force: true
   become: true
 
 - name: Copy agent.sh template to /tmp/AgentInstallerScripts
