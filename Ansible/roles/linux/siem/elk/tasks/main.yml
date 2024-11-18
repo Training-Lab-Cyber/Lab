@@ -55,7 +55,7 @@
 
 - name: Copy agent.sh template to /tmp/AgentInstallerScripts
   template:
-    src: templates/kibana.yml
+    src: templates/kibana.yml.j2
     dest: /opt/docker-elk/kibana/config/kibana.yml
     mode: "0755"
   become: true
