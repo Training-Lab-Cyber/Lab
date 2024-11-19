@@ -37,7 +37,8 @@
               },
               "malware": {
                 "mode": "prevent",
-                "blocklist": true
+                "blocklist": false,
+                "on_write_scan": true
               },
               "ransomware": {
                 "mode": "prevent",
@@ -53,19 +54,19 @@
               },
               "popup": {
                 "malware": {
-                  "message": "Potential Malware was detected.",
+                  "message": "",
                   "enabled": true
                 },
                 "ransomware": {
-                  "message": "Potential Ransomeware was detected.",
+                  "message": "",
                   "enabled": true
                 },
                 "memory_protection": {
-                  "message": "Memory protection launched.",
+                  "message": "",
                   "enabled": true
                 },
                 "behavior_protection": {
-                  "message": "Behavior protection launched.",
+                  "message": "",
                   "enabled": true
                 }
               },
@@ -79,6 +80,80 @@
                 "credential_hardening": {
                   "enabled": true
                 }
+              }
+            },
+            "mac": {
+              "events": {
+                "process": true,
+                "file": true,
+                "network": true
+              },
+              "malware": {
+                "mode": "prevent",
+                "blocklist": false
+              },
+              "behavior_protection": {
+                "mode": "detect",
+                "supported": true
+              },
+              "memory_protection": {
+                "mode": "detect",
+                "supported": true
+              },
+              "popup": {
+                "malware": {
+                  "message": "",
+                  "enabled": true
+                },
+                "behavior_protection": {
+                  "message": "",
+                  "enabled": true
+                },
+                "memory_protection": {
+                  "message": "",
+                  "enabled": true
+                }
+              },
+              "logging": {
+                "file": "info"
+              }
+            },
+            "linux": {
+              "events": {
+                "process": true,
+                "file": true,
+                "network": true,
+                "session_data": false,
+                "tty_io": false
+              },
+              "malware": {
+                "mode": "prevent",
+                "blocklist": false
+              },
+              "behavior_protection": {
+                "mode": "detect",
+                "supported": true
+              },
+              "memory_protection": {
+                "mode": "detect",
+                "supported": true
+              },
+              "popup": {
+                "malware": {
+                  "message": "",
+                  "enabled": true
+                },
+                "behavior_protection": {
+                  "message": "",
+                  "enabled": true
+                },
+                "memory_protection": {
+                  "message": "",
+                  "enabled": true
+                }
+              },
+              "logging": {
+                "file": "info"
               }
             }
           }

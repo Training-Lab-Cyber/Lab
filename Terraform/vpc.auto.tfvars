@@ -207,7 +207,7 @@ firewall_rules = {
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["9200", "8220", "5601","80"]
+        ports    = ["9200", "8220", "5601", "80"]
       }
     ]
     source_ranges      = ["10.4.0.0/24"]
@@ -216,6 +216,36 @@ firewall_rules = {
     priority           = 1000
   }
 
+
+  elasticsearch_from_phishing = {
+    name      = "allow-elasticsearch-from-phishing"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["9200", "8220", "5601", "80"]
+      }
+    ]
+    source_ranges      = ["10.2.0.0/24"]
+    destination_ranges = []
+    target_tags        = ["elk"]
+    priority           = 1000
+  }
+
+  elasticsearch_from_redirector = {
+    name      = "allow-elasticsearch-from-redirector"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["9200", "8220", "5601", "80"]
+      }
+    ]
+    source_ranges      = ["10.3.0.0/24"]
+    destination_ranges = []
+    target_tags        = ["elk"]
+    priority           = 1000
+  }
   kibana_from_myip = {
     name      = "allow-kibana-from-myip"
     direction = "INGRESS"

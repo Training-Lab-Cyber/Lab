@@ -1,0 +1,7 @@
+{
+  "name": "apache2",
+  "description": "",
+  "namespace": "default",
+  "monitoring_enabled": ["logs", "metrics"],
+  "inactivity_timeout": 1209600
+}

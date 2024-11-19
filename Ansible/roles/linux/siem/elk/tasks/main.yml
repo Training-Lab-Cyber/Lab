@@ -106,11 +106,9 @@
 
 - name: Wait until kibana status is 200
   uri:
-    url: "http://localhost:5601/"
+    url: "http://localhost:5601"
     return_content: yes
     validate_certs: no
-    status_code:
-      - 200
   register: kibana_status
   retries: 60 # Number of attempts
   delay: 15 # Wait 10 seconds between attempts
@@ -139,4 +137,9 @@
 - name: Run the Python script for proxy
   ansible.builtin.command:
     cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/proxy --os=linux --url="http://localhost:5601" --username="elastic" --password="changeme"
+  become: true
+
+- name: Run the Python script for apache2
+  ansible.builtin.command:
+    cmd: python3 /tmp/AgentPolicies/createPolicy.py --path /tmp/AgentPolicies/apache2 --os=linux --url="http://localhost:5601" --username="elastic" --password="changeme"
   become: true
