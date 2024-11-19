@@ -7,66 +7,66 @@ options:
     name: projects/$PROJECT_ID/locations/asia-northeast1/workerPools/private-pool
 
 steps:
-  # - id: "Create SSH Key Pair"
-  #   name: "alpine"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       apk add --no-cache openssh
-  #       ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
+  - id: "Create SSH Key Pair"
+    name: "alpine"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        apk add --no-cache openssh
+        ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
 
-  # - id: "Register SSH Private Key to Secret Manager"
-  #   name: "google/cloud-sdk"
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       if gcloud secrets describe ansible_key &>/dev/null; then
-  #         echo "Secret 'ansible_key' already exists. Adding a new version..."
-  #         gcloud secrets versions add ansible_key --data-file=/workspace/ansible_key
-  #       else
-  #         echo "Creating new secret 'ansible_key'..."
-  #         gcloud secrets create ansible_key --data-file=/workspace/ansible_key
-  #       fi
+  - id: "Register SSH Private Key to Secret Manager"
+    name: "google/cloud-sdk"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        if gcloud secrets describe ansible_key &>/dev/null; then
+          echo "Secret 'ansible_key' already exists. Adding a new version..."
+          gcloud secrets versions add ansible_key --data-file=/workspace/ansible_key
+        else
+          echo "Creating new secret 'ansible_key'..."
+          gcloud secrets create ansible_key --data-file=/workspace/ansible_key
+        fi
 
-  # - id: "tf init"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
+  - id: "tf init"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-  # - id: "tf plan"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform import  -var "project=$PROJECT_ID" -var "public_key_path=/workspace/ansible_key.pub" module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc
-  #       terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
+  - id: "tf plan"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform import  -var "project=$PROJECT_ID" -var "public_key_path=/workspace/ansible_key.pub" module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc
+        terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-  # - id: "tf apply"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
+  - id: "tf apply"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-  # - id: "tf output"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform output -json > /workspace/terraform_output.json
-  #       cat /workspace/terraform_output.json
+  - id: "tf output"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform output -json > /workspace/terraform_output.json
+        cat /workspace/terraform_output.json
 
   - id: "Run Ansible Playbook"
     name: "google/cloud-sdk"
