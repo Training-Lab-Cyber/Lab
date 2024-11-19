@@ -9,8 +9,14 @@ This lab  is used for automatic creation of redteam infrastructure, including C2
 
 ## Diagrams
 
-![alt text](diagram.png)
+* Building Flow
+![alt text](image.png)
 
+* Networking
+![alt text](image-1.png)
+
+* Testing Environment
+![alt text](image-2.png)
 
 ## GitOps style implementation
 The lab uses Google Cloud to host virtusl machines and virtual networks.  

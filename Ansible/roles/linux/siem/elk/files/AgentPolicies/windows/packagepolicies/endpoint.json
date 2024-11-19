@@ -4,26 +4,86 @@
   "namespace": "default",
   "policy_id": "",
   "enabled": true,
+  "package": {
+    "name": "endpoint",
+    "title": "Elastic Defend",
+    "version": "8.16.0"
+  },
   "inputs": [
     {
+      "type": "endpoint",
       "enabled": true,
       "streams": [],
-      "type": "ENDPOINT_INTEGRATION_CONFIG",
       "config": {
-        "_config": {
+        "integration_config": {
           "value": {
             "type": "endpoint",
             "endpointConfig": {
               "preset": "EDRComplete"
             }
           }
+        },
+        "policy": {
+          "value": {
+            "windows": {
+              "events": {
+                "dll_and_driver_load": true,
+                "dns": true,
+                "file": true,
+                "network": true,
+                "process": true,
+                "registry": true,
+                "security": true
+              },
+              "malware": {
+                "mode": "prevent",
+                "blocklist": true
+              },
+              "ransomware": {
+                "mode": "prevent",
+                "supported": true
+              },
+              "memory_protection": {
+                "mode": "detect",
+                "supported": true
+              },
+              "behavior_protection": {
+                "mode": "detect",
+                "supported": true
+              },
+              "popup": {
+                "malware": {
+                  "message": "Potential Malware was detected.",
+                  "enabled": true
+                },
+                "ransomware": {
+                  "message": "Potential Ransomeware was detected.",
+                  "enabled": true
+                },
+                "memory_protection": {
+                  "message": "Memory protection launched.",
+                  "enabled": true
+                },
+                "behavior_protection": {
+                  "message": "Behavior protection launched.",
+                  "enabled": true
+                }
+              },
+              "logging": {
+                "file": "info"
+              },
+              "antivirus_registration": {
+                "enabled": false
+              },
+              "attack_surface_reduction": {
+                "credential_hardening": {
+                  "enabled": true
+                }
+              }
+            }
+          }
         }
       }
     }
-  ],
-  "package": {
-    "name": "endpoint",
-    "title": "Elastic Defend",
-    "version": "8.15.2"
-  }
+  ]
 }

@@ -112,8 +112,8 @@
     status_code:
       - 200
   register: kibana_status
-  retries: 30 # Number of attempts
-  delay: 10 # Wait 10 seconds between attempts
+  retries: 60 # Number of attempts
+  delay: 15 # Wait 10 seconds between attempts
   until: kibana_status.status == 200 or 'Kibana server is not ready yet' not in (kibana_status.content | default(''))
   ignore_errors: true # Continue even if the check fails initially
 
