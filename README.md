@@ -42,6 +42,5 @@ To build the lab, push this repository to the Github branch.
 ## Roadmap
 * Eliminate hardcoded creds
 * Eliminate manual creation parts described above
-* Create Phishing environments
 * Create CDNs
 * Documentation
