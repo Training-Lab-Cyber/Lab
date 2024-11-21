@@ -15,7 +15,6 @@ steps:
       - |
         apk add --no-cache openssh
         ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
-
   - id: "Register SSH Private Key to Secret Manager"
     name: "google/cloud-sdk"
     entrypoint: "bash"
@@ -29,7 +28,6 @@ steps:
           echo "Creating new secret 'ansible_key'..."
           gcloud secrets create ansible_key --data-file=/workspace/ansible_key
         fi
-
   - id: "tf init"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
@@ -49,13 +47,14 @@ steps:
         terraform import  -var "project=$PROJECT_ID" -var "public_key_path=/workspace/ansible_key.pub" module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc
         terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
+
   - id: "tf apply"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
     args:
       - "-c"
       - |
-        cd Terraform
+        cd Terraform    
         terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
   - id: "tf output"
@@ -88,8 +87,10 @@ steps:
         cp -f /workspace/tunneling_key roles/linux/ssh_tunneling/src/files/id_rsa
 
         python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
+
         ansible-inventory --graph -i inventory/gcp.yaml 
-        ansible-playbook site.yml -i inventory/gcp.yaml
+        ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10 & ansible-playbook attacker_infra.yml -i inventory/gcp.yaml --forks 10 & ansible-playbook test_infra.yml -i inventory/gcp.yaml --forks 10 & wait
+        ansible-playbook elastic_agent.yml -i inventory/gcp.yaml --forks 10 
 
   # - id: "tf destroy"
   #   name: "hashicorp/terraform:1.0.0"

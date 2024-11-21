@@ -1,0 +1,49 @@
+---
+
+###
+# Create Redirector and C2 infra
+###
+- hosts: gcp_group_phishing
+  gather_facts: false
+  roles:
+    - roles/linux/web
+
+- hosts: gcp_group_redirector
+  gather_facts: false
+  roles:
+    - roles/linux/redirector
+    - roles/linux/proxy
+  vars:
+    allowed_ip_group: "gcp_group_c2"
+
+- hosts: gcp_group_c2
+  gather_facts: false
+  roles:
+    - roles/linux/c2/havoc
+  vars:
+    proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_port: "3128"
+
+- hosts: gcp_group_redirector
+  gather_facts: false
+  roles:
+    - roles/linux/ssh_tunneling/dest
+
+- hosts: gcp_group_c2
+  gather_facts: false
+  vars:
+    target_ip: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    remote_ports:
+      - src_port: 8080
+        dest_host: localhost
+        dest_port: 8080
+      - src_port: 40056
+        dest_host: localhost
+        dest_port: 40056
+      - src_port: 1080
+        dest_host: localhost
+        dest_port: 1080
+    proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_port: "3128"
+  roles:
+    - roles/linux/ssh_tunneling/src

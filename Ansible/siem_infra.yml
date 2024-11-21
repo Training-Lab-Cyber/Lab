@@ -1,0 +1,10 @@
+---
+###
+# Install ELK
+###
+
+- hosts: gcp_group_elk
+  gather_facts: false
+  roles:
+    - roles/linux/web
+    - roles/linux/siem/elk
