@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=./teamserver {{ inventory_hostname }} StrongPassword123! ./profiles/Normal/webbug.profile
+ExecStart=/opt/cobaltstrike/server/teamserver {{ inventory_hostname }} StrongPassword123! /opt/cobaltstrike/server/profiles/Normal/webbug.profile
 Restart=always
 RestartSec=5
 WorkingDirectory=/opt/cobaltstrike/server
