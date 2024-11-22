@@ -6,7 +6,7 @@ vm_configs = {
     subnet_name       = "c2"
     tags              = ["c2", "linux"]
     labels            = { group = "c2" }
-    image             = "debian-cloud/debian-11"
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
     os                = "linux"
     add_access_config = false
     disksize          = 100

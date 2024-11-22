@@ -1,0 +1,84 @@
+---
+- name: Create proxy file in /etc/sudoers.d
+  copy:
+    dest: /etc/sudoers.d/proxy
+    content: 'Defaults env_keep = "http_proxy https_proxy"'
+    owner: root
+    group: root
+    mode: "0440"
+  become: true
+
+- name: Set http_proxy environment variable
+  lineinfile:
+    path: /etc/environment
+    line: "http_proxy=http://{{proxy_server}}:{{proxy_port}}"
+    create: true
+  become: true
+
+- name: Set https_proxy environment variable
+  lineinfile:
+    path: /etc/environment
+    line: "https_proxy=http://{{proxy_server}}:{{proxy_port}}"
+    create: true
+  become: true
+
+- name: Update the system
+  apt:
+    update_cache: yes
+  become: true
+- name: Install required packages
+  apt:
+    name:
+      - openjdk-11-jdk
+      - autossh
+    state: present
+  become: true
+
+- name: Java update
+  command: update-java-alternatives -s java-1.11.0-openjdk-amd64
+  become: true
+
+- name: copy archived cobalt strike
+  copy:
+    src: files/cobaltstrike-dist-linux.tgz
+    dest: /tmp/cobaltstrike-dist-linux.tgz
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Extract tar.gz file
+  ansible.builtin.unarchive:
+    src: /tmp/cobaltstrike-dist-linux.tgz
+    dest: /opt/
+    remote_src: yes
+
+- name: Change directory and run the update script
+  command: echo -e {{ license_key }} | ./update
+  args:
+    chdir: /opt/cobaltstrike
+  become: true
+
+- name: Ensure /opt/cobaltstrike directory exists
+  file:
+    path: /opt/cobaltstrike/server/profiles
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Copy all the profile files
+  copy:
+    src: files/profiles/
+    dest: /opt/cobaltstrike/server/profiles
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Run teamserver
+  command: ./teamserver {{ inventory_hostname }} StrongPassword123! ./profiles/Normal/webbug.profile
+  args:
+    chdir: /opt/cobaltstrike
+  become: true
