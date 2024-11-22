@@ -132,8 +132,21 @@
     mode: "0755"
   become: true
 
-- name: Run teamserver
-  command: ./teamserver {{ inventory_hostname }} StrongPassword123! ./profiles/Normal/webbug.profile
-  args:
-    chdir: /opt/cobaltstrike/server
+- name: Create teamserver.service file
+  ansible.builtin.template:
+    src: templates/teamserver.service.j2
+    dest: /etc/systemd/system/teamserver.service
+    mode: "0644"
+  become: true
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: true
+
+- name: Enable and start teamserver service
+  ansible.builtin.systemd:
+    name: teamserver
+    enabled: true
+    state: started
   become: true
