@@ -52,6 +52,7 @@
     src: /tmp/cobaltstrike-dist-linux.tgz
     dest: /opt/
     remote_src: yes
+  become: true
 
 - name: Change directory and run the update script
   command: echo -e {{ license_key }} | ./update
