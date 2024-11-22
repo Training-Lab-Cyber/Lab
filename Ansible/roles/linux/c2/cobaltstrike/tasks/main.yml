@@ -48,12 +48,6 @@
     url: https://download.cobaltstrike.com/download
   delegate_to: localhost
   register: cobaltstrike_token
-  # The file /tmp/cobaltstrike.license doesn't exist until
-  # it is downloaded so the linter fails the lookup, which
-  # is the reason for the noqa below
-  vars: # noqa jinja[invalid]
-    cobaltstrike_license: >-
-      {{ lookup("file", "/tmp/cobaltstrike.license") }}
   become: true
 
 - name: Set CobaltStrike token fact
@@ -118,23 +112,7 @@
   # The CS license key is sensitive
   no_log: true
   register: expect
-  # The file /tmp/cobaltstrike.license doesn't exist until
-  # it is downloaded so the linter fails the lookup, which
-  # is the reason for the noqa below
-  vars: # noqa jinja[invalid]
-    cobaltstrike_license: >-
-      {{ lookup("file", "/tmp/cobaltstrike.license") }}
   become: true
-
-- name: Delete local copies of Cobalt Strike license and download token
-  ansible.builtin.file:
-    path: /tmp/{{ item }}
-    state: absent
-  become: true
-  delegate_to: localhost
-  loop:
-    - cobaltstrike.license
-    - token.html
 
 - name: Ensure /opt/cobaltstrike directory exists
   file:
