@@ -38,34 +38,109 @@
   command: update-java-alternatives -s java-1.11.0-openjdk-amd64
   become: true
 
-- name: copy archived cobalt strike
-  copy:
-    src: files/cobaltstrike-dist-linux.tgz
-    dest: /tmp/cobaltstrike-dist-linux.tgz
-    owner: root
-    group: root
-    mode: "0755"
+- name: Get CobaltStrike download token
+  ansible.builtin.uri:
+    body: dlkey={{ license_key }}
+    body_format: form-urlencoded
+    method: POST
+    return_content: true
+    url: https://download.cobaltstrike.com/download
+  delegate_to: localhost
+  register: cobaltstrike_token
+  # The file /tmp/cobaltstrike.license doesn't exist until
+  # it is downloaded so the linter fails the lookup, which
+  # is the reason for the noqa below
+  vars: # noqa jinja[invalid]
+    cobaltstrike_license: >-
+      {{ lookup("file", "/tmp/cobaltstrike.license") }}
   become: true
 
-- name: Extract tar.gz file
+- name: Set CobaltStrike token fact
+  ansible.builtin.set_fact:
+    cobaltstrike_token_content: "{{ cobaltstrike_token.content | regex_search('href=\"/downloads/(.+)/cobaltstrike-dist-windows.zip\"', '\\1') | first }}"
+  become: true
+
+- name: Extract the download token and download the Cobalt Strike tarball
+  ansible.builtin.get_url:
+    dest: /tmp
+    mode: "0644"
+    url: "https://download.cobaltstrike.com/downloads/{{ cobaltstrike_token_content }}/cobaltstrike-dist-linux.tgz"
+  become: true
+
+- name: Extract the Cobalt Strike tarball
   ansible.builtin.unarchive:
+    dest: /opt
+    remote_src: true
     src: /tmp/cobaltstrike-dist-linux.tgz
-    dest: /opt/
-    remote_src: yes
   become: true
 
-- name: Create havoc.service file
+- name: Delete remote copy of Cobalt Strike tarball
+  ansible.builtin.file:
+    path: /tmp/cobaltstrike-dist-linux.tgz
+    state: absent
+  become: true
+
+- name: Modify update shell to use proxy
   ansible.builtin.template:
     src: templates/update.j2
     dest: /opt/cobaltstrike/update
     mode: "0755"
   become: true
 
-- name: Change directory and run the update script
-  command: echo -e {{ license_key }} | ./update
+- name: Install expect
+  ansible.builtin.package:
+    name:
+      - expect
+- name: Upgrade and license Cobalt Strike
+  ansible.builtin.shell: |
+    set -o pipefail
+    log_file "expect.txt"
+    set timeout 300
+    spawn ./update
+    expect {
+      -re "Please enter your license key:" {
+        send [format "%s\n" {{ cobaltstrike_license }}]
+      } default {
+        exit 1
+      }
+    }
+    expect {
+      -re "(Failed to download hashes|Your license key is invalid)" {
+        exit 1
+      }
+    }
+    expect {
+      -re "Done" {
+        exit 0
+      } default {
+        exit 1
+      }
+    }
   args:
     chdir: /opt/cobaltstrike
+    creates: /opt/cobaltstrike/client/cobaltstrike.auth.client
+    executable: /usr/bin/expect
+  failed_when: expect.rc != 0
+  # The CS license key is sensitive
+  no_log: true
+  register: expect
+  # The file /tmp/cobaltstrike.license doesn't exist until
+  # it is downloaded so the linter fails the lookup, which
+  # is the reason for the noqa below
+  vars: # noqa jinja[invalid]
+    cobaltstrike_license: >-
+      {{ lookup("file", "/tmp/cobaltstrike.license") }}
   become: true
+
+- name: Delete local copies of Cobalt Strike license and download token
+  ansible.builtin.file:
+    path: /tmp/{{ item }}
+    state: absent
+  become: true
+  delegate_to: localhost
+  loop:
+    - cobaltstrike.license
+    - token.html
 
 - name: Ensure /opt/cobaltstrike directory exists
   file:
