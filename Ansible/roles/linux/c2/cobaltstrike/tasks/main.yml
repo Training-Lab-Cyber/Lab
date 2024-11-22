@@ -81,5 +81,5 @@
 - name: Run teamserver
   command: ./teamserver {{ inventory_hostname }} StrongPassword123! ./profiles/Normal/webbug.profile
   args:
-    chdir: /opt/cobaltstrike
+    chdir: /opt/cobaltstrike/server
   become: true
