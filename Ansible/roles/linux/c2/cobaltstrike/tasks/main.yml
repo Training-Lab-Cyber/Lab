@@ -65,6 +65,7 @@
     dest: /tmp
     mode: "0644"
     url: "https://download.cobaltstrike.com/downloads/{{ cobaltstrike_token_content }}/cobaltstrike-dist-linux.tgz"
+    validate_certs: no
   become: true
 
 - name: Extract the Cobalt Strike tarball
