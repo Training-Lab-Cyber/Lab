@@ -30,7 +30,21 @@ firewall_rules = {
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
-    target_tags        = ["phishing"]
+    target_tags        = ["phishing", "redirector"]
+    priority           = 1000
+  }
+  ssh_from_redirector = {
+    name      = "allow-ssh-from-redirector"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["22"]
+      }
+    ]
+    source_ranges      = ["10.3.0.0/24"]
+    destination_ranges = []
+    target_tags        = ["c2"]
     priority           = 1000
   }
 
