@@ -61,11 +61,7 @@
   become: true
 
 - name: Extract the download token and download the Cobalt Strike tarball
-  ansible.builtin.get_url:
-    dest: /tmp
-    mode: "0644"
-    url: "https://download.cobaltstrike.com/downloads/{{ cobaltstrike_token_content }}/cobaltstrike-dist-linux.tgz"
-    validate_certs: no
+  command: wget "https://download.cobaltstrike.com/downloads/{{ cobaltstrike_token_content }}/cobaltstrike-dist-linux.tgz" -O /tmp/cobaltstrike-dist-linux.tgz
   become: true
 
 - name: Extract the Cobalt Strike tarball
