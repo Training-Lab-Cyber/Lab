@@ -110,7 +110,7 @@
     executable: /usr/bin/expect
   failed_when: expect.rc != 0
   # The CS license key is sensitive
-  no_log: true
+  # no_log: true
   register: expect
   become: true
 
