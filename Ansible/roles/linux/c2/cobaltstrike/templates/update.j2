@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# Start Cobalt Strike Update Process
+#
+
+java -Dhttps.proxyHost={{proxy_server}} -Dhttps.proxyPort={{proxy_port}} -XX:ParallelGCThreads=4 -XX:+AggressiveHeap -XX:+UseParallelGC -jar update.jar -Type:linux $*

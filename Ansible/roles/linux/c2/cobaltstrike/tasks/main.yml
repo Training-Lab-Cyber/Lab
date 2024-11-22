@@ -54,6 +54,13 @@
     remote_src: yes
   become: true
 
+- name: Create havoc.service file
+  ansible.builtin.template:
+    src: templates/update.j2
+    dest: /opt/cobaltstrike/update
+    mode: "0755"
+  become: true
+
 - name: Change directory and run the update script
   command: echo -e {{ license_key }} | ./update
   args:
