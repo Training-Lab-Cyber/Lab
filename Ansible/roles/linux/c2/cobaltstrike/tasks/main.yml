@@ -87,7 +87,7 @@
     spawn ./update
     expect {
       -re "Please enter your license key:" {
-        send [format "%s\n" {{ cobaltstrike_license }}]
+        send [format "%s\n" {{ license_key }}]
       } default {
         exit 1
       }
