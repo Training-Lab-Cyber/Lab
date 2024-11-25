@@ -35,7 +35,7 @@ vm_configs = {
     labels            = { group = "vpn" }
     image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
     os                = "linux"
-    add_access_config = false
+    add_access_config = true
     disksize          = 500
   }
 

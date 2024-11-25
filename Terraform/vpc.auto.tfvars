@@ -34,7 +34,7 @@ firewall_rules = {
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
-    target_tags        = ["phishing"]
+    target_tags        = ["phishing", "vpn"]
     priority           = 1000
   }
 
