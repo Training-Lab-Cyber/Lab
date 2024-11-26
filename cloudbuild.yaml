@@ -88,10 +88,8 @@ steps:
 
         python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
 
-        ansible-inventory --graph -i inventory/gcp.yaml 
-        ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10 & ansible-playbook attacker_infra.yml -i inventory/gcp.yaml --forks 10 & ansible-playbook test_infra.yml -i inventory/gcp.yaml --forks 10 & wait
-        ansible-playbook elastic_agent.yml -i inventory/gcp.yaml --forks 10 
-
+        ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10 & ansible-playbook attacker_infra.yml -i inventory/gcp.yaml --forks 10 & wait
+        ansible-playbook test_infra.yml -i inventory/gcp.yaml & ansible-playbook elastic_agent.yml -i inventory/gcp.yaml --forks 10
   # - id: "tf destroy"
   #   name: "hashicorp/terraform:1.0.0"
   #   entrypoint: "sh"
