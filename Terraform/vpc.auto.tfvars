@@ -30,7 +30,7 @@ firewall_rules = {
     ]
     source_ranges      = ["192.168.0.0/24"]
     destination_ranges = []
-    target_tags        = ["linux,windows"]
+    target_tags        = ["linux", "windows"]
     priority           = 1000
   }
 
