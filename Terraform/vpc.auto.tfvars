@@ -24,8 +24,8 @@ firewall_rules = {
     direction = "INGRESS"
     allow_protocols = [
       {
-        protocol = "tcp"
-        ports    = ["*"]
+        protocol = "all"
+        ports    = []
       }
     ]
     source_ranges      = ["192.168.0.0/24"]
