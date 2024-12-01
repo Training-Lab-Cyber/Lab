@@ -15,10 +15,18 @@
   vars:
     allowed_ip_group: "gcp_group_c2"
 
-- hosts: gcp_group_c2
+- hosts: gcp_group_cs
   gather_facts: false
   roles:
     - roles/linux/c2/cobaltstrike
+  vars:
+    proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_port: "3128"
+
+- hosts: gcp_group_havoc
+  gather_facts: false
+  roles:
+    - roles/linux/c2/havoc
   vars:
     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
@@ -28,7 +36,7 @@
   roles:
     - roles/linux/ssh_tunneling/dest
 
-- hosts: gcp_group_c2
+- hosts: gcp_group_cs
   gather_facts: false
   vars:
     target_ip: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
@@ -36,12 +44,19 @@
       - src_port: 8080
         dest_host: localhost
         dest_port: 8080
-      - src_port: 50050
+    proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    proxy_port: "3128"
+  roles:
+    - roles/linux/ssh_tunneling/src
+
+- hosts: gcp_group_havoc
+  gather_facts: false
+  vars:
+    target_ip: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    remote_ports:
+      - src_port: 8081
         dest_host: localhost
-        dest_port: 50050
-      - src_port: 1080
-        dest_host: localhost
-        dest_port: 1080
+        dest_port: 8081
     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
   roles:

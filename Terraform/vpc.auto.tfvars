@@ -15,13 +15,25 @@ subnets = {
     region = "asia-northeast1"
     cidr   = "10.4.0.0/24"
   }
-  vpn = {
-    region = "asia-northeast1"
-    cidr   = "10.100.0.0/24"
-  }
 }
 
 firewall_rules = {
+
+  all_from_vpn = {
+    name      = "allow-all-from-vpn"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "tcp"
+        ports    = ["*"]
+      }
+    ]
+    source_ranges      = ["192.168.0.0/24"]
+    destination_ranges = []
+    target_tags        = ["linux,windows"]
+    priority           = 1000
+  }
+
 
   ssh_from_myip = {
     name      = "allow-ssh-from-myip"
@@ -34,7 +46,7 @@ firewall_rules = {
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
-    target_tags        = ["phishing", "vpn"]
+    target_tags        = ["phishing"]
     priority           = 1000
   }
 
@@ -65,25 +77,6 @@ firewall_rules = {
     source_ranges      = ["10.1.0.0/24"]
     destination_ranges = []
     target_tags        = ["redirector"]
-    priority           = 1000
-  }
-
-  openvpn_from_myip = {
-    name      = "allow-vpn-from-myip"
-    direction = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["443"]
-        }, {
-        protocol = "udp"
-        ports    = ["1194"]
-
-      }
-    ]
-    source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
-    destination_ranges = []
-    target_tags        = ["vpn"]
     priority           = 1000
   }
 
