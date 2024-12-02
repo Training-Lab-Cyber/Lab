@@ -39,7 +39,7 @@
     set -o pipefail
     log_file "expect_build_ca.log"
     set timeout 300
-    spawn ./easyrsa build-ca nopass
+    spawn /home/ansible/openvpn/easyrsa build-ca nopass
     expect {
       -re "Common Name \\(eg: your user, host, or server name\\) \\[Easy-RSA CA\\]:" {
         send "server\n"
@@ -77,7 +77,7 @@
     set -o pipefail
     log_file "expect_build_ca.log"
     set timeout 300
-    spawn ./easyrsa build-server-full server nopass
+    spawn /home/ansible/openvpn/easyrsa build-server-full server nopass
     expect {
       -re "Confirm request details:" {
         send "yes\n"
