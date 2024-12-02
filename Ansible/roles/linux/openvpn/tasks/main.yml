@@ -19,19 +19,27 @@
     - libqrencode4
   become: true
 
+- name: Add user 'vpn-user'
+  ansible.builtin.user:
+    name: vpn-user
+    groups: wheel
+    password: "{{ 'korehavpnnopasuwa-dodesu202412' | password_hash('sha512') }}"
+    create_home: true
+  become: true
+
 - name: "Remove CA directory"
   become: true
   file:
     state: absent
-    path: "{{ ansible_env.HOME }}/openvpn-ca/"
+    path: "/home/vpn-user/openvpn-ca/"
 
 - name: "Create CA dir"
   become: true
-  command: make-cadir {{ ansible_env.HOME }}/openvpn-ca
+  command: make-cadir /home/vpn-user/openvpn-ca
 
 - name: Customize CA variable configuration
   lineinfile:
-    dest: "{{ ansible_env.HOME }}/openvpn-ca/vars"
+    dest: "/home/vpn-user/openvpn-ca/vars"
     regexp: "^{{ item.property | regex_escape() }}="
     line: "{{ item.property }}={{ item.value }}"
   with_items:
@@ -39,12 +47,9 @@
     - { property: "export KEY_COUNTRY", value: '"JP"' }
     - {
         property: "export KEY_CONFIG",
-        value: "{{ ansible_env.HOME }}/openvpn-ca/openssl-1.0.0.cnf",
+        value: "/home/vpn-user/openvpn-ca/openssl-1.0.0.cnf",
       }
-    - {
-        property: "export KEY_DIR",
-        value: "{{ ansible_env.HOME }}/openvpn-ca/keys",
-      }
+    - { property: "export KEY_DIR", value: "/home/vpn-user/openvpn-ca/keys" }
 
 - name: "Build the certificate authority"
   become: true
@@ -53,7 +58,7 @@
     ./clean-all;
     yes "" | ./build-ca;
   args:
-    chdir: "{{ ansible_env.HOME }}/openvpn-ca/"
+    chdir: "/home/vpn-user/openvpn-ca/"
     executable: /bin/bash
 
 - name: "Build server certificate"
@@ -62,7 +67,7 @@
     source vars;
     ./build-key-server --batch server;
   args:
-    chdir: "{{ ansible_env.HOME }}/openvpn-ca/"
+    chdir: "/home/vpn-user/openvpn-ca/"
     executable: /bin/bash
 
 - name: "Build Diffie-Hellman parameters and key generation"
@@ -72,14 +77,14 @@
     yes "" | ./build-dh;
     openvpn --genkey --secret keys/ta.key;
   args:
-    chdir: "{{ ansible_env.HOME }}/openvpn-ca/"
+    chdir: "/home/vpn-user/openvpn-ca/"
     executable: /bin/bash
 
 - name: "Copy key and certificates to /etc/openvpn"
   become: true
   copy:
     remote_src: yes
-    src: "{{ ansible_env.HOME }}/openvpn-ca/keys/{{ item }}"
+    src: "/home/vpn-user/openvpn-ca/keys/{{ item }}"
     dest: "/etc/openvpn/"
   with_items:
     - "ca.crt"
