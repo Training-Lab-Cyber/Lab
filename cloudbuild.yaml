@@ -88,7 +88,7 @@ steps:
 
         python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
 
-        ansible-playbook vpn_infra.yml -i inventory/gcp.yaml --forks 10 -vvv
+#        ansible-playbook vpn_infra.yml -i inventory/gcp.yaml --forks 10 -vvv
 
 # ansible-playbook attacker_infra.yml -i inventory/gcp.yaml --forks 10 -vvv
 # ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10

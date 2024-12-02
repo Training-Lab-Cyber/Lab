@@ -38,6 +38,21 @@ firewall_rules = {
     priority           = 1000
   }
 
+  vpn_from_myip = {
+    name      = "allow-vpn-from-myip"
+    direction = "INGRESS"
+    allow_protocols = [
+      {
+        protocol = "upd"
+        ports    = ["1194"]
+      }
+    ]
+    source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
+    destination_ranges = []
+    target_tags        = ["vpn"]
+    priority           = 1000
+  }
+
 
   ssh_from_myip = {
     name      = "allow-ssh-from-myip"
