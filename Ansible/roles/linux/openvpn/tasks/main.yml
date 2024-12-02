@@ -17,6 +17,7 @@
     - easy-rsa
     - libpam-google-authenticator
     - libqrencode4
+  become: true
 
 - name: "Remove CA directory"
   become: true
