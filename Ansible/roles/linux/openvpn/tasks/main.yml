@@ -75,7 +75,7 @@
 - name: Create server certificate with expect
   ansible.builtin.shell: |
     set -o pipefail
-    log_file "expect_build_ca.log"
+    log_file "expect_build_server_full.log"
     set timeout 300
     spawn /home/ansible/openvpn/easyrsa build-server-full server nopass
     expect {
