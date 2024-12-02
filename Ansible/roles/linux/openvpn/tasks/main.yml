@@ -3,6 +3,11 @@
   apt:
     upgrade: yes
 
+- name: Update the system
+  apt:
+    update_cache: yes
+  become: true
+
 - name: Install openvpn
   package:
     name: "{{ item }}"
