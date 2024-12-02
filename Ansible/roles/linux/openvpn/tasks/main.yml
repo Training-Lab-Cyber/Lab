@@ -58,7 +58,7 @@
     chdir: "/home/ansible/openvpn/"
     executable: /usr/bin/expect
   failed_when: expect.rc != 0
-  register: expect_output
+  register: expect
 
 - name: "Build server certificate"
   shell: ./easyrsa gen-dh
@@ -96,7 +96,7 @@
     chdir: "/home/ansible/openvpn/"
     executable: /usr/bin/expect
   failed_when: expect.rc != 0
-  register: expect_output
+  register: expect
 
 - name: "Copy key and certificates to /etc/openvpn"
   become: true
