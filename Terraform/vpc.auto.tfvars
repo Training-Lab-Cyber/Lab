@@ -69,6 +69,7 @@ firewall_rules = {
     priority           = 1000
   }
 
+
   http_from_internet = {
     name      = "allow-http-from-internet"
     direction = "INGRESS"
@@ -80,9 +81,10 @@ firewall_rules = {
     ]
     source_ranges      = ["0.0.0.0/0"]
     destination_ranges = []
-    target_tags        = ["redirector", "phishing"]
+    target_tags        = ["phishing"]
     priority           = 1000
   }
+
 
   proxy_from_c2 = {
     name      = "allow-proxy-from-c2"
@@ -94,21 +96,6 @@ firewall_rules = {
       }
     ]
     source_ranges      = ["10.1.0.0/24"]
-    destination_ranges = []
-    target_tags        = ["redirector"]
-    priority           = 1000
-  }
-
-  socks_from_myip = {
-    name      = "allow-socks-from-myip"
-    direction = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["1080"]
-      }
-    ]
-    source_ranges      = ["220.146.34.124/32", "121.103.83.2/32"]
     destination_ranges = []
     target_tags        = ["redirector"]
     priority           = 1000
@@ -126,36 +113,6 @@ firewall_rules = {
     source_ranges      = ["10.1.0.0/24"]
     destination_ranges = []
     target_tags        = ["redirector"]
-    priority           = 1000
-  }
-
-  rdp_inside_test = {
-    name      = "allow-rdp-inside-test"
-    direction = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["3389"]
-      }
-    ]
-    source_ranges      = ["10.4.0.0/24"]
-    destination_ranges = []
-    target_tags        = ["ad", "terminal", "bastion", "server"]
-    priority           = 1000
-  }
-
-  rdp_from_myip = {
-    name      = "allow-rdp-from-myip"
-    direction = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["3389"]
-      }
-    ]
-    source_ranges      = ["121.103.83.2/32", "220.146.34.124/32"]
-    destination_ranges = []
-    target_tags        = ["bastion"]
     priority           = 1000
   }
 
@@ -266,20 +223,5 @@ firewall_rules = {
     target_tags        = ["elk"]
     priority           = 1000
   }
-  kibana_from_myip = {
-    name      = "allow-kibana-from-myip"
-    direction = "INGRESS"
-    allow_protocols = [
-      {
-        protocol = "tcp"
-        ports    = ["5601", "22"]
-      }
-    ]
-    source_ranges      = ["121.103.83.2/32", "220.146.34.124/32"]
-    destination_ranges = []
-    target_tags        = ["elk"]
-    priority           = 1000
-  }
-
 
 }

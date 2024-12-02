@@ -92,18 +92,6 @@ vm_configs = {
     disksize          = 20
   }
 
-  bastion = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-bastion"
-    machine_type      = "n1-standard-1"
-    subnet_name       = "test"
-    tags              = ["bastion", "windows"]
-    labels            = { group = "bastion" }
-    image             = "windows-server-2022-dc-v20241010"
-    os                = "windows"
-    add_access_config = true
-    disksize          = 50
-  }
   ad-prod = {
     zone              = "asia-northeast1-a"
     name              = "vm-ad-prod"
@@ -123,6 +111,18 @@ vm_configs = {
     subnet_name       = "test"
     tags              = ["ad", "windows"]
     labels            = { group = "ad-dev" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
+    disksize          = 50
+  }
+  ad-child = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-ad-child"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "test"
+    tags              = ["ad", "windows"]
+    labels            = { group = "ad-child" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
