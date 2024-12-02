@@ -50,6 +50,7 @@
         value: "/home/vpn-user/openvpn-ca/openssl-1.0.0.cnf",
       }
     - { property: "export KEY_DIR", value: "/home/vpn-user/openvpn-ca/keys" }
+  become: true
 
 - name: "Build the certificate authority"
   become: true
