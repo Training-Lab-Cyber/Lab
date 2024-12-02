@@ -43,7 +43,7 @@ firewall_rules = {
     direction = "INGRESS"
     allow_protocols = [
       {
-        protocol = "upd"
+        protocol = "udp"
         ports    = ["1194"]
       }
     ]
