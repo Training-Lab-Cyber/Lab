@@ -19,27 +19,19 @@
     - libqrencode4
   become: true
 
-- name: Add user 'vpn-user'
-  ansible.builtin.user:
-    name: vpn-user
-    groups: wheel
-    password: "{{ 'korehavpnnopasuwa-dodesu202412' | password_hash('sha512') }}"
-    create_home: true
-  become: true
-
 - name: "Remove CA directory"
   become: true
   file:
     state: absent
-    path: "/home/vpn-user/openvpn-ca/"
+    path: "/home/ansible/openvpn-ca/"
 
 - name: "Create CA dir"
   become: true
-  command: make-cadir /home/vpn-user/openvpn-ca
+  command: make-cadir /home/ansible/openvpn-ca
 
 - name: Customize CA variable configuration
   lineinfile:
-    dest: "/home/vpn-user/openvpn-ca/vars"
+    dest: "/home/ansible/openvpn-ca/vars"
     regexp: "^{{ item.property | regex_escape() }}="
     line: "{{ item.property }}={{ item.value }}"
   with_items:
@@ -47,9 +39,9 @@
     - { property: "export KEY_COUNTRY", value: '"JP"' }
     - {
         property: "export KEY_CONFIG",
-        value: "/home/vpn-user/openvpn-ca/openssl-1.0.0.cnf",
+        value: "/home/ansible/openvpn-ca/openssl-1.0.0.cnf",
       }
-    - { property: "export KEY_DIR", value: "/home/vpn-user/openvpn-ca/keys" }
+    - { property: "export KEY_DIR", value: "/home/ansible/openvpn-ca/keys" }
   become: true
 
 - name: "Build the certificate authority"
@@ -59,7 +51,7 @@
     ./clean-all;
     yes "" | ./build-ca;
   args:
-    chdir: "/home/vpn-user/openvpn-ca/"
+    chdir: "/home/ansible/openvpn-ca/"
     executable: /bin/bash
 
 - name: "Build server certificate"
@@ -68,7 +60,7 @@
     source vars;
     ./build-key-server --batch server;
   args:
-    chdir: "/home/vpn-user/openvpn-ca/"
+    chdir: "/home/ansible/openvpn-ca/"
     executable: /bin/bash
 
 - name: "Build Diffie-Hellman parameters and key generation"
@@ -78,14 +70,14 @@
     yes "" | ./build-dh;
     openvpn --genkey --secret keys/ta.key;
   args:
-    chdir: "/home/vpn-user/openvpn-ca/"
+    chdir: "/home/ansible/openvpn-ca/"
     executable: /bin/bash
 
 - name: "Copy key and certificates to /etc/openvpn"
   become: true
   copy:
     remote_src: yes
-    src: "/home/vpn-user/openvpn-ca/keys/{{ item }}"
+    src: "/home/ansible/openvpn-ca/keys/{{ item }}"
     dest: "/etc/openvpn/"
   with_items:
     - "ca.crt"
