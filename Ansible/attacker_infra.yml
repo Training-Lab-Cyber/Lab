@@ -13,7 +13,7 @@
     - roles/linux/redirector
     - roles/linux/proxy
   vars:
-    allowed_ip_group: "gcp_group_c2"
+    allowed_ip_group: "gcp_group_cs"
 
 - hosts: gcp_group_cs
   gather_facts: false

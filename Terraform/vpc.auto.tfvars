@@ -15,6 +15,10 @@ subnets = {
     region = "asia-northeast1"
     cidr   = "10.4.0.0/24"
   }
+  vpn = {
+    region = "asia-northeast1"
+    cidr   = "10.100.0.0/24"
+  }
 }
 
 firewall_rules = {
@@ -28,7 +32,7 @@ firewall_rules = {
         ports    = []
       }
     ]
-    source_ranges      = ["192.168.0.0/24"]
+    source_ranges      = ["10.100.0.0/24"]
     destination_ranges = []
     target_tags        = ["linux", "windows"]
     priority           = 1000
@@ -46,7 +50,7 @@ firewall_rules = {
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
-    target_tags        = ["phishing"]
+    target_tags        = ["phishing", "vpn"]
     priority           = 1000
   }
 

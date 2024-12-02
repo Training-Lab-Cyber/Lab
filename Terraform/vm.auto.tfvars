@@ -1,4 +1,17 @@
 vm_configs = {
+  vpn = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-openvpn"
+    machine_type      = "n1-standard-1"
+    subnet_name       = "vpn"
+    tags              = ["c2", "linux"]
+    labels            = { group = "vpn" }
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+    os                = "linux"
+    add_access_config = true
+    disksize          = 20
+  }
+
   cs = {
     zone              = "asia-northeast1-a"
     name              = "vm-cobaltstrike"
