@@ -4,7 +4,7 @@ vm_configs = {
     name              = "vm-openvpn"
     machine_type      = "n1-standard-1"
     subnet_name       = "vpn"
-    tags              = ["c2", "linux"]
+    tags              = ["vpn", "linux"]
     labels            = { group = "vpn" }
     image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
     os                = "linux"
