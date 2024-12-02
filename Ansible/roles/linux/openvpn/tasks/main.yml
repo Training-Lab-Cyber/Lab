@@ -17,74 +17,99 @@
     - easy-rsa
     - libpam-google-authenticator
     - libqrencode4
+    - expect
   become: true
 
 - name: "Remove CA directory"
-  become: true
   file:
     state: absent
-    path: "/home/ansible/openvpn-ca/"
+    path: "/home/ansible/openvpn/"
 
 - name: "Create CA dir"
-  become: true
-  command: make-cadir /home/ansible/openvpn-ca
+  command: make-cadir /home/ansible/openvpn
 
-- name: Customize CA variable configuration
-  lineinfile:
-    dest: "/home/ansible/openvpn-ca/vars"
-    regexp: "^{{ item.property | regex_escape() }}="
-    line: "{{ item.property }}={{ item.value }}"
-  with_items:
-    - { property: "export KEY_NAME", value: '"server"' }
-    - { property: "export KEY_COUNTRY", value: '"JP"' }
-    - {
-        property: "export KEY_CONFIG",
-        value: "/home/ansible/openvpn-ca/openssl-1.0.0.cnf",
-      }
-    - { property: "export KEY_DIR", value: "/home/ansible/openvpn-ca/keys" }
-  become: true
-
-- name: "Build the certificate authority"
-  become: true
-  shell: >
-    source vars;
-    ./clean-all;
-    yes "" | ./build-ca;
+- name: "Init the certificate authority"
+  shell: ./easyrsa init-pki
   args:
-    chdir: "/home/ansible/openvpn-ca/"
+    chdir: "/home/ansible/openvpn/"
     executable: /bin/bash
+
+- name: Run ./build-ca with expect
+  ansible.builtin.shell: |
+    set -o pipefail
+    log_file "expect_build_ca.log"
+    set timeout 300
+    spawn ./easyrsa build-ca nopass
+    expect {
+      -re "Common Name \\(eg: your user, host, or server name\\) \\[Easy-RSA CA\\]:" {
+        send "server\n"
+      } default {
+        exit 1
+      }
+    }
+    expect {
+      -re "Done" {
+        exit 0
+      } default {
+        exit 1
+      }
+    }
+  args:
+    chdir: "/home/ansible/openvpn/"
+    executable: /usr/bin/expect
+  failed_when: expect.rc != 0
+  register: expect_output
 
 - name: "Build server certificate"
-  become: true
-  shell: >
-    source vars;
-    ./build-key-server --batch server;
+  shell: ./easyrsa gen-dh
   args:
-    chdir: "/home/ansible/openvpn-ca/"
+    chdir: "/home/ansible/openvpn/"
     executable: /bin/bash
 
-- name: "Build Diffie-Hellman parameters and key generation"
-  become: true
-  shell: >
-    source vars;
-    yes "" | ./build-dh;
-    openvpn --genkey --secret keys/ta.key;
+- name: "Create ta.key"
+  shell: openvpn --genkey secret ./pki/ta.key
   args:
-    chdir: "/home/ansible/openvpn-ca/"
+    chdir: "/home/ansible/openvpn/"
     executable: /bin/bash
+
+- name: Create server certificate with expect
+  ansible.builtin.shell: |
+    set -o pipefail
+    log_file "expect_build_ca.log"
+    set timeout 300
+    spawn ./easyrsa build-server-full server nopass
+    expect {
+      -re "Confirm request details:" {
+        send "yes\n"
+      } default {
+        exit 1
+      }
+    }
+    expect {
+      -re "Done" {
+        exit 0
+      } default {
+        exit 1
+      }
+    }
+  args:
+    chdir: "/home/ansible/openvpn/"
+    executable: /usr/bin/expect
+  failed_when: expect.rc != 0
+  register: expect_output
 
 - name: "Copy key and certificates to /etc/openvpn"
   become: true
   copy:
     remote_src: yes
-    src: "/home/ansible/openvpn-ca/keys/{{ item }}"
+    src: "/home/ansible/openvpn/pki/{{ item }}"
     dest: "/etc/openvpn/"
   with_items:
     - "ca.crt"
-    - "server.crt"
-    - "server.key"
+    - "issued/server.crt"
+    - "private/server.key"
     - "ta.key"
-    - "dh2048.pem"
+    - "dh.pem"
 
 - name: Adjust OpenVPN server configuration
   ansible.builtin.template:
