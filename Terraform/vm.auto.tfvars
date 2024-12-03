@@ -15,7 +15,7 @@ vm_configs = {
   
   bloodhound = {
     zone              = "asia-northeast1-a"
-    name              = "vm-cobaltstrike"
+    name              = "vm-bloodhound"
     machine_type      = "n1-standard-2"
     subnet_name       = "c2"
     tags              = ["bloodhound", "linux"]
