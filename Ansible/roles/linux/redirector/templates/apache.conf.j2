@@ -3,7 +3,14 @@
     DocumentRoot /var/www/html
 
     RewriteEngine on
+
+    # Rule for /connect/cs
+    RewriteCond %{REQUEST_URI} ^/connect/cs$
     RewriteRule ^.*$ http://localhost:8080%{REQUEST_URI} [P]
+
+    # Rule for /connect/havoc
+    RewriteCond %{REQUEST_URI} ^/connect/havoc$
+    RewriteRule ^.*$ http://localhost:8081%{REQUEST_URI} [P]
 
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined

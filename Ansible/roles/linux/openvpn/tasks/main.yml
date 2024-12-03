@@ -1,0 +1,20 @@
+- name: Update apt packages
+  become: true
+  apt:
+    upgrade: yes
+
+- name: Update the system
+  apt:
+    update_cache: yes
+  become: true
+
+- name: Install openvpn
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - openvpn
+    - easy-rsa
+    - libpam-google-authenticator
+    - libqrencode4
+  become: true

@@ -1,0 +1,8 @@
+---
+###
+# Create OpenVpn server
+###
+- hosts: gcp_group_vpn
+  gather_facts: false
+  roles:
+    - roles/linux/openvpn

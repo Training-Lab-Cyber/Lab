@@ -1,16 +1,43 @@
 vm_configs = {
-  c2 = {
+  vpn = {
     zone              = "asia-northeast1-a"
-    name              = "vm-c2"
+    name              = "vm-openvpn"
+    machine_type      = "n1-standard-1"
+    subnet_name       = "vpn"
+    tags              = ["vpn", "linux"]
+    labels            = { group = "vpn" }
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+    os                = "linux"
+    add_access_config = true
+    disksize          = 20
+  }
+
+  cs = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-cobaltstrike"
     machine_type      = "n1-standard-2"
     subnet_name       = "c2"
     tags              = ["c2", "linux"]
-    labels            = { group = "c2" }
+    labels            = { group = "cs" }
     image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
     os                = "linux"
     add_access_config = false
     disksize          = 100
   }
+
+  havoc = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-havoc"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "c2"
+    tags              = ["c2", "linux"]
+    labels            = { group = "havoc" }
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+    os                = "linux"
+    add_access_config = false
+    disksize          = 100
+  }
+
 
   redelk = {
     zone              = "asia-northeast1-a"
@@ -22,20 +49,6 @@ vm_configs = {
     image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
     os                = "linux"
     add_access_config = false
-    disksize          = 500
-  }
-
-
-  vpn = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-openvpn"
-    machine_type      = "n1-standard-2"
-    subnet_name       = "vpn"
-    tags              = ["vpn", "linux"]
-    labels            = { group = "vpn" }
-    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
-    os                = "linux"
-    add_access_config = true
     disksize          = 500
   }
 
@@ -79,18 +92,6 @@ vm_configs = {
     disksize          = 20
   }
 
-  bastion = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-bastion"
-    machine_type      = "n1-standard-1"
-    subnet_name       = "test"
-    tags              = ["bastion", "windows"]
-    labels            = { group = "bastion" }
-    image             = "windows-server-2022-dc-v20241010"
-    os                = "windows"
-    add_access_config = true
-    disksize          = 50
-  }
   ad-prod = {
     zone              = "asia-northeast1-a"
     name              = "vm-ad-prod"
@@ -110,6 +111,18 @@ vm_configs = {
     subnet_name       = "test"
     tags              = ["ad", "windows"]
     labels            = { group = "ad-dev" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
+    disksize          = 50
+  }
+  ad-child = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-ad-child"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "test"
+    tags              = ["ad", "windows"]
+    labels            = { group = "ad-child" }
     image             = "windows-server-2022-dc-v20241010"
     os                = "windows"
     add_access_config = false
