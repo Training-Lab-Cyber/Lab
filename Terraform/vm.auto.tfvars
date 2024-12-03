@@ -12,6 +12,20 @@ vm_configs = {
     disksize          = 20
   }
 
+  
+  bloodhound = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-cobaltstrike"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "c2"
+    tags              = ["bloodhound", "linux"]
+    labels            = { group = "bloodhound" }
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+    os                = "linux"
+    add_access_config = false
+    disksize          = 200
+  }
+
   cs = {
     zone              = "asia-northeast1-a"
     name              = "vm-cobaltstrike"
