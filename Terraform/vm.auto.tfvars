@@ -20,9 +20,9 @@ vm_configs = {
     subnet_name       = "c2"
     tags              = ["bloodhound", "linux"]
     labels            = { group = "bloodhound" }
-    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+    image             = "debian-cloud/debian-11"
     os                = "linux"
-    add_access_config = false
+    add_access_config = true
     disksize          = 200
   }
 
