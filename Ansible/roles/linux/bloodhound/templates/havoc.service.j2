@@ -1,0 +1,14 @@
+[Unit]
+Description=Havoc Server Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/opt/Havoc/havoc server --profile /opt/Havoc/profiles/havoc.yaotl -v --debug
+Restart=always
+RestartSec=5
+WorkingDirectory=/opt/Havoc
+User=root
+
+[Install]
+WantedBy=multi-user.target
