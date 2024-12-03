@@ -1,5 +1,4 @@
 ---
-
 ###
 # Create Redirector and C2 infra
 ###
@@ -19,7 +18,7 @@
 - hosts: gcp_group_c2
   gather_facts: false
   roles:
-    - roles/linux/c2/havoc
+    - roles/linux/c2/cobaltstrike
   vars:
     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
@@ -37,9 +36,9 @@
       - src_port: 8080
         dest_host: localhost
         dest_port: 8080
-      - src_port: 40056
+      - src_port: 50050
         dest_host: localhost
-        dest_port: 40056
+        dest_port: 50050
       - src_port: 1080
         dest_host: localhost
         dest_port: 1080

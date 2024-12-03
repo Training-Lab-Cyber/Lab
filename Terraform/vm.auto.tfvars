@@ -6,11 +6,39 @@ vm_configs = {
     subnet_name       = "c2"
     tags              = ["c2", "linux"]
     labels            = { group = "c2" }
-    image             = "debian-cloud/debian-11"
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
     os                = "linux"
     add_access_config = false
     disksize          = 100
   }
+
+  redelk = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-redelk"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "c2"
+    tags              = ["redelk", "linux"]
+    labels            = { group = "redelk" }
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+    os                = "linux"
+    add_access_config = false
+    disksize          = 500
+  }
+
+
+  vpn = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-openvpn"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "vpn"
+    tags              = ["vpn", "linux"]
+    labels            = { group = "vpn" }
+    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+    os                = "linux"
+    add_access_config = true
+    disksize          = 500
+  }
+
 
   phishing = {
     zone              = "asia-northeast1-a"

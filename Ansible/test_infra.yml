@@ -1,5 +1,4 @@
 ---
-
 ###
 # Create Test environment
 ###
@@ -10,7 +9,6 @@
     - roles/linux/proxy
   vars:
     allowed_ip_group: "gcp_group_terminal_dev"
-
 
 - hosts: gcp_group_ad_dev
   gather_facts: false

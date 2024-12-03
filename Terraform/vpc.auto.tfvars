@@ -3,17 +3,21 @@ subnets = {
     region = "asia-northeast1"
     cidr   = "10.1.0.0/24"
   }
-  phishing = {
+  redirector = {
     region = "asia-northeast1"
     cidr   = "10.2.0.0/24"
   }
-  redirector = {
+  phishing = {
     region = "asia-northeast1"
     cidr   = "10.3.0.0/24"
   }
   test = {
     region = "asia-northeast1"
     cidr   = "10.4.0.0/24"
+  }
+  vpn = {
+    region = "asia-northeast1"
+    cidr   = "10.100.0.0/24"
   }
 }
 
@@ -30,7 +34,7 @@ firewall_rules = {
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
-    target_tags        = ["phishing"]
+    target_tags        = ["phishing", "vpn"]
     priority           = 1000
   }
 
@@ -64,18 +68,22 @@ firewall_rules = {
     priority           = 1000
   }
 
-  c2_from_myip = {
-    name      = "allow-c2-from-myip"
+  openvpn_from_myip = {
+    name      = "allow-vpn-from-myip"
     direction = "INGRESS"
     allow_protocols = [
       {
         protocol = "tcp"
-        ports    = ["40056"]
+        ports    = ["443"]
+        }, {
+        protocol = "udp"
+        ports    = ["1194"]
+
       }
     ]
     source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
     destination_ranges = []
-    target_tags        = ["redirector"]
+    target_tags        = ["vpn"]
     priority           = 1000
   }
 
@@ -260,4 +268,6 @@ firewall_rules = {
     target_tags        = ["elk"]
     priority           = 1000
   }
+
+
 }

@@ -1,0 +1,152 @@
+---
+- name: Create proxy file in /etc/sudoers.d
+  copy:
+    dest: /etc/sudoers.d/proxy
+    content: 'Defaults env_keep = "http_proxy https_proxy"'
+    owner: root
+    group: root
+    mode: "0440"
+  become: true
+
+- name: Set http_proxy environment variable
+  lineinfile:
+    path: /etc/environment
+    line: "http_proxy=http://{{proxy_server}}:{{proxy_port}}"
+    create: true
+  become: true
+
+- name: Set https_proxy environment variable
+  lineinfile:
+    path: /etc/environment
+    line: "https_proxy=http://{{proxy_server}}:{{proxy_port}}"
+    create: true
+  become: true
+
+- name: Update the system
+  apt:
+    update_cache: yes
+  become: true
+- name: Install required packages
+  apt:
+    name:
+      - openjdk-11-jdk
+      - autossh
+      - expect
+    state: present
+  become: true
+
+- name: Java update
+  command: update-java-alternatives -s java-1.11.0-openjdk-amd64
+  become: true
+
+- name: Get CobaltStrike download token
+  ansible.builtin.uri:
+    body: dlkey={{ license_key }}
+    body_format: form-urlencoded
+    method: POST
+    return_content: true
+    url: https://download.cobaltstrike.com/download
+  delegate_to: localhost
+  register: cobaltstrike_token
+  become: true
+
+- name: Set CobaltStrike token fact
+  ansible.builtin.set_fact:
+    cobaltstrike_token_content: "{{ cobaltstrike_token.content | regex_search('href=\"/downloads/(.+)/cobaltstrike-dist-windows.zip\"', '\\1') | first }}"
+  become: true
+
+- name: Extract the download token and download the Cobalt Strike tarball
+  command: wget "https://download.cobaltstrike.com/downloads/{{ cobaltstrike_token_content }}/cobaltstrike-dist-linux.tgz" -O /tmp/cobaltstrike-dist-linux.tgz
+  become: true
+
+- name: Extract the Cobalt Strike tarball
+  ansible.builtin.unarchive:
+    dest: /opt
+    remote_src: true
+    src: /tmp/cobaltstrike-dist-linux.tgz
+  become: true
+
+- name: Delete remote copy of Cobalt Strike tarball
+  ansible.builtin.file:
+    path: /tmp/cobaltstrike-dist-linux.tgz
+    state: absent
+  become: true
+
+- name: Modify update shell to use proxy
+  ansible.builtin.template:
+    src: templates/update.j2
+    dest: /opt/cobaltstrike/update
+    mode: "0755"
+  become: true
+
+- name: Upgrade and license Cobalt Strike
+  ansible.builtin.shell: |
+    set -o pipefail
+    log_file "expect.txt"
+    set timeout 300
+    spawn ./update
+    expect {
+      -re "Please enter your license key:" {
+        send [format "%s\n" {{ license_key }}]
+      } default {
+        exit 1
+      }
+    }
+    expect {
+      -re "(Failed to download hashes|Your license key is invalid)" {
+        exit 1
+      }
+    }
+    expect {
+      -re "Done" {
+        exit 0
+      } default {
+        exit 1
+      }
+    }
+  args:
+    chdir: /opt/cobaltstrike
+    creates: /opt/cobaltstrike/client/cobaltstrike.auth.client
+    executable: /usr/bin/expect
+  failed_when: expect.rc != 0
+  # The CS license key is sensitive
+  # no_log: true
+  register: expect
+  become: true
+
+- name: Ensure /opt/cobaltstrike directory exists
+  file:
+    path: /opt/cobaltstrike/server/profiles
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Copy all the profile files
+  copy:
+    src: files/profiles/
+    dest: /opt/cobaltstrike/server/profiles
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
+- name: Create teamserver.service file
+  ansible.builtin.template:
+    src: templates/teamserver.service.j2
+    dest: /etc/systemd/system/teamserver.service
+    mode: "0644"
+  become: true
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: true
+
+- name: Enable and start teamserver service
+  ansible.builtin.systemd:
+    name: teamserver
+    enabled: true
+    state: started
+  become: true
