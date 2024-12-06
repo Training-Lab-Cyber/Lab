@@ -5,27 +5,18 @@
     password: "{{domain_password}}"
     state: present
 
-- name: Create new domain in a new forest on the target host and reboot
-  microsoft.ad.domain:
+- name: Set multiple lookup addresses on all visible adapters (usually physical adapters that are in the Up state), with debug logging to a file
+  ansible.windows.win_dns_client:
+    adapter_names: "*"
+    dns_servers: "{{dns_server}}"
+
+- name: Create a domain tree foo.example.com with parent bar.example.com
+  microsoft.ad.domain_child:
     dns_domain_name: "{{ domain }}"
+    domain_admin_user: "Administrator@{{ parent_domain }}"
+    domain_admin_password: "{{domain_password}}"
     safe_mode_password: "{{domain_password}}"
     reboot: true
-
-- name: Create new Windows domain in a new forest with specific parameters and reboot in post task
-  microsoft.ad.domain:
-    create_dns_delegation: false
-    database_path: C:\Windows\NTDS
-    dns_domain_name: "{{ domain }}"
-    domain_mode: WinThreshold
-    domain_netbios_name: "{{netbios_name}}"
-    forest_mode: WinThreshold
-    safe_mode_password: "{{domain_password}}"
-    sysvol_path: C:\Windows\SYSVOL
-  register: domain_install
-
-- name: Reboot host if install requires it
-  ansible.windows.win_reboot:
-  when: domain_install.reboot_required
 
 - name: Ensure a server is a domain controller
   microsoft.ad.domain_controller:
