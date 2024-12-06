@@ -26,14 +26,14 @@
     domain: prod.com
     netbios_name: PROD
 
-- hosts: gcp_group_ad_child
-  gather_facts: false
-  roles:
-    - roles/windows/active_directory/child_domain_controller
-  vars:
-    domain: child.dev.com
-    parent_domain: dev.com
-    dns_server: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+# - hosts: gcp_group_ad_child
+#   gather_facts: false
+#   roles:
+#     - roles/windows/active_directory/child_domain_controller
+#   vars:
+#     domain: child.dev.com
+#     parent_domain: dev.com
+#     dns_server: "{{ groups['gcp_group_ad_dev'] | map('extract', hostvars, 'inventory_hostname') | first }}"
 
 - hosts: gcp_group_ad_dev
   gather_facts: false
@@ -75,15 +75,15 @@
   roles:
     - roles/windows/terminals
 
-- hosts: gcp_group_terminal_child
-  gather_facts: false
-  vars:
-    domain: child.dev.com
-    dns_server: "{{ groups['gcp_group_ad_child'] | map('extract', hostvars, 'inventory_hostname') | first }}"
-    proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | first }}"
-    proxy_port: "3128"
-  roles:
-    - roles/windows/terminals
+# - hosts: gcp_group_terminal_child
+#   gather_facts: false
+#   vars:
+#     domain: child.dev.com
+#     dns_server: "{{ groups['gcp_group_ad_child'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+#     proxy_server: "{{ groups['gcp_group_proxy'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+#     proxy_port: "3128"
+#   roles:
+#     - roles/windows/terminals
 
 - hosts: gcp_group_server_dev
   gather_facts: false
