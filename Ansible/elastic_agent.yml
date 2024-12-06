@@ -1,10 +1,12 @@
 ---
-
 ###
 # Install EDR to test servers
 ###
 
-- hosts: gcp_group_ad_dev, gcp_group_terminal_dev,gcp_group_server_dev
+- hosts:
+    - gcp_group_ad_dev
+    - gcp_group_terminal_dev
+    - gcp_group_server_dev
   gather_facts: false
   roles:
     - roles/windows/elastic_agent
@@ -12,6 +14,17 @@
     fleet_server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     file: windows.ps1
     domain: dev.com
+
+- hosts:
+    - gcp_group_ad_child
+    - gcp_group_terminal_child
+  gather_facts: false
+  roles:
+    - roles/windows/elastic_agent
+  vars:
+    fleet_server: "{{ groups['gcp_group_elk'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+    file: windows.ps1
+    domain: child.dev.com
 
 - hosts: gcp_group_ad_prod
   gather_facts: false

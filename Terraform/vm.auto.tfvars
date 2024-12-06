@@ -167,6 +167,18 @@ vm_configs = {
     disksize          = 50
   }
 
+  pc2 = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-terminal2"
+    machine_type      = "n1-standard-1"
+    subnet_name       = "test"
+    tags              = ["terminal", "windows"]
+    labels            = { group = "terminal-child" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
+    disksize          = 50
+  }
   webserver = {
     zone              = "asia-northeast1-a"
     name              = "vm-web"

@@ -86,14 +86,15 @@ steps:
         cp -f /workspace/tunneling_key.pub roles/linux/ssh_tunneling/dest/files/authorized_keys
         cp -f /workspace/tunneling_key roles/linux/ssh_tunneling/src/files/id_rsa
 
-        python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
+        python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID 
 
-#        ansible-playbook test_infra.yml -i inventory/gcp.yaml --forks 10
-#        ansible-playbook elastic_agent.yml -i inventory/gcp.yaml --forks 10
+        ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10
+        ansible-playbook test_infra.yml -i inventory/gcp.yaml --forks 10
+        ansible-playbook elastic_agent.yml -i inventory/gcp.yaml --forks 10
 
 #        ansible-playbook vpn_infra.yml -i inventory/gcp.yaml --forks 10 -vvv
 #        ansible-playbook attacker_infra.yml -i inventory/gcp.yaml --forks 10
-#        ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10
+#
 
 # - id: "tf destroy"
 #   name: "hashicorp/terraform:1.0.0"
