@@ -34,7 +34,7 @@ In order to make the environment disposable, almost all the components are imple
 
 The codes is intended for continuous integration and delivery (CI/CD) pipeline on CloudBuild and Github. 
 
-## Requirements (manual creation)
+## Requirements (Manual creation)
 * Github repository which hosts these codes
 * Google Cloud project
 * Service Account which has all the privileges below
