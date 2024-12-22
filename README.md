@@ -2,7 +2,7 @@
 
 ## Overview
 This lab  is used for automatic creation of redteam infrastructure, including C2 server, HTTP redirector and testing environments like AD server and terminals.
-> Warning: This lab is still early PoC stage and there are lots of hardcoded credentials. Please DO NOT use this lab in a production environment.
+> Warning:  This lab is still early PoC stage and there are lots of hardcoded credentials. Please DO NOT use this lab in a production environment.
 
 ## Functions
 
