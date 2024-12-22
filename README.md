@@ -28,7 +28,7 @@ This lab  is used for automatic creation of redteam infrastructure, including C2
 
 <div style="page-break-before:always"></div>
 
-## GitOps style implementation
+## GitOps Style implementation
 The lab uses Google Cloud to host virtusl machines and virtual networks.  
 In order to make the environment disposable, almost all the components are implemented using IaC(terraform and ansible) for automatic construction.
 
