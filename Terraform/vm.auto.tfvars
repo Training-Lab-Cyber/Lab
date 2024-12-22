@@ -26,18 +26,6 @@ vm_configs = {
     disksize          = 200
   }
 
-  bloodhound = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-bloodhound"
-    machine_type      = "n1-standard-2"
-    subnet_name       = "c2"
-    tags              = ["bloodhound", "linux"]
-    labels            = { group = "bloodhound" }
-    image             = "debian-cloud/debian-11"
-    os                = "linux"
-    add_access_config = false
-    disksize          = 500
-  }
   cs = {
     zone              = "asia-northeast1-a"
     name              = "vm-cobaltstrike"

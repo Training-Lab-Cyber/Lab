@@ -14,6 +14,12 @@
 
 - name: Configure Apache to redirect to the specified IP on port 8080
   template:
+    src: .htaccess.j2
+    dest: /var/www/html/.htaccess
+  become: true
+
+- name: Configure Apache to redirect to the specified IP on port 8080
+  template:
     src: apache.conf.j2
     dest: /etc/apache2/sites-available/000-default.conf
   become: true
