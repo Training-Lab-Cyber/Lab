@@ -12,20 +12,6 @@ vm_configs = {
     disksize          = 20
   }
 
-
-  bloodhound = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-bloodhound"
-    machine_type      = "n1-standard-2"
-    subnet_name       = "c2"
-    tags              = ["bloodhound", "linux"]
-    labels            = { group = "bloodhound" }
-    image             = "debian-cloud/debian-11"
-    os                = "linux"
-    add_access_config = true
-    disksize          = 200
-  }
-
   cs = {
     zone              = "asia-northeast1-a"
     name              = "vm-cobaltstrike"
@@ -51,21 +37,6 @@ vm_configs = {
     add_access_config = false
     disksize          = 100
   }
-
-
-  redelk = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-redelk"
-    machine_type      = "n1-standard-2"
-    subnet_name       = "c2"
-    tags              = ["redelk", "linux"]
-    labels            = { group = "redelk" }
-    image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
-    os                = "linux"
-    add_access_config = false
-    disksize          = 500
-  }
-
 
   phishing = {
     zone              = "asia-northeast1-a"
