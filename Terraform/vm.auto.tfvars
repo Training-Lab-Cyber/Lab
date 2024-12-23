@@ -12,6 +12,20 @@ vm_configs = {
     disksize          = 20
   }
 
+
+  # bloodhound = {
+  #   zone              = "asia-northeast1-a"
+  #   name              = "vm-bloodhound"
+  #   machine_type      = "n1-standard-2"
+  #   subnet_name       = "c2"
+  #   tags              = ["bloodhound", "linux"]
+  #   labels            = { group = "bloodhound" }
+  #   image             = "debian-cloud/debian-11"
+  #   os                = "linux"
+  #   add_access_config = true
+  #   disksize          = 200
+  # }
+
   cs = {
     zone              = "asia-northeast1-a"
     name              = "vm-cobaltstrike"
@@ -38,18 +52,33 @@ vm_configs = {
     disksize          = 100
   }
 
-  phishing = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-phishing"
-    machine_type      = "n1-standard-1"
-    subnet_name       = "phishing"
-    tags              = ["phishing", "linux"]
-    labels            = { group = "phishing" }
-    image             = "debian-cloud/debian-11"
-    os                = "linux"
-    add_access_config = true
-    disksize          = 20
-  }
+
+  # redelk = {
+  #   zone              = "asia-northeast1-a"
+  #   name              = "vm-redelk"
+  #   machine_type      = "n1-standard-2"
+  #   subnet_name       = "c2"
+  #   tags              = ["redelk", "linux"]
+  #   labels            = { group = "redelk" }
+  #   image             = "ubuntu-os-cloud/ubuntu-2410-amd64"
+  #   os                = "linux"
+  #   add_access_config = false
+  #   disksize          = 500
+  # }
+
+
+  # phishing = {
+  #   zone              = "asia-northeast1-a"
+  #   name              = "vm-phishing"
+  #   machine_type      = "n1-standard-1"
+  #   subnet_name       = "phishing"
+  #   tags              = ["phishing", "linux"]
+  #   labels            = { group = "phishing" }
+  #   image             = "debian-cloud/debian-11"
+  #   os                = "linux"
+  #   add_access_config = true
+  #   disksize          = 20
+  # }
 
   redirector = {
     zone              = "asia-northeast1-a"
@@ -138,18 +167,18 @@ vm_configs = {
     add_access_config = false
     disksize          = 50
   }
-  webserver = {
-    zone              = "asia-northeast1-a"
-    name              = "vm-web"
-    machine_type      = "n1-standard-1"
-    subnet_name       = "test"
-    tags              = ["server", "windows"]
-    labels            = { group = "server-dev" }
-    image             = "windows-server-2022-dc-v20241010"
-    os                = "windows"
-    add_access_config = false
-    disksize          = 50
-  }
+  # webserver = {
+  #   zone              = "asia-northeast1-a"
+  #   name              = "vm-web"
+  #   machine_type      = "n1-standard-1"
+  #   subnet_name       = "test"
+  #   tags              = ["server", "windows"]
+  #   labels            = { group = "server-dev" }
+  #   image             = "windows-server-2022-dc-v20241010"
+  #   os                = "windows"
+  #   add_access_config = false
+  #   disksize          = 50
+  # }
 
   elk = {
     zone              = "asia-northeast1-a"
