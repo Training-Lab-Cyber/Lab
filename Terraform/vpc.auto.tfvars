@@ -47,7 +47,7 @@ firewall_rules = {
         ports    = ["1194"]
       }
     ]
-    source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
+    source_ranges      = ["220.146.34.124/32", "121.103.83.2/32"]
     destination_ranges = []
     target_tags        = ["vpn"]
     priority           = 1000
@@ -63,7 +63,7 @@ firewall_rules = {
         ports    = ["22"]
       }
     ]
-    source_ranges      = ["220.146.34.124/32", "121.103.83.2"]
+    source_ranges      = ["220.146.34.124/32", "121.103.83.2/32"]
     destination_ranges = []
     target_tags        = ["phishing", "vpn"]
     priority           = 1000

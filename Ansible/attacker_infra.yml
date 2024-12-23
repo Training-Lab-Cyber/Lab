@@ -23,13 +23,13 @@
     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
     proxy_port: "3128"
 
-- hosts: gcp_group_havoc
-  gather_facts: false
-  roles:
-    - roles/linux/c2/havoc
-  vars:
-    proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
-    proxy_port: "3128"
+# - hosts: gcp_group_bloodhound
+#   gather_facts: false
+#   roles:
+#     - roles/linux/bloodhound
+#   vars:
+#     proxy_server: "{{ groups['gcp_group_redirector'] | map('extract', hostvars, 'inventory_hostname') | first }}"
+#     proxy_port: "3128"
 
 - hosts: gcp_group_redirector
   gather_facts: false
