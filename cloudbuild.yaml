@@ -3,8 +3,8 @@ substitutions:
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-  pool:
-    name: projects/$PROJECT_ID/locations/asia-northeast1/workerPools/privatepool
+  # pool:
+  #   name: projects/$PROJECT_ID/locations/asia-northeast1/workerPools/privatepool
 
 steps:
   - id: "Create SSH Key Pair"
