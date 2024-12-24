@@ -142,6 +142,18 @@ vm_configs = {
     add_access_config = false
     disksize          = 50
   }
+  ad-child2 = {
+    zone              = "asia-northeast1-a"
+    name              = "vm-ad-child2"
+    machine_type      = "n1-standard-2"
+    subnet_name       = "test"
+    tags              = ["ad", "windows"]
+    labels            = { group = "ad-child" }
+    image             = "windows-server-2022-dc-v20241010"
+    os                = "windows"
+    add_access_config = false
+    disksize          = 50
+  }
   pc1 = {
     zone              = "asia-northeast1-a"
     name              = "vm-terminal1"

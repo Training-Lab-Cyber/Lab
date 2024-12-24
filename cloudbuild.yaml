@@ -7,91 +7,91 @@ options:
     name: projects/$PROJECT_ID/locations/asia-northeast1/workerPools/private-pool
 
 steps:
-  # - id: "Create SSH Key Pair"
-  #   name: "alpine"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       apk add --no-cache openssh
-  #       ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
-  # - id: "Register SSH Private Key to Secret Manager"
-  #   name: "google/cloud-sdk"
-  #   entrypoint: "bash"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       if gcloud secrets describe ansible_key &>/dev/null; then
-  #         echo "Secret 'ansible_key' already exists. Adding a new version..."
-  #         gcloud secrets versions add ansible_key --data-file=/workspace/ansible_key
-  #       else
-  #         echo "Creating new secret 'ansible_key'..."
-  #         gcloud secrets create ansible_key --data-file=/workspace/ansible_key
-  #       fi
-  # - id: "tf init"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
-
-  # - id: "tf plan"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform import  -var "project=$PROJECT_ID" -var "public_key_path=/workspace/ansible_key.pub" module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc
-  #       terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
-
-  # - id: "tf apply"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
-
-  # - id: "tf output"
-  #   name: "hashicorp/terraform:1.0.0"
-  #   entrypoint: "sh"
-  #   args:
-  #     - "-c"
-  #     - |
-  #       cd Terraform
-  #       terraform output -json > /workspace/terraform_output.json
-  #       cat /workspace/terraform_output.json
-
-  - id: "Run Ansible Playbook"
+  - id: "Create SSH Key Pair"
+    name: "alpine"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        apk add --no-cache openssh
+        ssh-keygen -t rsa -b 2048 -f /workspace/ansible_key -q -N ""
+  - id: "Register SSH Private Key to Secret Manager"
     name: "google/cloud-sdk"
     entrypoint: "bash"
     args:
       - "-c"
       - |
-        cd Ansible
-        gcloud secrets versions access latest --secret=ansible_key > /workspace/ansible_key
-        sed -i "s|^license_key:.*|license_key: \"$(gcloud secrets versions access latest --secret=key)\"|" roles/linux/c2/cobaltstrike/vars/main.yml
-        chmod 400 /workspace/ansible_key
-        apt-get update > /dev/null 2>&1
-        apt-get install -y ansible > /dev/null 2>&1
-        apt-get install -y python3-google-auth > /dev/null 2>&1
-        chmod 600 ~/.netrc
-        ansible-galaxy collection install -f microsoft.ad --upgrade
+        if gcloud secrets describe ansible_key &>/dev/null; then
+          echo "Secret 'ansible_key' already exists. Adding a new version..."
+          gcloud secrets versions add ansible_key --data-file=/workspace/ansible_key
+        else
+          echo "Creating new secret 'ansible_key'..."
+          gcloud secrets create ansible_key --data-file=/workspace/ansible_key
+        fi
+  - id: "tf init"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform init -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-        ssh-keygen -t rsa -b 2048 -f /workspace/tunneling_key -q -N ""
-        cp -f /workspace/tunneling_key.pub roles/linux/ssh_tunneling/dest/files/authorized_keys
-        cp -f /workspace/tunneling_key roles/linux/ssh_tunneling/src/files/id_rsa
+  - id: "tf plan"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform import  -var "project=$PROJECT_ID" -var "public_key_path=/workspace/ansible_key.pub" module.vpc.google_compute_network.vpc projects/$PROJECT_ID/global/networks/redteam-vpc
+        terraform plan -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-        python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
+  - id: "tf apply"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform apply -auto-approve -var="public_key_path=/workspace/ansible_key.pub" -var="project=$PROJECT_ID"
 
-        ansible-playbook attacker_infra.yml -i inventory/gcp.yaml --forks 10
-        ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10
-        ansible-playbook test_infra.yml -i inventory/gcp.yaml --forks 10
-        ansible-playbook elastic_agent.yml -i inventory/gcp.yaml --forks 10
+  - id: "tf output"
+    name: "hashicorp/terraform:1.0.0"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        cd Terraform
+        terraform output -json > /workspace/terraform_output.json
+        cat /workspace/terraform_output.json
+
+  # - id: "Run Ansible Playbook"
+  #   name: "google/cloud-sdk"
+  #   entrypoint: "bash"
+  #   args:
+  #     - "-c"
+  #     - |
+  #       cd Ansible
+  #       gcloud secrets versions access latest --secret=ansible_key > /workspace/ansible_key
+  #       sed -i "s|^license_key:.*|license_key: \"$(gcloud secrets versions access latest --secret=key)\"|" roles/linux/c2/cobaltstrike/vars/main.yml
+  #       chmod 400 /workspace/ansible_key
+  #       apt-get update > /dev/null 2>&1
+  #       apt-get install -y ansible > /dev/null 2>&1
+  #       apt-get install -y python3-google-auth > /dev/null 2>&1
+  #       chmod 600 ~/.netrc
+  #       ansible-galaxy collection install -f microsoft.ad --upgrade
+
+  #       ssh-keygen -t rsa -b 2048 -f /workspace/tunneling_key -q -N ""
+  #       cp -f /workspace/tunneling_key.pub roles/linux/ssh_tunneling/dest/files/authorized_keys
+  #       cp -f /workspace/tunneling_key roles/linux/ssh_tunneling/src/files/id_rsa
+
+  #       python3 tools/updateInventory.py  inventory/gcp.yaml  $PROJECT_ID
+
+  #       ansible-playbook attacker_infra.yml -i inventory/gcp.yaml --forks 10
+  #       ansible-playbook siem_infra.yml -i inventory/gcp.yaml --forks 10
+  #       ansible-playbook test_infra.yml -i inventory/gcp.yaml --forks 10
+  #       ansible-playbook elastic_agent.yml -i inventory/gcp.yaml --forks 10
 
 #        ansible-playbook vpn_infra.yml -i inventory/gcp.yaml --forks 10 -vvv
 #
